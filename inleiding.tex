@@ -1,25 +1,21 @@
 %%=============================================================================
 %% Inleiding
 %%=============================================================================
-
 \chapter{Inleiding}
 \label{ch:inleiding}
-
-De inleiding moet de lezer alle nodige informatie verschaffen om het onderwerp te begrijpen zonder nog externe werken te moeten raadplegen \autocite{Pollefliet2011}. Dit is een doorlopende tekst die gebaseerd is op al wat je over het onderwerp gelezen hebt (literatuuronderzoek).
-
-Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz. naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\TeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin, gebruik je \texttt{$\backslash${}textcite\{\}}.
-Soms wil je de auteur niet expliciet vernoemen, dan gebruik je \texttt{$\backslash${}autocite\{\}}. Hieronder een voorbeeld van elk.
-
-\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
-
+Het onderzoek zal verschillende methodes voor offline opslag en synchronisatie analyseren en onderzoeken. Het onderzoek zal van elke methode de voor- en nadelen overlopen en de toepassing tonen met behulp van een prototype. In het eerste deel worden de verschillende relevante termen overlopen. In 'Stand van zaken' komt de context en noodzaak van het onderzoek aan bod. In de sectie 'Business Case' wordt de business case van Pridiktiv.case - Into.case toegelicht. Tenslotte volgt de probleemstelling, de onderzoeksvraag en de opzet van de bachelorproef.
+%% literatuurstudie. Vergeet niet telkens je bronnen te vermelden!
+\section{Terminologie}
+\label{sec:terminologie}
+In deze sectie komen de verschillende componenten van het onderzoek, het prototype en tools aan bod. Een volledige lijst met begrippen en termen kan u terugvinden onder het hoofdstuk 'Glossarium'. Er is een minimum kennis in verband met software ontwikkeling vereist van de lezer om deze sectie volledig te begrijpen.
+\subsection{test}
+\section{Business Case}
+\label{sec:business-case}
+De business case van Pridiktiv vormt het vertrekpunt van deze studie en wordt nu nog wat verder toegelicht. De applicatie draait op een smartphone in een woonzorgcentrum. Het woonzorgcentrum beschikt over draadloos internet maar de dekking is niet het volledige gebouw. Hierdoor moet de applicatie ook offline werken. Wanneer verschillende waarden worden geregistreerd met de applicatie (zoals bloeddruk, gewicht, inname medicatie) worden die offline opgeslagen in een Indexed DB. Wanneer het toestel terug online komt, moeten deze waarden worden doorgestuurd naar de backend. Het is essentieel dat er geen data verloren gaat aangezien het gaat om medische data. Het huidige algoritme doet een HTTP call wanneer een waarde wordt ingegeven. Wanneer dit niet lukt, veronderstelt het algoritme dat de applicatie offline is en wordt de data lokaal opgeslagen. Wanneer het toestel terug online komt, dan worden de offline data gesynchroniseerd met de server.
 \section{Stand van zaken}
 \label{sec:stand-van-zaken}
-
+Wanneer een ontwikkelaar de end user van zijn web -of mobiele applicatie wil voorstellen, dan denkt hij vaak aan een user met dezelfde eigenschappen als zichzelf (laatste smartphone, up-to-date besturingssysteem,  snelle internetverbinding). De ontwikkelomgeving (snelle desktop/laptop met een betrouwbare en snelle internetverbinding) simuleert amper de omgeving van de end user. 
 %% TODO: deze sectie (die je kan opsplitsen in verschillende secties) bevat je
-%% literatuurstudie. Vergeet niet telkens je bronnen te vermelden!
-
-\lipsum[7-20]
-
 \section{Probleemstelling en Onderzoeksvragen}
 \label{sec:onderzoeksvragen}
 
@@ -41,8 +37,7 @@ Soms wil je de auteur niet expliciet vernoemen, dan gebruik je \texttt{$\backsla
 De rest van deze bachelorproef is als volgt opgebouwd:
 
 In Hoofdstuk~\ref{ch:methodologie} wordt de methodologie toegelicht en worden de gebruikte onderzoekstechnieken besproken om een antwoord te kunnen formuleren op de onderzoeksvragen.
-
 %% TODO: Vul hier aan voor je eigen hoofstukken, één of twee zinnen per hoofdstuk
-
+In Hoofdstuk~\ref{ch:glossarium} vindt u de volledige woordenlijst met alle technische begrippen.
 In Hoofdstuk~\ref{ch:conclusie}, tenslotte, wordt de conclusie gegeven en een antwoord geformuleerd op de onderzoeksvragen. Daarbij wordt ook een aanzet gegeven voor toekomstig onderzoek binnen dit domein.
 
