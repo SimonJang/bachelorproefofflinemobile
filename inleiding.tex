@@ -60,11 +60,11 @@ Afhankelijk van wat de applicatie wil doen, zijn er verschillende opties:
 \item Uitschakelen of aanpassen van bepaalde features wanneer de applicatie offline is.
 \end{itemize}
 Daarnaast kan het zijn dat de server data wil pushen naar de applicatie van de gebruiker en dat verschilt met de data van de applicatie. De applicatie moet de gebruiker dan waarschuwen dat er nieuwere, recentere data beschikbaar is en indien nodig, een conflict-resolution tool aanbieden.
-Momenteel zijn er al enkele frameworks en databank systemen die eenvoudig toelaten om (offline) data te synchroniseren van een web- of mobiele applicatie met de achterliggende databank. CloudBoost, CouchBase, CouchDB met PouchDB bieden een all-in-one oplossing. Het nadeel van die oplossing is dat het niet compatibel is met de bestaande backend.
+Momenteel zijn er al enkele frameworks en databank systemen die eenvoudig toelaten om (offline) data te synchroniseren van een web- of mobiele applicatie met de achterliggende databank. CloudBoost, CouchBase en Firebase bieden een all-in-one oplossing. Het nadeel van die oplossing is dat het niet compatibel is met de bestaande backend.
 %% TODO: deze sectie (die je kan opsplitsen in verschillende secties) bevat je
 \section{Probleemstelling en Onderzoeksvragen}
 \label{sec:onderzoeksvragen}
-Het doel van dit onderzoek is om bij een bestaande Angular applicatie data synchronisatie zo vlot mogelijk te laten verlopen, zonder onderbreking bij de gebruiker terwijl de data consistent blijft. Hoe wordt conflict-resolution opgelost en moet de gebruiker daar zelf een keuze maken of kan de applicatie en backend zelf alle conflicten oplossen? Tenslotte wordt ook de performantie en de schaalbaarheid van de oplossingen onderzocht. Op basis van verschillende tests op het prototype, is het de intentie van het onderzoek om tot een betrouwbare oplossing te komen voor het probleem van de business case. Die oplossing kan zowel een bestaande oplossing zijn, een nieuw algortime of een combinatie van beide.
+Het doel van dit onderzoek is om bij een bestaande Angular applicatie data synchronisatie zo vlot mogelijk te laten verlopen, zonder onderbreking bij de gebruiker terwijl de data consistent blijft. Hoe wordt conflict-resolution opgelost en moet de gebruiker daar zelf een keuze maken of kan de applicatie of achterliggende systemen zelf alle conflicten oplossen? Tenslotte wordt ook de performantie en de schaalbaarheid van de oplossingen onderzocht. Op basis van verschillende tests op het prototype, is het de intentie van het onderzoek om tot een betrouwbare oplossing te komen voor het probleem van de business case.
 %% TODO:
 %% Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde
 %% heeft voor een concrete doelgroep (bv. een bedrijf).
@@ -84,7 +84,8 @@ De rest van deze bachelorproef is als volgt opgebouwd:
 
 In Hoofdstuk~\ref{ch:methodologie} wordt de methodologie toegelicht en worden de gebruikte onderzoekstechnieken besproken om een antwoord te kunnen formuleren op de onderzoeksvragen.
 In Hoofdstuk~\ref{ch:synchronisatiemethdodes} worden de verschillende methodes voor synchronisatie en conflict resolution toegelicht.
-In Hoofdstuk~\ref{ch:setup} wordt het gebruikte prototype kort toegelicht.
+In Hoofdstuk~\ref{ch:setup} wordt het gebruikte prototype toegelicht.
+In Hoofdstuk
 %% TODO: Vul hier aan voor je eigen hoofstukken, één of twee zinnen per hoofdstuk
 In Hoofdstuk~\ref{ch:glossarium} vindt u de volledige woordenlijst met alle technische begrippen.
 In Hoofdstuk~\ref{ch:conclusie}, tenslotte, wordt de conclusie gegeven en een antwoord geformuleerd op de onderzoeksvragen. Daarbij wordt ook een aanzet gegeven voor toekomstig onderzoek binnen dit domein.

@@ -40,9 +40,29 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {3}Methodologie}{17}{chapter.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}Research fase}{17}{section.3.1}
+\contentsline {section}{\numberline {3.1}Research}{17}{section.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {4}Conclusie}{19}{chapter.4}
+\contentsline {subsection}{\numberline {3.1.1}Beperkingen door business case}{17}{subsection.3.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{20}{chapter.4}
+\contentsline {section}{\numberline {3.2}Protoyping}{18}{section.3.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.3}Testen van prototype}{18}{section.3.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.4}Conclusie}{18}{section.3.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {4}Synchronisatie patterns}{19}{chapter.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.1}Read-Only Data}{19}{section.4.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.2}Read-Only Data Optimized}{20}{section.4.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.3}Read/Write Data Last Write Wins}{20}{section.4.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.4}Read/Write with Conflict Detection}{20}{section.4.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {5}Prototype}{23}{chapter.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {6}Conclusie}{25}{chapter.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{25}{chapter.6}
 \contentsfinish 
