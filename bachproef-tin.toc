@@ -50,17 +50,17 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {3.4}Conclusie}{18}{section.3.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {4}Synchronisatie patterns}{19}{chapter.4}
+\contentsline {chapter}{\numberline {4}Prototype}{19}{chapter.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.1}Read-Only Data}{19}{section.4.1}
+\contentsline {chapter}{\numberline {5}Synchronisatie patterns}{21}{chapter.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.2}Read-Only Data Optimized}{20}{section.4.2}
+\contentsline {section}{\numberline {5.1}Read-Only Data}{21}{section.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.3}Read/Write Data Last Write Wins}{20}{section.4.3}
+\contentsline {section}{\numberline {5.2}Read-Only Data Optimized}{22}{section.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.4}Read/Write with Conflict Detection}{20}{section.4.4}
+\contentsline {section}{\numberline {5.3}Read/Write Data Last Write Wins}{22}{section.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {5}Prototype}{23}{chapter.5}
+\contentsline {section}{\numberline {5.4}Read/Write with Conflict Detection}{22}{section.5.4}
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {6}Conclusie}{25}{chapter.6}
 \defcounter {refsection}{0}\relax 
