@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.12.4)  16 MAR 2017 19:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.12.4)  17 MAR 2017 10:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2122,30 +2122,30 @@ Package babel Info: Redefining dutch shorthand "|
 Package babel Info: Redefining dutch shorthand "~
 (babel)             in language  on input line 47.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language  on input line 49.
+(babel)             in language  on input line 55.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language  on input line 49.
+(babel)             in language  on input line 55.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language  on input line 65.
+(babel)             in language  on input line 60.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language  on input line 65.
+(babel)             in language  on input line 60.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language  on input line 65.
+(babel)             in language  on input line 60.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language  on input line 65.
+(babel)             in language  on input line 60.
 
 [15]
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language  on input line 65.
+(babel)             in language  on input line 71.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language  on input line 65.
+(babel)             in language  on input line 71.
 Package babel Info: Redefining dutch shorthand "|
-(babel)             in language  on input line 76.
+(babel)             in language  on input line 82.
 Package babel Info: Redefining dutch shorthand "~
-(babel)             in language  on input line 76.
+(babel)             in language  on input line 82.
 
 
-LaTeX Warning: Reference `ch:setup' on page 16 undefined on input line 86.
+LaTeX Warning: Reference `ch:setup' on page 16 undefined on input line 92.
 
 ) (./methodologie.tex
 Package babel Info: Redefining dutch shorthand "|
@@ -2402,9 +2402,6 @@ Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 101.
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package logreq Info: Writing requests to 'bachproef-tin.run.xml'.
 \openout1 = `bachproef-tin.run.xml'.
 
@@ -2413,7 +2410,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 101.
 Here is how much of TeX's memory you used:
  36285 strings out of 493014
  664581 string characters out of 6133351
- 1249048 words of memory out of 5000000
+ 1248880 words of memory out of 5000000
  39044 multiletter control sequences out of 15000+600000
  47102 words of font info for 136 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -2424,7 +2421,7 @@ xlive/2016/texmf-dist/fonts/type1/urw/avantgar/uagd8a.pfb></usr/local/texlive/2
 016/texmf-dist/fonts/type1/urw/avantgar/uagk8a.pfb></usr/local/texlive/2016/tex
 mf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fo
 nts/type1/urw/times/utmr8a.pfb>
-Output written on bachproef-tin.pdf (33 pages, 169740 bytes).
+Output written on bachproef-tin.pdf (33 pages, 170903 bytes).
 PDF statistics:
  399 PDF objects out of 1000 (max. 8388607)
  323 compressed objects within 4 object streams
