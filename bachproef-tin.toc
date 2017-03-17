@@ -52,6 +52,10 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {4}Prototype}{19}{chapter.4}
 \defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.1}Client side}{19}{section.4.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.2}Server side}{19}{section.4.2}
+\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {5}Synchronisatie patterns}{21}{chapter.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {5.1}Read-Only Data}{21}{section.5.1}
@@ -62,7 +66,9 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {5.4}Read/Write with Conflict Detection}{22}{section.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {6}Conclusie}{25}{chapter.6}
+\contentsline {chapter}{\numberline {6}Onderzoek}{25}{chapter.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{25}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusie}{27}{chapter.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{27}{chapter.7}
 \contentsfinish 
