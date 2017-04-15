@@ -16,7 +16,7 @@ Dit data synchronisatie patroon wordt gebruikt wanneer de end user enkel maar da
 \item Server retourneert de data. De opgevraagde data wordt lokaal opgeslagen.
 \item Alle manipulaties op de data worden geblokkeerd en worden nooit doorgegeven aan de server. De client kan dus enkel maar GET HTTP requests sturen voor de data op te vragen.
 \item Bij synchronisatie wordt de oude data lokaal verwijderd en vervangen door de nieuwe data.
-\item De applicatie controleert op regelmatige tijdstippen of de data is gewijzigd.
+\item De applicatie controleert op regelmatige tijdstippen de data.
 \end{enumerate}
 Een voorbeeld van het Read-Only pattern van in de use case van Pridiktiv is het opvragen van de pati\"entenlijst. Die lijst kan worden gewijzigd door de hoofdverpleger in het dashboard maar niet in de applicatie zelf. Wanneer de applicatie offline is, kan eenvoudig worden verder gewerkt met de applicatie. Indien er een nieuwe pati\"ent wordt toegevoegd, dan is die vanaf de volgende synchronisatie zichtbaar.
 \section{Read-Only Data Optimized}
@@ -24,7 +24,7 @@ Het Read-Only Data Optimized pattern is identiek aan het Read-Only Data pattern 
 \section{Read/Write Data Last Write Wins}
 In dit pattern gaat de server er van uit dat writes altijd in de juiste volgorde worden uitgevoerd en de laatste write die naar de databank wordt gestuurd ook de werkelijke laatste wijziging is van de client applicatie. Er wordt geen conflict resolution uitgevoerd. Het pattern blinkt uit wanneer er enkel wordt toegevoegd en de data nooit wordt gemanipuleerd. In de use case van Pridiktiv kan dit worden toegepast bij bijvoorbeeld het toevoegen van notities bij een patient. De notities van een patient worden niet gewijzigd waardoor er geen data kan worden overschreven.
 \section{Read/Write with Conflict Detection}
-Het Read/Write with Conflict Detection pattern is het meest complexe waarbij verschillende end-users de dezelfde data wijzigen op het moment dat de applicatie offline is. Bij dit pattern wordt er gesproken van multi-way synchronisatie waarbij een applicatie zowel de data van de server kan updaten en dat de server op zijn beurt alle andere apparaten moet updaten. Een mogelijke flow van het proces zou er als volgt kunnen uitzien:
+Het Read/Write with Conflict Detection pattern is het meest complexe waarbij verschillende end-users dezelfde data wijzigen op het moment dat de applicatie offline is. Bij dit pattern wordt er gesproken van multi-way synchronisatie waarbij een applicatie zowel de data van de server kan updaten en dat de server op zijn beurt alle andere apparaten moet updaten. Een mogelijke flow van het proces zou er als volgt kunnen uitzien:
 \begin{enumerate}
 \item De server database houdt alle data bij
 \item De applicatie houdt lokaal een subset van de data bij die kan worden gewijzigd.

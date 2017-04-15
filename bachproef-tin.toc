@@ -14,7 +14,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{localStorage en sessionStorage}{12}{section*.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{localStorage}{13}{section*.5}
+\contentsline {subsubsection}{localStorage}{12}{section*.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{sessionStorage}{13}{section*.6}
 \defcounter {refsection}{0}\relax 
@@ -24,11 +24,11 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.2.2}Scalable Angular Architecture}{13}{subsection.2.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.3}ngrx store: een state container}{14}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.3}Ngrx store: een state container}{14}{subsection.2.2.3}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.2.4}Reactive programming paradigm}{14}{subsection.2.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.5}Offline First}{15}{subsection.2.2.5}
+\contentsline {subsection}{\numberline {2.2.5}Offline First}{14}{subsection.2.2.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.2.6}Amazon Web Services}{15}{subsection.2.2.6}
 \defcounter {refsection}{0}\relax 
@@ -38,37 +38,37 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2.5}Opzet van deze bachelorproef}{16}{section.2.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {3}Methodologie}{17}{chapter.3}
+\contentsline {chapter}{\numberline {3}Methodologie}{19}{chapter.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}Research}{17}{section.3.1}
+\contentsline {section}{\numberline {3.1}Research}{19}{section.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.1}Beperkingen door business case}{17}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.1}Beperkingen door business case}{19}{subsection.3.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.2}Protoyping}{18}{section.3.2}
+\contentsline {section}{\numberline {3.2}Protoyping}{20}{section.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.3}Testen van prototype}{18}{section.3.3}
+\contentsline {section}{\numberline {3.3}Testen van prototype}{20}{section.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.4}Conclusie}{18}{section.3.4}
+\contentsline {section}{\numberline {3.4}Conclusie}{20}{section.3.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {4}Prototype}{19}{chapter.4}
+\contentsline {chapter}{\numberline {4}Opstelling}{21}{chapter.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.1}Client side}{19}{section.4.1}
+\contentsline {section}{\numberline {4.1}Client side}{21}{section.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.2}Server side}{19}{section.4.2}
+\contentsline {section}{\numberline {4.2}Server side}{21}{section.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {5}Synchronisatie patterns}{21}{chapter.5}
+\contentsline {chapter}{\numberline {5}Synchronisatie patterns}{23}{chapter.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.1}Read-Only Data}{21}{section.5.1}
+\contentsline {section}{\numberline {5.1}Read-Only Data}{23}{section.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.2}Read-Only Data Optimized}{22}{section.5.2}
+\contentsline {section}{\numberline {5.2}Read-Only Data Optimized}{24}{section.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.3}Read/Write Data Last Write Wins}{22}{section.5.3}
+\contentsline {section}{\numberline {5.3}Read/Write Data Last Write Wins}{24}{section.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.4}Read/Write with Conflict Detection}{22}{section.5.4}
+\contentsline {section}{\numberline {5.4}Read/Write with Conflict Detection}{24}{section.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {6}Onderzoek}{25}{chapter.6}
+\contentsline {chapter}{\numberline {6}Onderzoek}{27}{chapter.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {7}Conclusie}{27}{chapter.7}
+\contentsline {chapter}{\numberline {7}Conclusie}{29}{chapter.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{27}{chapter.7}
+\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{29}{chapter.7}
 \contentsfinish 
