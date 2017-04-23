@@ -35,9 +35,9 @@ De dataflow tussen componenten is ook belangrijk om een beheersbare applicatie t
 \subsection{Ngrx store: een state container}
 Ngrx store is een container die de state van de applicatie bijhoudt waarbij performantie en consistentie centraal staan. De ngrx store is de 'single source of truth', verder benoemd als SSOT, voor de applicatie en moet ervoor zorgen dat de data van alle componenten consistent is met elkaar en er geen duplicate data is. Alle updates aan de data worden eerste weggeschreven naar de store en daarna gecachet. In het geval dat de gebruiker toegang heeft tot internet wordt de data verstuurd naar de achterliggende systemen. Indien er geen of slechte internetverbinding is, krijgt de user de gecachte data te zien dankzij de SSOT. De ngrx store werkt met volgende principes:
 \begin{itemize}  
-\item De state is een single immutable data structure.
+\item De state is een single immutable JSON data structure.
 \item Actions initialiseren veranderingen in de state.
-\item Pure functions verwerken actions om een 'nieuwe' state te cre\"een.
+\item Reducers verwerken actions om een 'nieuwe' state te cre\"een. Een reducer is een functie die een action moet verwerken.
 \item De state van de store wordt geraadpleegd als een Observable van state die op zijn beurt een observer is van actions.
 \end{itemize}
 \subsection{Reactive programming paradigm}

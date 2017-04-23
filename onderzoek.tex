@@ -5,4 +5,42 @@
 \chapter{Onderzoek}
 \label{ch:onderzoek}
 
-In dit hoofdstuk wordt een overzicht gemaakt van de verschillende user stories, scenario's en oplossingen die worden onderzocht.
+In dit hoofdstuk wordt dieper ingegaan op de verschillende methodes  en de real-world toepassing van die methodes met de testopstelling. Zoals eerder reeds aangegeven is, worden komen volgende methodes of problemen aan bod:
+\begin{itemize}
+\item Read-only Optimised
+\item Last/First Write Wins
+\item Conflict resolution
+\end{itemize}
+
+\section{Read-Only Optimised}
+De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client. Deze techniek laat toe om enkel nieuwe data binnen te halen waardoor data die de client reeds bezit niet opnieuw worden opgevraagd. De complexiteit van deze methode stijgt evenredig met het aantal parameters dat in de data kan worden aangepast. Van alle methodes die in dit hoofdstuk worden besproken, is dit de enige methode waarbij enkel een HTTP GET wordt gebruikt.
+\subsection{Overzicht: Client}
+Bij Read-Only Optimised staat de synchronisatie van de client centraal. Tijdens de periode dat de client offline was, is het mogelijk dat er nieuwe data zijn aangemaakt. Om deze data te synchroniseren kan de client alle data opnieuw opvragen maar deze manier heeft enkele nadelen. Indien de data klein is zoals enkel tekst, dan is Read-Only Optimised triviaal en kan alle data opnieuw worden opgevraagd. Wanneer er echter grotere data moet worden ingeladen zoals afbeeldingen, dan kan Read-Only Optimised heel wat bandbreedte uitsparen. Dankzij de Ngrx store is het ook gemakkelijk om manipulaties uit te voeren op de data, waardoor er eenvoudig objecten kunnen worden toegevoegd aan de data in de store. Belangrijke voorwaarde voor het uitvoeren van deze actie is het bijhouden in de client van de timestamp van de laatste update indien de data aanwezig is. Indien er geen timestamp aanwezig is, dan weet de client dat alle data moet worden opgevraagd.
+
+< TOEVOEGEN SCREENSHOT VAN RESPONSE  BODY ZONDER READ-ONLY OPTIMISED>
+< TOEVOEGEN SCREENSHOT VAN RESPONSE  BODY MET READ-ONLY OPTIMISED>
+
+Bovenstaande afbeelding is een voorbeeld van een Read-Only Optimised request waarbij enkel de nieuwe data wordt aangevraagd. Wanneer de client een HTTP GET uitvoert, dan wordt in de header van de request de timestamp van de laatste update toegevoegd. Die timestamp is belangrijk server side, voor het uitvoeren van de query op de databank.
+
+< TOEVOEGEN CODE REDUCER OF SERVICE DIE RESPONS MAPPED >
+< TOEVOEGEN SCREENSHOT REDUX STORE>
+
+In de bovenstaande reducer functie wordt een nieuw item toegevoegd aan de data store.
+
+<TOEVOEGEN SCREENSHOT USE CASE IN SETUP APPLICATIE >
+De wijzigingen zijn dan meteen zichtbaar in de store en bijgevolg ook in de client.
+\subsection{Overzicht: Server}
+De server heeft de net zoals bij een traditionele GET de verantwoordelijkheid om de data op te vragen uit de databank en die terug te sturen naar de client. Het enige verschil is dat nu rekening moet worden gehouden met de een mogelijke timestamp in de header. Op basis van die timestamp kan dan alle nieuwe data sinds de laatste GET worden opgevraagd. De request wordt doorgestuurd naar 
+
+<TOEVOEGEN SCREENSHOT OVERZICHT BACKEND INFRASTRUCTUUR VOOR READ-ONLY OPTIMISED>
+
+\subsection{Opmerkingen}
+Ondanks de perceptie dat dit een eenvoudige methode is, zijn er enkele opmerkingen zij deze methode:
+\begin{enumerate}
+\item In bovenstaand scenario wordt er enkel maar uitgegaan van nieuwe data, dus CREATE operaties. Indien de methode ook voor UPDATE moet werken is het in bepaalde gevallen noodzakelijk om ook de databank structuur aan te passen.
+\item Bij klassieke SQL databanken kan gemakkelijk worden gefilterd op bepaalde velden zoals een 'updated veld' binnen een tabel. Bij DynamoDB is dit moeilijker als de waarde van de query geen deel uitmaakt van de sort -of partition key. In dat geval moet er dan gebruik worden gemaakt van een extra secondary index zodat er geen full table scan moet worden uitgevoerd.
+\item Zoals reeds aangegeven, is het bij kleine data vaak eenvoudiger om steeds alle data op te vragen en geen gebruik te maken van de Read-Only Optimised methode.
+\end{enumerate}
+
+\section{Last/First Write Wins}
+Wanneer er potenti\"ele conflicten kunnen optreden.

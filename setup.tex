@@ -5,9 +5,24 @@
 \chapter{Opstelling}
 \label{ch:setup}
 
-%% Bespreken setup van prototype
+%% Bespreken setup van de setup voor het onderzoek
 
-In dit hoofdstuk bespreken we de opstelling van zowel de client als van de server. De gebruikte scenario's maken deel uit van verschillende use cases opgesteld door Pridiktiv bij het online en offline gebruik van de applicatie. Verder in het hoofdstuk 'Onderzoek' worden verschillende scenario's belicht en de resulaten van het onderzoek.
+In dit hoofdstuk stellen we de technologie stack voor die gebruikt wordt voor deze bachelorpaper. De verschillende modules van de client applicatie maken deel uit van verschillende use cases opgesteld door Pridiktiv bij het online en offline gebruik van de applicatie. De opstelling is een eenvoudige benadering van de setup die Pridiktiv gebruikt bij hun product. In het volgende hoofdstuk 'Onderzoek' kan u een uitgebreid overzicht vinden van de verschillende methodes. 
 
 \section{Client side}
+De client applicatie bestaat uit een Angular applicatie die de verschillende use cases van de Pridiktiv app voorstelt. De complexiteit van de voorbeelden is aangepast om de focus te kunnen leggen op de synchronisatie van de data. De client applicatie bestaat uit volgende delen:
+\begin{itemize}
+\item Aanmaken van notities: Deze module illustreert het Read-Only en Read-Only Optimized scenario. In dit scenario worden enkel de nieuwe notities van de server gehaald en niet de gecachte notities.
+\item Aanmaken en aanpassen van een wondzorg dossier: Deze module illustreert een synchronisatie use case waarbij verschillende acties (CREATE en UPDATE) worden uitgevoerd op een object waarbij een object gebundeld wordt met zijn history in de client side. Server side kan de synchronisatie dan vlotter verlopen.
+\item Voltooien van een taak: In deze module worden 2 methodes van conflict resolution getoond. Bij de eerste methode wordt het First Write Wins principe toegepast. De tweede methode is een voorbeeld waarbij er conflict resolution wordt aangeboden en er geen data verloren gaat.
+\end{itemize}
+Naast bovenstaande modules voorziet de client applicatie ook caching met behulp van de localForage library die gebruik maakt van verschillende Web API's voor lokale opslag en caching. State management gebeurt met Ngrx en voor de HTTP communicatie wordt de AWS API Gateway client voor JavaScript gebruikt. De client heeft ook een gedeelde verantwoordelijkheid naar synchronisatie toe. Het is belangrijk om de mislukte HTTP requests te cachen om die dan opnieuw door te sturen eenmaal de applicatie terug online is. Alle gecachte HTTP requests worden gebundeld in een object en doorgestuurd naar de API Gateway. Daar gebeurt de verdere afhandeling van de requests.
 \section{Server side}
+Door de serverless architectuur bestaat de server side uit verschillende Lambda's die elk een eigen verantwoordelijkheid hebben. Deze microservices architectuur zorgt ervoor dat bepaalde onderdelen gemakkelijk kunnen worden refactored, zolang de API van de microservice maar dezelfde blijft. Voor de voor de synchronisatie en dataopslag van de client side applicatie worden volgende AWS services gebruikt:
+\begin{itemize}
+\item API Gateway: Delegeert de REST calls van de client.
+\item Lambda: De verschillende functies die elke een (beperkte) verantwoordelijkheid hebben. Dat kan bijvoorbeeld database read/writes, berichten plaatsen op SNS/SQS of afhandelen van requests van de client.
+\item DynamoDB: NoSQL database voor persisteren van de data.
+\item SNS en SQS: Voor het versturen en bewaren van de berichten tussen de verschillende AWS services.
+\end{itemize}
+	
