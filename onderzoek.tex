@@ -5,7 +5,7 @@
 \chapter{Onderzoek}
 \label{ch:onderzoek}
 
-In dit hoofdstuk wordt dieper ingegaan op de verschillende methodes  en de real-world toepassing van die methodes met de testopstelling. Zoals eerder reeds aangegeven is, worden komen volgende methodes of problemen aan bod:
+In dit hoofdstuk wordt dieper ingegaan op de verschillende methodes  en de real-world toepassing van die methodes met de testopstelling. Zoals eerder reeds aangegeven is komen volgende methodes of problemen aan bod:
 \begin{itemize}
 \item Read-only Optimised
 \item Last/First Write Wins
@@ -13,10 +13,10 @@ In dit hoofdstuk wordt dieper ingegaan op de verschillende methodes  en de real-
 \end{itemize}
 
 \section{Online/Offline status registratie}
-Voor dat bovenstaande synchronisatie methodes verder worden besproken is het belangrijk om aan te geven welke methode er wordt gebruikt zodat de applicatie kan waarnemen dat die al dan niet online of offline is. Er zijn 2 mogelijkheden:
+Voor bovenstaande synchronisatie methodes worden besproken is het belangrijk om aan te geven welke methode er wordt gebruikt zodat de applicatie kan waarnemen dat die al dan niet online is. Er zijn 2 mogelijkheden:
 \begin{enumerate}
-\item DOM API's aanspreken vanuit JavaScript: Helaas is er geen consistente crossbrowser support op het controleren van de status van de verbinding zonder gebruik te maken van van requests naar externe data. Bijvoorbeeld luisteren naar events van het document.window object on online en offline status te controleren werkt niet op alle browsers. Een andere optie waarbij de status van de verbinding wordt opgevraagd met window.navigator.onLine werkt ook niet consistent in alle browsers.
-\item Een request uitvoeren naar een externe bron: Als de applicatie een request uitvoert naar een externe bron en de HTTP code controleert van de respons, dan kan de applicatie gemakkelijk afleiden wat de status van de verbinding is. Deze methode garandeert dat de applicatie correct kan vaststellen wanneer de status van de verbinding verandert. Deze methode onder andere ook gebruikt in libraries zoals Offline.js.
+\item DOM API's aanspreken vanuit JavaScript: helaas is er geen consistente crossbrowser support op het controleren van de status van de verbinding zonder gebruik te maken van van requests naar externe data. Bijvoorbeeld luisteren naar events van het document.window object om online en offline status te controleren werkt niet op alle browsers. Een andere optie waarbij de status van de verbinding wordt opgevraagd met window.navigator.onLine werkt ook niet consistent in alle browsers.
+\item Een request uitvoeren naar een externe bron: als de applicatie een request uitvoert naar een externe bron en de HTTP code controleert van de respons, dan kan de applicatie gemakkelijk afleiden wat de status van de verbinding is. Deze methode garandeert dat de applicatie correct kan vaststellen wanneer de status van de verbinding verandert. Deze methode ook gebruikt in libraries zoals Offline.js.
 \end{enumerate}
 
 \begin{lstlisting}[caption=DOM API's voor controleren offline en online status]
@@ -26,8 +26,8 @@ Voor dat bovenstaande synchronisatie methodes verder worden besproken is het bel
 
     //IE met vendor specifieke objecten
     window.onload = function() {
-        document.body.ononline = IeConnectionEvent;
-        document.body.onoffline = IeConnectionEvent;
+        document.body.ononline = ConnectionEvent;
+        document.body.onoffline = ConnectionEvent;
     }
     
     // met window.navigator
@@ -39,17 +39,17 @@ Voor dat bovenstaande synchronisatie methodes verder worden besproken is het bel
     
 \end{lstlisting}
 
-Voor het onderzoek werd geopteerd op gebruik te maken van de tweede methode. Vanaf het moment dat de applicatie registreert dat er geen verbinding meer is, worden alle requests gecached als afzonderlijke objecten. Wanneer de applicatie dan terug online is, wordt er in een request naar de server alle gecachte data doorgestuurd. De API Gateway geeft het object door aan een Lambda die de objecten op een queue plaatst.  Een andere Lambda leest alle boodschappen uit de queue en stuurt elke request terug naar de API Gateway. De API Gateway wijst de correcte Lambda aan die verantwoordelijk is voor de verwerking van de oorspronkelijke request. Bij requests die een UPDATE uitvoeren op een object dat aangemaakt werd (CREATE) tijdens de offline status, worden allemaal gebundeld in een object. Op die manier wordt de volgorde gegarandeerd voor het verwerken van de verschillende requests.
+Voor het onderzoek werd geopteerd op gebruik te maken van de tweede methode. Wanneer de applicatie registreert dat er geen verbinding meer is, worden alle requests gecached als afzonderlijke objecten. Wanneer de applicatie dan terug online is, wordt er in een request naar de server alle gecachte data doorgestuurd. De API Gateway geeft het object door aan een Lambda die de objecten op een queue plaatst.  Een andere Lambda leest alle boodschappen uit de queue en stuurt elke request terug naar de API Gateway. De API Gateway wijst de correcte Lambda aan die verantwoordelijk is voor de verwerking van de oorspronkelijke request. Bij requests die een UPDATE uitvoeren op een object dat aangemaakt werd (CREATE) tijdens de offline status, worden allemaal gebundeld in een object. Op die manier wordt de volgorde gegarandeerd voor het verwerken van de verschillende requests.
 
 \section{Read-Only Optimised}
 De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client. Deze techniek laat toe om enkel nieuwe data binnen te halen waardoor data die de client reeds bezit niet opnieuw worden opgevraagd. De complexiteit van deze methode stijgt evenredig met het aantal parameters dat in de data kan worden aangepast. Van alle methodes die in dit hoofdstuk worden besproken, is dit de enige methode waarbij enkel een HTTP GET wordt gebruikt.
 \subsection{Overzicht: Client}
-Bij Read-Only Optimised staat de synchronisatie van de client centraal. Tijdens de periode dat de client offline was, is het mogelijk dat er nieuwe data zijn aangemaakt. Om deze data te synchroniseren kan de client alle data opnieuw opvragen maar deze manier heeft enkele nadelen. Indien de data klein is zoals enkel tekst, dan is Read-Only Optimised triviaal en kan alle data opnieuw worden opgevraagd. Wanneer er echter grotere data moet worden ingeladen zoals afbeeldingen, dan kan Read-Only Optimised heel wat bandbreedte uitsparen. Dankzij de Ngrx store is het ook gemakkelijk om manipulaties uit te voeren op de data, waardoor er eenvoudig objecten kunnen worden toegevoegd aan de data in de store. Belangrijke voorwaarde voor het uitvoeren van deze actie is het bijhouden in de client van de timestamp van de laatste update indien de data aanwezig is. Indien er geen timestamp aanwezig is, dan weet de client dat alle data moet worden opgevraagd.
+Bij Read-Only Optimised staat de synchronisatie van de client centraal. Tijdens de periode dat de client offline was, is het mogelijk dat er nieuwe data zijn aangemaakt. Om deze data te synchroniseren kan de client alle data opnieuw opvragen maar deze manier heeft enkele nadelen. Indien de data klein is zoals enkel tekst, dan is Read-Only Optimised triviaal en kunnen alle data opnieuw worden opgevraagd. Wanneer er echter grotere data moet worden ingeladen zoals afbeeldingen, dan kan Read-Only Optimised heel wat bandbreedte uitsparen. Dankzij de ngrx store is het ook gemakkelijk om manipulaties uit te voeren op de data, waardoor er eenvoudig objecten kunnen worden toegevoegd aan de data in de store. Belangrijke voorwaarde voor het uitvoeren van deze actie is het bijhouden in de client van de timestamp van de laatste update indien de data aanwezig zijn. Indien er geen timestamp aanwezig is, dan weet de client dat alle data moeten worden opgevraagd.
 
 < TOEVOEGEN SCREENSHOT VAN RESPONSE  BODY ZONDER READ-ONLY OPTIMISED>
 < TOEVOEGEN SCREENSHOT VAN RESPONSE  BODY MET READ-ONLY OPTIMISED>
 
-Bovenstaande afbeelding is een voorbeeld van een Read-Only Optimised request waarbij enkel de nieuwe data wordt aangevraagd. Wanneer de client een HTTP GET uitvoert, dan wordt in de header van de request de timestamp van de laatste update toegevoegd. Die timestamp is belangrijk server side, voor het uitvoeren van de query op de databank.
+Bovenstaande afbeelding is een voorbeeld van een Read-Only Optimised request waarbij enkel de nieuwe data worden aangevraagd. Wanneer de client een HTTP GET uitvoert, dan wordt in de header van de request de timestamp van de laatste update toegevoegd. Deze timestamp is belangrijk voor de verwerking server side bij voor het uitvoeren van een query op de databank.
 
 < TOEVOEGEN CODE REDUCER OF SERVICE DIE RESPONS MAPPED >
 < TOEVOEGEN SCREENSHOT REDUX STORE>
@@ -59,7 +59,7 @@ In de bovenstaande reducer functie wordt een nieuw item toegevoegd aan de data s
 <TOEVOEGEN SCREENSHOT USE CASE IN SETUP APPLICATIE >
 De wijzigingen zijn dan meteen zichtbaar in de store en bijgevolg ook in de client.
 \subsection{Overzicht: Server}
-De server heeft de net zoals bij een traditionele GET de verantwoordelijkheid om de data op te vragen uit de databank en die terug te sturen naar de client. Het enige verschil is dat nu rekening moet worden gehouden met de een mogelijke timestamp in de header. Op basis van die timestamp kan dan alle nieuwe data sinds de laatste GET worden opgevraagd. De request wordt doorgestuurd naar 
+De server heeft net zoals bij een traditionele GET de verantwoordelijkheid om de data op te vragen uit de databank en die terug te sturen naar de client. Het enige verschil is dat er rekening moet worden gehouden met de een mogelijke timestamp in de header. Op basis van die timestamp kan dan alle nieuwe data sinds de laatste GET worden opgevraagd. De request wordt doorgestuurd naar 
 
 <TOEVOEGEN VP OVERZICHT BACKEND INFRASTRUCTUUR VOOR READ-ONLY OPTIMISED>
 
