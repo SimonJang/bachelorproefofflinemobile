@@ -41,8 +41,13 @@ Voor bovenstaande synchronisatie methodes worden besproken is het belangrijk om 
 
 Voor het onderzoek werd geopteerd op gebruik te maken van de tweede methode. Wanneer de applicatie registreert dat er geen verbinding meer is, worden alle requests gecached als afzonderlijke objecten. Wanneer de applicatie dan terug online is, wordt er in een request naar de server alle gecachte data doorgestuurd. De API Gateway geeft het object door aan een Lambda die de objecten op een queue plaatst.  Een andere Lambda leest alle boodschappen uit de queue en stuurt elke request terug naar de API Gateway. De API Gateway wijst de correcte Lambda aan die verantwoordelijk is voor de verwerking van de oorspronkelijke request. Bij requests die een UPDATE uitvoeren op een object dat aangemaakt werd (CREATE) tijdens de offline status, worden allemaal gebundeld in een object. Op die manier wordt de volgorde gegarandeerd voor het verwerken van de verschillende requests.
 
+<TODO uitwerken van data caching>
+
+\section{Data caching}
+Bij een applicatie die zowel online als offline moet werken, is het belangrijk dat er data wordt gepreload in de applicatie. Zo kan de gebruiker blijven verder werken indien de applicatie plots offline is. Het belangrijkste aandachtspunt is hierbij de schaalbaarheid van de oplossing. In de business case van Pridiktiv worden verschillende requests naar de server uitgevoerd naar de server om de data op te vragen. Wanneer de functionaliteit en data capaciteit van de applicatie toeneemt kan het aantal requests kan wel dramatisch stijgen. Een mogelijke oplossing voor dat probleem kan een webworker zijn. Door het single-threaded karakter van JavaScript kan er een webworker worden gebruikt voor het parallel bevragen van de server. In dit onderzoek wordt er niet verder ingegaan om andere methodes
+\subsection{Toepassing op de business case}
 \section{Read-Only Optimised}
-De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client. Deze techniek laat toe om enkel nieuwe data binnen te halen waardoor data die de client reeds bezit niet opnieuw worden opgevraagd. De complexiteit van deze methode stijgt evenredig met het aantal parameters dat in de data kan worden aangepast. Van alle methodes die in dit hoofdstuk worden besproken, is dit de enige methode waarbij enkel een HTTP GET wordt gebruikt.
+De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client. Read-Only Optimised is dan ook eerder een optimalisatietechniek dan een zuivere synchronisatiemethode. Deze techniek laat toe om enkel nieuwe data binnen te halen waardoor data die de client reeds bezit niet opnieuw worden opgevraagd. De complexiteit van deze methode stijgt evenredig met het aantal parameters dat in de data kan worden aangepast. Van alle methodes die in dit hoofdstuk worden besproken, is dit de enige methode waarbij enkel een HTTP GET wordt gebruikt. Deze methode is ook enkel maar van toepassing bij het caching van data voor offline en online gebruik. Wanneer de applicatie online is wordt de data incrementeel aan de applicatie toegevoegd. 
 \subsection{Overzicht: Client}
 Bij Read-Only Optimised staat de synchronisatie van de client centraal. Tijdens de periode dat de client offline was, is het mogelijk dat er nieuwe data zijn aangemaakt. Om deze data te synchroniseren kan de client alle data opnieuw opvragen maar deze manier heeft enkele nadelen. Indien de data klein is zoals enkel tekst, dan is Read-Only Optimised triviaal en kunnen alle data opnieuw worden opgevraagd. Wanneer er echter grotere data moet worden ingeladen zoals afbeeldingen, dan kan Read-Only Optimised heel wat bandbreedte uitsparen. Dankzij de ngrx store is het ook gemakkelijk om manipulaties uit te voeren op de data, waardoor er eenvoudig objecten kunnen worden toegevoegd aan de data in de store. Belangrijke voorwaarde voor het uitvoeren van deze actie is het bijhouden in de client van de timestamp van de laatste update indien de data aanwezig zijn. Indien er geen timestamp aanwezig is, dan weet de client dat alle data moeten worden opgevraagd.
 
@@ -70,6 +75,26 @@ Ondanks de perceptie dat dit een eenvoudige methode is, zijn er enkele opmerking
 \item Bij klassieke SQL databanken kan gemakkelijk worden gefilterd op bepaalde velden zoals een 'updated veld' binnen een tabel. Bij DynamoDB is dit moeilijker als de waarde van de query geen deel uitmaakt van de sort -of partition key. In dat geval moet er dan gebruik worden gemaakt van een extra secondary index zodat er geen full table scan moet worden uitgevoerd telkens wanneer er een GET request is.
 \item Zoals reeds aangegeven, is het bij kleine data vaak eenvoudiger om steeds alle data op te vragen en geen gebruik te maken van de Read-Only Optimised methode.
 \end{enumerate}
-
+\subsection{Toepassing op de business case}
+TODO
 \section{Last/First Write Wins}
+Bij Last/First Write Wins gaat er onherroepelijk informatie verloren. Afhankelijk van de gekozen conflict resolution methode is het wordt de eerste of laatste write bijgehouden. Dit is de eenvoudigste manier van conflict resolution maar men moet bereidt zijn om een compromis te sluiten en informatie op te offeren in ruil voor minder complexiteit bij het synchroniseren. Wanneer heel snel naar een offline/online synchronisatiemethode moet worden gezocht, biedt die de gemakkelijkste oplossing.
+\subsection{Overzicht: Client}
+Bij deze methode is de impact van de client miniem want de client weet niet dat er een synchronisatieprobleem zal optreden wanneer die data doorstuurt naar de server.
+\subsection{Overzicht: Server}
+Deze methode vind plaats wanneer verschillende clients een verandering aanbrengen bij hetzelfde bestaande object. Hierdoor krijgt de databank verschillende waarden binnen en moet dat verplicht de databank er toe om te reageren. Afhankelijk van de methode die gekozen zijn er twee scenario's mogelijk bij deze synchronisatiemethode.
+\begin{enumerate}
+\item First Write Wins. Hier wordt enkel de eerste write van een object of row bijgehouden. Indien hetzelfde object opnieuw wordt aangepast dan wordt er een exceptie geworpen. Dit is enkel maar mogelijk in use cases waarbij een aanpassing in een object finaal is. Een voorbeeld uit de use case is bijvoorbeeld het volbrengen van een taak. Wanneer een taak is volbracht, is het niet meer mogelijk om die aan te passen. Met behulp van een completed flag kan de state van de taak worden bijgehouden. Wanneer de aanpassingen in een object niet finaal zijn, is een last Write wins een betere methode.
+\item Last Write Wins. Bij Last Write Wins wordt enkel maar de laatste write operatie behouden. Er wordt geen vergelijking gemaakt met de waarde die reeds in de databank beschikbaar is en de nieuwe waarde die wordt doorgegeven. Men hanteert deze methode dan best enkel bij bestaande objecten waarbij het mogelijk is om UPDATE operaties op uit te voeren.
+\end{enumerate}
+\subsection{Opmerkingen}
+First/Last Write wins is een aantrekkelijke methode wanneer er op korte termijn synchronisatie moet worden gerealiseerd maar er zijn wel enkele bemerkingen bij deze methode.
+\begin{itemize}
+\item Er gaat onherroepelijk data verloren op deze manier. Indien de use case dit niet toelaat dan moet er worden gekeken naar andere conflict resolution.
+\item Het type van de data (finaal of niet-finaal) sluit de andere methode uit. Niet-finale data met First Write Wins maken de data impliciet finaal en immutable.
+\end{itemize}
+\subsection{Toepassing op de business case}
+TODO
 \section{Conflict Resolution}
+Bij synchronisatie gaat er idealiter geen informatie verloren of laat de business case gaan dataverlies toe. Daarom is het ook belangrijk om te kijken hoe data kan worden gesynchroniseerd op een manier waarbij geen data verloren gaan. Om het onderzoek binnen de restricties van de business case te laten passen, worden hier enkel AWS services gebruikt voor de synchronisatie.
+ 
