@@ -70,19 +70,47 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {6.1}Online/Offline status registratie}{29}{section.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.2}Read-Only Optimised}{30}{section.6.2}
+\contentsline {subsection}{\numberline {6.1.1}Gecachte data doorsturen naar de server}{30}{subsection.6.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.2.1}Overzicht: Client}{30}{subsection.6.2.1}
+\contentsline {section}{\numberline {6.2}Data caching uit backend}{30}{section.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.2.2}Overzicht: Server}{31}{subsection.6.2.2}
+\contentsline {subsection}{\numberline {6.2.1}Beperkingen door single-threaded omgeving}{31}{subsection.6.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.2.3}Opmerkingen}{31}{subsection.6.2.3}
+\contentsline {subsection}{\numberline {6.2.2}Toepassing op prototype}{31}{subsection.6.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.3}Last/First Write Wins}{32}{section.6.3}
+\contentsline {subsection}{\numberline {6.2.3}Toepassing op de business case}{32}{subsection.6.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.4}Conflict Resolution}{32}{section.6.4}
+\contentsline {section}{\numberline {6.3}Read-Only Optimised}{32}{section.6.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {7}Conclusie}{33}{chapter.7}
+\contentsline {subsection}{\numberline {6.3.1}Overzicht: Client}{32}{subsection.6.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{34}{chapter.7}
+\contentsline {subsection}{\numberline {6.3.2}Overzicht: Server}{33}{subsection.6.3.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.3.3}Opmerkingen}{33}{subsection.6.3.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.3.4}Toepassing op prototype}{33}{subsection.6.3.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.3.5}Toepassing op de business case}{34}{subsection.6.3.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6.4}Last/First Write Wins}{34}{section.6.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.4.1}Overzicht: Client}{34}{subsection.6.4.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.4.2}Overzicht: Server}{34}{subsection.6.4.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.4.3}Opmerkingen}{35}{subsection.6.4.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.4.4}Toepassing op prototype}{35}{subsection.6.4.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.4.5}Toepassing op de business case}{35}{subsection.6.4.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6.5}Conflict Resolution}{35}{section.6.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.5.1}Overzicht: Client}{35}{subsection.6.5.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.5.2}Overzicht: Server}{35}{subsection.6.5.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {7}Conclusie}{37}{chapter.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{38}{chapter.7}
 \contentsfinish 
