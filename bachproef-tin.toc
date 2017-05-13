@@ -108,9 +108,21 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {6.5.1}Overzicht: Client}{35}{subsection.6.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.5.2}Overzicht: Server}{35}{subsection.6.5.2}
+\contentsline {subsection}{\numberline {6.5.2}Overzicht: Server}{36}{subsection.6.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {7}Conclusie}{37}{chapter.7}
+\contentsline {subsection}{\numberline {6.5.3}Toepassing op prototype}{36}{subsection.6.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{38}{chapter.7}
+\contentsline {subsection}{\numberline {6.5.4}Toepassing op de business case}{36}{subsection.6.5.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{UPDATE operatie}{36}{section*.9}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{DELETE operatie}{36}{section*.10}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6.6}Open-source libraries}{37}{section.6.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6.7}Conflict resolution policies}{37}{section.6.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {7}Conclusie}{39}{chapter.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{40}{chapter.7}
 \contentsfinish 
