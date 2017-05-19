@@ -14,7 +14,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{localStorage en sessionStorage}{14}{section*.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{localStorage}{14}{section*.5}
+\contentsline {subsubsection}{localStorage}{15}{section*.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{sessionStorage}{15}{section*.6}
 \defcounter {refsection}{0}\relax 
@@ -22,21 +22,21 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{Web SQL}{15}{section*.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.2}Scalable Angular Architecture}{15}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.2}Scalable Angular Architecture}{16}{subsection.2.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.3}Ngrx store: een state container}{16}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.3}Ngrx store: een state container}{17}{subsection.2.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.4}Reactive programming paradigm}{16}{subsection.2.2.4}
+\contentsline {subsection}{\numberline {2.2.4}Reactive programming paradigm}{17}{subsection.2.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.5}Offline First}{16}{subsection.2.2.5}
+\contentsline {subsection}{\numberline {2.2.5}Offline First}{18}{subsection.2.2.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.6}Amazon Web Services}{17}{subsection.2.2.6}
+\contentsline {subsection}{\numberline {2.2.6}Amazon Web Services}{18}{subsection.2.2.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.3}Stand van zaken}{17}{section.2.3}
+\contentsline {section}{\numberline {2.3}Stand van zaken}{18}{section.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.4}Probleemstelling en Onderzoeksvragen}{18}{section.2.4}
+\contentsline {section}{\numberline {2.4}Probleemstelling en Onderzoeksvragen}{19}{section.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.5}Opzet van deze bachelorproef}{18}{section.2.5}
+\contentsline {section}{\numberline {2.5}Opzet van deze bachelorproef}{20}{section.2.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {3}Methodologie}{21}{chapter.3}
 \defcounter {refsection}{0}\relax 
@@ -90,7 +90,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {6.3.4}Toepassing op prototype}{33}{subsection.6.3.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.3.5}Toepassing op de business case}{34}{subsection.6.3.5}
+\contentsline {subsection}{\numberline {6.3.5}Toepassing op de business case}{33}{subsection.6.3.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {6.4}Last/First Write Wins}{34}{section.6.4}
 \defcounter {refsection}{0}\relax 
@@ -98,7 +98,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {6.4.2}Overzicht: Server}{34}{subsection.6.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.4.3}Opmerkingen}{35}{subsection.6.4.3}
+\contentsline {subsection}{\numberline {6.4.3}Opmerkingen}{34}{subsection.6.4.3}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {6.4.4}Toepassing op prototype}{35}{subsection.6.4.4}
 \defcounter {refsection}{0}\relax 
@@ -108,7 +108,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {6.5.1}Overzicht: Client}{35}{subsection.6.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.5.2}Overzicht: Server}{36}{subsection.6.5.2}
+\contentsline {subsection}{\numberline {6.5.2}Overzicht: Server}{35}{subsection.6.5.2}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {6.5.3}Toepassing op prototype}{36}{subsection.6.5.3}
 \defcounter {refsection}{0}\relax 
@@ -132,5 +132,5 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {7}Conclusie}{39}{chapter.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{40}{chapter.7}
+\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{41}{chapter*.11}
 \contentsfinish 

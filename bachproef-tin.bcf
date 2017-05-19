@@ -2256,6 +2256,21 @@
     <bcf:datasource type="file" datatype="bibtex">bachproef-tin.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
+    <bcf:citekey order="1">mozilla-overview</bcf:citekey>
+    <bcf:citekey order="2">WHATWG-storage-API</bcf:citekey>
+    <bcf:citekey order="3">clientside-storage</bcf:citekey>
+    <bcf:citekey order="4">mozilla-overview</bcf:citekey>
+    <bcf:citekey order="5">indexeddb-moz</bcf:citekey>
+    <bcf:citekey order="6">clientside-storage</bcf:citekey>
+    <bcf:citekey order="7">websql-specification</bcf:citekey>
+    <bcf:citekey order="8">minko-gechev-scalable</bcf:citekey>
+    <bcf:citekey order="9">brechtbilliet-scalable</bcf:citekey>
+    <bcf:citekey order="10">ngrx-info</bcf:citekey>
+    <bcf:citekey order="11">reactivex-intro</bcf:citekey>
+    <bcf:citekey order="12">promise-info</bcf:citekey>
+    <bcf:citekey order="13">offline-first</bcf:citekey>
+    <bcf:citekey order="14">aws-documentation</bcf:citekey>
+    <bcf:citekey order="15">chrome-offline-first-statement</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="apa/global/" type="entry" sortscheme="apa" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>
