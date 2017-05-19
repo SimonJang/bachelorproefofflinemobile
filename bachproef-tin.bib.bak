@@ -125,8 +125,13 @@
 }
 
 @Electronic{webworker-reference,
-  author = {W3C},
-  year   = {2017},
+  author       = {W3C},
+  year         = {2017},
+  title        = {Specification for Webworkers},
+  language     = {English},
+  howpublished = {Web},
+  organization = {W3C},
+  url          = {https://w3c.github.io/workers/},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

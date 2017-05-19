@@ -52,87 +52,89 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {4}Opstelling}{23}{chapter.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.1}Client side}{23}{section.4.1}
+\contentsline {section}{\numberline {4.1}De Pridiktiv applicatie}{23}{section.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.2}Server side}{23}{section.4.2}
+\contentsline {section}{\numberline {4.2}Applicaties voor het onderzoek}{23}{section.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {5}Synchronisatie patterns}{25}{chapter.5}
+\contentsline {section}{\numberline {4.3}Client side}{24}{section.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.1}Read-Only Data}{25}{section.5.1}
+\contentsline {section}{\numberline {4.4}Server side}{24}{section.4.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.2}Read-Only Data Optimized}{26}{section.5.2}
+\contentsline {chapter}{\numberline {5}Synchronisatie patterns}{27}{chapter.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.3}Read/Write Data Last Write Wins}{26}{section.5.3}
+\contentsline {section}{\numberline {5.1}Read-Only Data}{27}{section.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.4}Read/Write with Conflict Detection}{26}{section.5.4}
+\contentsline {section}{\numberline {5.2}Read-Only Data Optimized}{28}{section.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {6}Onderzoek}{29}{chapter.6}
+\contentsline {section}{\numberline {5.3}Read/Write Data Last Write Wins}{28}{section.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.1}Online/Offline status registratie}{29}{section.6.1}
+\contentsline {section}{\numberline {5.4}Read/Write with Conflict Detection}{28}{section.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.1.1}Gecachte data doorsturen naar de server}{30}{subsection.6.1.1}
+\contentsline {chapter}{\numberline {6}Onderzoek}{31}{chapter.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.2}Data caching uit backend}{30}{section.6.2}
+\contentsline {section}{\numberline {6.1}Online/Offline status registratie}{31}{section.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.2.1}Beperkingen door single-threaded omgeving}{31}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.1.1}Gecachte data doorsturen naar de server}{32}{subsection.6.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.2.2}Toepassing op prototype}{31}{subsection.6.2.2}
+\contentsline {section}{\numberline {6.2}Data caching uit backend}{33}{section.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.2.3}Toepassing op de business case}{32}{subsection.6.2.3}
+\contentsline {subsection}{\numberline {6.2.1}Beperkingen door single-threaded omgeving}{33}{subsection.6.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.3}Data synchronisatie: planning bij development}{32}{section.6.3}
+\contentsline {subsection}{\numberline {6.2.2}Toepassing}{33}{subsection.6.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.4}Data synchronisatie: planning bij development}{32}{section.6.4}
+\contentsline {subsubsection}{Toepassing op de business case}{34}{section*.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.5}Read-Only Optimised}{33}{section.6.5}
+\contentsline {section}{\numberline {6.3}Data synchronisatie: planning bij development}{34}{section.6.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.5.1}Overzicht: Client}{33}{subsection.6.5.1}
+\contentsline {section}{\numberline {6.4}Read-Only Optimised}{35}{section.6.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.5.2}Overzicht: Server}{34}{subsection.6.5.2}
+\contentsline {subsection}{\numberline {6.4.1}Overzicht: Client}{35}{subsection.6.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.5.3}Opmerkingen}{34}{subsection.6.5.3}
+\contentsline {subsection}{\numberline {6.4.2}Overzicht: Server}{36}{subsection.6.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.5.4}Toepassing op prototype}{34}{subsection.6.5.4}
+\contentsline {subsection}{\numberline {6.4.3}Opmerkingen}{36}{subsection.6.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.5.5}Toepassing op de business case}{35}{subsection.6.5.5}
+\contentsline {subsection}{\numberline {6.4.4}Toepassing}{36}{subsection.6.4.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.6}Last/First Write Wins}{35}{section.6.6}
+\contentsline {subsubsection}{Toepassing op de business case}{36}{section*.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.6.1}Overzicht: Client}{35}{subsection.6.6.1}
+\contentsline {section}{\numberline {6.5}Last/First Write Wins}{37}{section.6.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.6.2}Overzicht: Server}{35}{subsection.6.6.2}
+\contentsline {subsection}{\numberline {6.5.1}Overzicht: Client}{37}{subsection.6.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.6.3}Opmerkingen}{36}{subsection.6.6.3}
+\contentsline {subsection}{\numberline {6.5.2}Overzicht: Server}{37}{subsection.6.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.6.4}Toepassing op prototype}{36}{subsection.6.6.4}
+\contentsline {subsection}{\numberline {6.5.3}Opmerkingen}{37}{subsection.6.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.6.5}Toepassing op de business case}{36}{subsection.6.6.5}
+\contentsline {subsection}{\numberline {6.5.4}Toepassing}{38}{subsection.6.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.7}Conflict Resolution}{36}{section.6.7}
+\contentsline {subsubsection}{Toepassing op de business case}{38}{section*.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.7.1}Overzicht: Client}{36}{subsection.6.7.1}
+\contentsline {section}{\numberline {6.6}Conflict Resolution}{38}{section.6.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.7.2}Overzicht: Server}{37}{subsection.6.7.2}
+\contentsline {subsection}{\numberline {6.6.1}Overzicht: Client}{38}{subsection.6.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.7.3}Toepassing op prototype}{37}{subsection.6.7.3}
+\contentsline {subsection}{\numberline {6.6.2}Overzicht: Server}{38}{subsection.6.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.7.4}Toepassing op de business case}{37}{subsection.6.7.4}
+\contentsline {subsection}{\numberline {6.6.3}Toepassing}{39}{subsection.6.6.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{UPDATE operatie}{37}{section*.9}
+\contentsline {subsubsection}{Toepassing op de business case}{39}{section*.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{DELETE operatie}{37}{section*.10}
+\contentsline {subsubsection}{UPDATE operatie}{39}{section*.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.8}Open-source libraries}{38}{section.6.8}
+\contentsline {subsubsection}{DELETE operatie}{39}{section*.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.8.1}aws-sqs-push}{38}{subsection.6.8.1}
+\contentsline {section}{\numberline {6.7}Open-source libraries}{39}{section.6.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.8.2}aws-sqs-poll}{39}{subsection.6.8.2}
+\contentsline {subsection}{\numberline {6.7.1}aws-sqs-push}{39}{subsection.6.7.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.8.3}aws-sqs-deletemessage}{39}{subsection.6.8.3}
+\contentsline {subsection}{\numberline {6.7.2}aws-sqs-poll}{41}{subsection.6.7.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.8.4}aws-sqs-geturl}{40}{subsection.6.8.4}
+\contentsline {subsection}{\numberline {6.7.3}aws-sqs-deletemessage}{41}{subsection.6.7.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {7}Conclusie}{41}{chapter.7}
+\contentsline {subsection}{\numberline {6.7.4}aws-sqs-geturl}{42}{subsection.6.7.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{43}{chapter*.11}
+\contentsline {chapter}{\numberline {7}Conclusie}{43}{chapter.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\leavevmode {\color {maincolor}Bibliografie}}{46}{chapter*.15}
 \contentsfinish 

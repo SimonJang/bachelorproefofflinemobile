@@ -295,6 +295,33 @@
       \verb http://reactivex.io/intro.html
       \endverb
     \endentry
+    \entry{scalable-theorie}{online}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=d0740bcf48754b8fa2cd3549a1d73461}{%
+           family={Richardson},
+           family_i={R\bibinitperiod},
+           given={Chris},
+           given_i={C\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \strng{namehash}{d0740bcf48754b8fa2cd3549a1d73461}
+      \strng{fullhash}{d0740bcf48754b8fa2cd3549a1d73461}
+      \field{sortinit}{R}
+      \field{sortinithash}{c7387613477035a752d935acfc3e3ea2}
+      \field{labelyear}{2015}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{title}{Overview of microservices}
+      \field{year}{2015}
+      \verb{url}
+      \verb http://microservices.io/patterns/microservices.html
+      \endverb
+    \endentry
     \entry{aws-documentation}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=d42d62d6d3bfc2b889e4616093f39333}{%

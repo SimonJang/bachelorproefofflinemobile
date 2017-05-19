@@ -30,7 +30,7 @@ Voor bovenstaande synchronisatie methodes worden besproken is het belangrijk om 
         document.body.onoffline = ConnectionEvent;
     }
     
-    // met window.navigator
+    // met native window.navigator
     if (navigator.onLine) {
   	// Online
      } else {
@@ -42,6 +42,12 @@ Voor bovenstaande synchronisatie methodes worden besproken is het belangrijk om 
 \subsection{Gecachte data doorsturen naar de server}
 Voor het onderzoek werd geopteerd op gebruik te maken van de tweede methode. Wanneer de applicatie registreert dat er geen verbinding meer is, worden alle requests gecached als afzonderlijke objecten. Wanneer de applicatie dan terug online is, wordt er in een request naar de server alle gecachte data doorgestuurd. De API Gateway geeft het object door aan een gateway lambda die de objecten op een queue plaatst.  Een andere lambda leest alle boodschappen uit de queue en stuurt elke request terug naar de gateway lambda. De API Gateway wijst de correcte lambda aan die verantwoordelijk is voor de verwerking van de oorspronkelijke request. Bij requests die een UPDATE uitvoeren op een object dat aangemaakt werd (CREATE) tijdens de offline status, worden allemaal gebundeld in een object. Op die manier wordt de volgorde gegarandeerd voor het verwerken van de verschillende requests. Wanneer er dan synchronisatieproblemen optreden, moeten die in de lambda's worden opgevangen die de individuele request moeten verwerken.
 
+\begin{figure}[h]
+\caption{Caching van requests in de client}
+\centering
+\includegraphics[width=1\textwidth]{caching-requests}
+\end{figure}
+
 \section{Data caching uit backend}
 Bij een applicatie die zowel online als offline moet werken, is het belangrijk dat er data wordt gepreload in de applicatie. Zo kan de gebruiker blijven verder werken indien de applicatie plots offline zou zijn. Het belangrijkste aandachtspunt is hierbij de schaalbaarheid van de oplossing. In de business case van Pridiktiv worden verschillende requests naar de server uitgevoerd naar de server om de data op te vragen. Wanneer de functionaliteit en data capaciteit van de applicatie toeneemt kan het aantal requests kan wel dramatisch stijgen. Een mogelijke oplossing voor dat probleem kan een webworker zijn. Door het single-threaded karakter van JavaScript kan er een webworker worden gebruikt voor het parallel bevragen van de server.
 
@@ -50,21 +56,24 @@ De connectie status van de de applicatie wordt bewaard als state in de ngrx stor
 \subsection{Beperkingen door single-threaded omgeving}
 JavaScript is een single-threaded omgeving waardoor meerdere scripts niet simultaan kunnen worden uitgevoerd. Dit vormt problemen wanneer een webapplicatie UI events, queries, een groot volume API data en tegelijk de DOM aanpassingen moet verwerken. Met technieken zoals setTimeout() en setInterval() is het mogelijk om concurrency te simuleren maar dit maakt de applicatie meteen een stuk complexer. Dankzij de HTML5 specificatie is het mogelijk om Web Workers te gebruiken. Deze laten toe om scripts in de achtergrond uit te voeren. Hierdoor is het mogelijk om complexe berekeningen concurrent uit te voeren zonder dat dit een performantie impact op de applicatie heeft.
 
-\subsection{Toepassing op prototype}
-In het onderzoek zijn twee verschillende mogelijkheden voor caching onderzocht. De eerste methode vraagt serieel alle data op van de server. Dit vormt geen probleem indien de data beperkt is, maar eenmaal het volume van de data stijgt, dan moeten er steeds meer requests wordt uitgevoerd naar de server. Dit heeft als nadeel dat de main thread geblocked wordt waardoor er geen UI kan worden gerenderd op het toestel. Dit is dus geen ideaal scenario. Bij de andere 2 methodes wordt er gebruik gemaakt van een webworker. Deze webworker laat doe om parallel met de applicatie bepaalde acties uit te voeren. Met behulp van de webworker is het dan mogelijk om de caching in de achtergrond uit te voeren. Met deze web workers kunnen dan volgende operaties worden uitgevoerd:
+\subsection{Toepassing}
+In het onderzoek zijn drie verschillende mogelijkheden voor caching onderzocht. De eerste methode vraagt serieel alle data op van de server. Dit vormt geen probleem indien de data beperkt is, maar eenmaal het volume van de data stijgt, dan moeten er steeds meer requests wordt uitgevoerd naar de server. Dit heeft als nadeel dat de main thread geblocked wordt waardoor er geen UI kan worden gerenderd op het toestel. Dit is dus geen ideaal scenario. Bij de andere 2 methodes wordt er gebruik gemaakt van een webworker. Deze webworker laat doe om parallel met de applicatie bepaalde acties uit te voeren. Met behulp van de webworker is het dan mogelijk om de caching in de achtergrond uit te voeren. Met deze web workers kunnen dan volgende operaties worden uitgevoerd:
 
 \begin{enumerate}
 \item data ophalen van de server
 \item omzetten van opgehaalde data naar state object voor ngrx
 \end{enumerate}
 
-Om het aantal requests drastisch te verminderen is het ook mogelijk om bepaalde data te bundelen. Zo kunnen alle observaties voor patienten worden gebundeld worden in 1 object en de webworker vormt die response dan om naar een geldig state object. Zo worden intensieve berekeningen in de applicatie vermeden. Een andere mogelijkheid is het opzetten van een applicatie state in de backend en dit dan door te sturen. Op die manier moet enkel het state object worden toegevoegd aan de store wanneer het is opgevraagd van de server. een nadeel van deze methode is de state van de client die nu sterk gekoppeld is aan de backend.
+\begin{figure}[h]
+\caption{Web worker die request verwerkt}
+\centering
+\includegraphics[width=1\textwidth]{example-webworker}
+\end{figure}
 
-\subsection{Toepassing op de business case}
+Om het aantal requests drastisch te verminderen is het ook mogelijk om bepaalde data te bundelen. Zo kunnen alle observaties voor patienten worden gebundeld worden in 1 object en de webworker vormt die response dan om naar een geldig state object. Zo worden intensieve berekeningen in de applicatie vermeden. Een derde mogelijkheid is het opzetten van een applicatie state in de backend en dit dan door te sturen. Op die manier moet enkel het state object worden toegevoegd aan de store wanneer het is opgevraagd van de server. een nadeel van deze methode is de state van de client die nu sterk gekoppeld is aan de backend. Grote voordeel is dat de backend nu verantwoordelijk is voor alle intensieve operaties en dat de client applicatie enkel maar zijn state moet injecteren in de store.
+
+\subsubsection{Toepassing op de business case}
 In de business case wordt de request serieel bevraagd van de server. Nadat de pati\"entenlijst is opgevraagd, worden voor alle pati\"enten de relevante data opgevraagd. In de piloot versie waren dat ongeveer 75 personen die elk taken, notities, observaties, medische parameters en wondzorgdossiers kunnen bevatten. Dit leidt tot een 500 requests die in een zeer korte periode worden uitgevoerd. Het gebruik van web workers \autocite{webworker-reference} gecombineerd met een gebundelde data zou het aantal requests sterk kunnen verminderen. In de business case is er ook sprake van afbeeldingen die moeten worden gesynchroniseerd met de applicatie maar het cachen van BLOBs valt buiten de scope van dit onderzoek.
-
-\section{Data synchronisatie: planning bij development}
-Wanneer een synchronisatieoplossing moet worden ontwikkeld voor een applicatie, is het belangrijk om alle use cases in kaart te brengen waarbij er rekening moet worden gehouden met synchronisatie. Dit zorgt ervoor dat er geen functionaliteit over het hoofd wordt gezien bij het ontwikkelen van de synchronisatieoplossing. Ter illustratie wordt in de onderstaande voorbeeld de business case van Pridiktiv ontleed.
 
 \section{Data synchronisatie: planning bij development}
 Wanneer een synchronisatieoplossing moet worden ontwikkeld voor een applicatie, is het belangrijk om alle use cases in kaart te brengen waarbij er rekening moet worden gehouden met synchronisatie. Dit zorgt ervoor dat er geen functionaliteit over het hoofd wordt gezien bij het ontwikkelen van de synchronisatieoplossing. Ter illustratie wordt in de onderstaande voorbeeld de business case van Pridiktiv ontleed.
@@ -84,35 +93,25 @@ Wanneer een synchronisatieoplossing moet worden ontwikkeld voor een applicatie, 
 
 De onderverdeling is het uitgangspunt voor de volgende stap namelijk het bepalen van de verschillende synchronisatie mogelijkheden. Zo kan bijvoorbeeld worden bepaald dat de gebruiker bij een conflict zelf een beslissing moet nemen. Of indien er een conflict optreedt bij een synchronisatie van bepaalde data, dat er automatisch voor Last/First Write Wins wordt gekozen. In het geval waarbij er conflict resolution moet gebeuren door de gebruiker, kunnen kan worden bepaald welke keuzes de gebruiker krijgen en welke keuzes de server zelf kan maken. Bovenstaande overzicht vormt dan als het ware de basis voor de ontwikkeling van de synchronisatie. Een ander voorbeeld is het deactiveren van bepaalde functionaliteit bij wanneer de applicatie offline is. Hierdoor kunnen potentieel complexe synchronisatieproblemen worden vermeden. Dit heeft echter als nadeel dat de applicatie niet meer de volledige functionaliteit kan aanbieden wanneer de verbinding is verbroken. Het al dan niet uitschakelen van bepaalde functionaliteit bij offline gebruik is sterk afhankelijk van de business case
 
-De onderverdeling is het uitgangspunt voor de volgende stap namelijk het bepalen van de verschillende synchronisatie mogelijkheden. Zo kan bijvoorbeeld worden bepaald dat de gebruiker bij een conflict zelf een beslissing moet nemen. Of indien er een conflict optreedt bij een synchronisatie van bepaalde data, dat er automatisch voor Last/First Write Wins wordt gekozen. In het geval waarbij er conflict resolution moet gebeuren door de gebruiker, kunnen kan worden bepaald welke keuzes de gebruiker krijgen en welke keuzes de server zelf kan maken. Bovenstaande overzicht vormt dan als het ware de basis voor de ontwikkeling van de synchronisatie. Een ander voorbeeld is het deactiveren van bepaalde functionaliteit bij wanneer de applicatie offline is. Hierdoor kunnen potentieel complexe synchronisatieproblemen worden vermeden. Dit heeft echter als nadeel dat de applicatie niet meer de volledige functionaliteit kan aanbieden wanneer de verbinding is verbroken. Het al dan niet uitschakelen van bepaalde functionaliteit bij offline gebruik is sterk afhankelijk van de business case
-
 \section{Read-Only Optimised}
-De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client. Read-Only Optimised is dan ook eerder een optimalisatietechniek dan een synchronisatiemethode. Deze techniek laat toe om enkel nieuwe data binnen te halen waardoor data die de client reeds bezit niet opnieuw worden opgevraagd. De complexiteit van deze methode stijgt evenredig met het aantal parameters dat in de data kan worden aangepast. Van alle methodes die in dit hoofdstuk worden besproken, is dit de enige methode waarbij enkel een HTTP GET wordt gebruikt. Deze methode is ook enkel maar belangrijk bij het caching van data voor offline en online gebruik.
+De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client of processor tijd serverside. Read-Only Optimised is dan ook eerder een optimalisatietechniek dan een synchronisatiemethode. Deze techniek laat toe om enkel nieuwe data binnen te halen waardoor data die de applicatie reeds bezit niet opnieuw worden opgevraagd. De complexiteit van deze methode stijgt evenredig met het aantal parameters dat in de data kan worden aangepast. Deze methode wordt vooral gebruikt bij het cachen van data voor offline gebruik.
 \subsection{Overzicht: Client}
 Bij Read-Only Optimised staat de synchronisatie van de client centraal. Tijdens de periode dat de client offline was, is het mogelijk dat er nieuwe data zijn aangemaakt. Om deze data te synchroniseren kan de client alle data opnieuw opvragen maar deze manier heeft enkele nadelen. Indien de data klein is zoals enkel tekst, dan is Read-Only Optimised triviaal en kunnen alle data opnieuw worden opgevraagd. Wanneer er echter grotere data moet worden ingeladen zoals afbeeldingen, dan kan Read-Only Optimised heel wat bandbreedte uitsparen. Dankzij de ngrx store is het ook gemakkelijk om manipulaties uit te voeren op de data, waardoor er eenvoudig objecten kunnen worden toegevoegd aan de data in de store. Belangrijke voorwaarde voor het uitvoeren van deze actie is het bijhouden in de client van de timestamp van de laatste update indien de data aanwezig zijn. Indien er geen timestamp aanwezig is, dan weet de client dat alle data moeten worden opgevraagd.
-
-<TODO request invoegen>
-
-Bovenstaande afbeelding is een voorbeeld van een Read-Only Optimised request waarbij enkel de nieuwe data worden aangevraagd. Wanneer de client een HTTP GET uitvoert, dan wordt in de header van de request de timestamp van de laatste update toegevoegd. Deze timestamp is belangrijk voor de verwerking server side bij voor het uitvoeren van een query op de databank.
-
-<TOEVOEGEN SCREENSHOT USE CASE IN SETUP APPLICATIE >
-De wijzigingen zijn dan meteen zichtbaar in de store en bijgevolg ook in de client.
 \subsection{Overzicht: Server}
-De server heeft net zoals bij een traditionele GET de verantwoordelijkheid om de data op te vragen uit de databank en die terug te sturen naar de client. Het enige verschil is dat er rekening moet worden gehouden met de een mogelijke timestamp in de header. Op basis van die timestamp kan dan alle nieuwe data sinds de laatste GET worden opgevraagd. De request wordt doorgestuurd naar 
-
-<TOEVOEGEN VP OVERZICHT BACKEND INFRASTRUCTUUR VOOR READ-ONLY OPTIMISED>
+De server houdt rekening 
 
 \subsection{Opmerkingen}
-Ondanks de perceptie dat dit een eenvoudige methode is, zijn er enkele opmerkingen zij deze methode:
+Ondanks de perceptie dat dit een eenvoudige methode is om te implementeren, zijn er enkele opmerkingen zij deze methode:
 \begin{enumerate}
 \item In bovenstaand scenario wordt er enkel maar uitgegaan van nieuwe data, dus CREATE operaties. Indien de methode ook voor UPDATE moet werken is het in bepaalde gevallen noodzakelijk om ook de databank structuur aan te passen.
-\item Bij klassieke SQL databanken kan gemakkelijk worden gefilterd op bepaalde velden zoals een 'updated veld' binnen een tabel. Bij DynamoDB is dit moeilijker als de waarde van de query geen deel uitmaakt van de sort -of partition key. In dat geval moet er dan gebruik worden gemaakt van een extra secondary index zodat er geen full table scan moet worden uitgevoerd telkens wanneer er een GET request is.
-\item Het is bij kleine data vaak eenvoudiger om steeds alle data op te vragen en geen gebruik te maken van de Read-Only Optimised methode.
+\item Bij klassieke SQL databanken kan gemakkelijk worden gefilterd op bepaalde velden zoals een 'updated veld' binnen een tabel. Bij DynamoDB is dit moeilijker als de waarde van de query geen deel uitmaakt van de sort -of partition key. In dat geval moet er dan gebruik worden gemaakt van een extra secondary index niet telkens alle partition key moet worden overlopen telkens wanneer er een GET request is.
+\item Het is bij kleine data vaak eenvoudiger om steeds alle data op te vragen en geen gebruik te maken van de Read-Only Optimised methode. De complexiteit die Read-Only Optimised toevoegt bij eenvoudige scenario's maakt deze methode soms overbodig.
 \end{enumerate}
-\subsection{Toepassing op prototype}
-Met behulp van een timestamp wordt er bijgehouden wanneer de laatste GET is uitgevoerd. Op die manier kan de backend bepalen welke informatie er moet worden geretourneerd. Wanneer er enkel maar eenvoudige data moet worden geretourneerd zoals JSON dan zorgt de Read-Only Optimised methode nodeloos voor extra complexiteit. Het is daarom enkel aangeraden om enkel Read-Only Optimised te gebruiken indien er met andere en grotere data wordt gewerkt.
-\subsection{Toepassing op de business case}
-In de backoffice en mobiele applicatie van Pridiktiv wordt er momenteel geen gebruikt gemaakt van Read-Only Optimised. Omdat synchronisatie momenteel de grootste zorg is van de organisatie, is Read-Only Optimised minder belangrijk in de business case.
+\subsection{Toepassing}
+Met behulp van twee timestamps wordt er bijgehouden wanneer de laatste GET is uitgevoerd en wanneer de laatste aanpassing in een tabel heeft plaatsgevonden. Op die manier kan de backend bepalen welke informatie er moet worden geretourneerd. Wanneer er maar een beperkt volume data wordt geretourneerd dan zorgt de Read-Only Optimised methode nodeloos voor extra complexiteit. Het is daarom enkel aangeraden om enkel Read-Only Optimised te gebruiken indien er met grotere datasets wordt gewerkt.
+\subsubsection{Toepassing op de business case}
+In de backoffice en mobiele applicatie van Pridiktiv wordt er momenteel geen gebruikt gemaakt van Read-Only Optimised. Het Read-Only Optimised patroon zou in de business case van Pridiktiv eerder geschikt zijn wanneer de state server side wordt opgebouwd. Als de state voor de caching serverside wordt opgebouwd, dan zou men gebruik kunnen maken van Read-Only Optimised. Door de opgebouwde state te persisteren en de tegelijk  de timestamps van de laatste change binnen een bepaalde categorie bij te houden in een 'changes' tabel zou het aantal queries dat nodig is om de state op te bouwen sterk kunnen verminderen. 
+
 \section{Last/First Write Wins}
 Bij Last/First Write Wins gaat er onherroepelijk informatie verloren. Afhankelijk van de gekozen conflict resolution methode is het wordt de eerste of laatste write bijgehouden. Dit is de eenvoudigste manier van conflict resolution maar men moet bereidt zijn om een compromis te sluiten en informatie op te offeren in ruil voor minder complexiteit bij het synchroniseren. Wanneer heel snel naar een offline/online synchronisatiemethode moet worden gezocht, biedt die de gemakkelijkste oplossing.
 \subsection{Overzicht: Client}
@@ -129,23 +128,18 @@ First/Last Write wins is een aantrekkelijke methode wanneer er op korte termijn 
 \item Er gaat onherroepelijk data verloren op deze manier. Indien de use case dit niet toelaat dan moet er worden gekeken naar andere conflict resolution policy.
 \item Het type van de data (finaal of niet-finaal) sluit de andere methode uit. Niet-finale data met First Write Wins maken de data impliciet finaal en immutable.
 \end{itemize}
-\subsection{Toepassing op prototype}
-Deze synchronisatiemethode is de meest eenvoudige en wordt in het prototype gedemonstreerd aan de hand van twee scenario's in de client.
-\begin{enumerate}
-\item Er worden taken volbracht. Die zijn finaal en worden dus verwerkt volgens de First Write Wins
-\item Een notitie wordt gewijzigd. Hier geldt de Last Write Wins regel want een notitie aanpassen is nooit finaal.
-\end{enumerate}
-\subsection{Toepassing op de business case}
+\subsection{Toepassing}
+\subsubsection{Toepassing op de business case}
 Momenteel hanteert de backend van Pridiktiv enkel een First/Last Write principe bij data. Naar de toekomst zou dit moeten veranderen naar een een bredere oplossing die conflict resolution kan aanbieden.
+
 \section{Conflict Resolution}
 Bij synchronisatie gaat er idealiter geen informatie verloren of laat de business case gaan dataverlies toe. Daarom is het ook belangrijk om te kijken hoe data kan worden gesynchroniseerd op een manier waarbij geen data verloren gaan. Om het onderzoek binnen de restricties van de business case te laten passen, worden hier enkel AWS services gebruikt bij het synchronisatie. Een andere belangrijke opmerking dat het enkel maar gaat over UPDATE en DELETE operaties want Een CREATE operatie kan niet leiden tot een conflict wanneer het toestel offline is.
 \subsection{Overzicht: Client}
 Net zoals bij First/Last Write Wins, is de rol van de client beperkt. Wanneer de data zonder timestamp in de database wordt bewaard, is het belangrijk om een timestamp bij te houden wanneer nieuwe data zijn aangemaakt of aangepast. Zo heeft de server een referentiepunt om de data te verwerken.
 \subsection{Overzicht: Server}
 Timestamps bieden een eenvoudige oplossing om de controleren wanneer een bepaalde actie heeft plaatsgevonden. De timestamp van het nieuwe aangepaste object wordt vergeleken met de timestamp van het object dat reeds aanwezig is in de database. Zo kan bijvoorbeeld een timestamp worden bijgehouden in een 'modified' veld. Dat veld kan worden vergeleken met de timestamp van de UPDATE of DELETE die wordt doorgestuurd. Zo kan de server bepalen of er al dan niet een conflict is en wat er in het geval van een conflict moet gebeuren. Indien er geen timestamp sinds de laatste update wordt bewaard in het object, dan wordt synchroniseren zeer moeilijk en is First/Last Write Wins een betere oplossing. Het bijhouden van een timestamp alleen is echter niet voldoende. Het is belangrijk om op voorhand te bepalen wat de conflict resolution policies zijn en welke uses cases er allemaal van toepassing zijn. Niet alle conflicten kunnen worden opgevangen door de server. Zo kan de server geen beslissing nemen wanneer een DELETE actie wordt uitgevoerd op een object en er na nog een update wordt doorgestuurd. De gebruiker moet dan een waarschuwing krijgen dat zijn object is verwijderd en dan zijn aanpassingen niet zijn opgeslagen. Indien de gebruiker geen boodschap zou krijgen, dan wekt de server de perceptie dat er iets fout is gegaan bij de verwerking van de data.
-\subsection{Toepassing op prototype}
-TODO
-\subsection{Toepassing op de business case}
+\subsection{Toepassing}
+\subsubsection{Toepassing op de business case}
 \subsubsection{UPDATE operatie}
 Pridiktiv maakt gebruik van DynamoDB voor het bijhouden van de data. In DynamoDB wordt er gewerkt met een Partition Key die kan worden vergeleken met een Primary Key in SQL-terminologie en optioneel een Sort Key die  de Partition Key bevat in combinatie met een attribuut van het object. Daarnaast is het ook nog mogelijk om Secondary Indices te cre\"eren die functioneren zoals Sort keys.  Het is belangrijk dat de timestamp de Partition Key is of deel uitmaakt van de samengestelde Sort Key. Indien niet, is de DynamoDB verplicht om een full table scan uit te voeren op de tabel en over die data set te filteren. Omdat de timestamp deel uitmaakt van de Primary Key, is het bij updates eenvoudig om bij te houden wanneer de laatste update is uitgevoerd en om te voorkomen dat een UPDATE gedupliceerd wordt. Dit laatste wordt vermeden doordat de Partition Key unique moet zijn en dus met andere woorden kan die niet worden gedupliceerd zonder dat DynamoDB een exceptie gooit.
 \subsubsection{DELETE operatie}
