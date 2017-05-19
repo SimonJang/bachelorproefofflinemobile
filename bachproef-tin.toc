@@ -120,7 +120,15 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {6.6}Open-source libraries}{37}{section.6.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.7}Conflict resolution policies}{37}{section.6.7}
+\contentsline {subsection}{\numberline {6.6.1}aws-sqs-push}{37}{subsection.6.6.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.6.2}aws-sqs-poll}{37}{subsection.6.6.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.6.3}aws-sqs-deletemessage}{37}{subsection.6.6.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {6.6.4}aws-sqs-geturl}{37}{subsection.6.6.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6.7}Conflict resolution policies}{38}{section.6.7}
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {7}Conclusie}{39}{chapter.7}
 \defcounter {refsection}{0}\relax 
