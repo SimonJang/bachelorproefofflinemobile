@@ -114,4 +114,19 @@
   url          = {https://aws.amazon.com/documentation/},
 }
 
+@Electronic{chrome-offline-first-statement,
+  author       = {Google},
+  year         = {2017},
+  title        = {Why develop for offline?},
+  language     = {English},
+  howpublished = {Web},
+  organization = {Google},
+  url          = {https://developer.chrome.com/apps/offline_apps},
+}
+
+@Electronic{webworker-reference,
+  author = {W3C},
+  year   = {2017},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}

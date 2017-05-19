@@ -68,6 +68,36 @@
       \field{title}{Client-Side Data Storage}
       \field{year}{2016}
     \endentry
+    \entry{offline-first}{online}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=d8a92b47376633f734f8d544f44c0566}{%
+           family={First},
+           family_i={F\bibinitperiod},
+           given={Offline},
+           given_i={O\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{organization}{1}{%
+        {Offline First Open Source}%
+      }
+      \strng{namehash}{d8a92b47376633f734f8d544f44c0566}
+      \strng{fullhash}{d8a92b47376633f734f8d544f44c0566}
+      \field{sortinit}{F}
+      \field{sortinithash}{c6a7d9913bbd7b20ea954441c0460b78}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{title}{Offline first mission statement}
+      \field{year}{2017}
+      \verb{url}
+      \verb http://offlinefirst.org/
+      \endverb
+    \endentry
     \entry{minko-gechev-scalable}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=effaf90e988f01d5b55464d6f2bf438a}{%
@@ -92,6 +122,34 @@
       \field{year}{2016}
       \verb{url}
       \verb http://blog.mgechev.com/2016/04/10/scalable-javascript-single-page-app-angular2-application-architecture/
+      \endverb
+    \endentry
+    \entry{chrome-offline-first-statement}{online}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=8b36e9207c24c76e6719268e49201d94}{%
+           family={Google},
+           family_i={G\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{organization}{1}{%
+        {Google}%
+      }
+      \strng{namehash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{fullhash}{8b36e9207c24c76e6719268e49201d94}
+      \field{sortinit}{G}
+      \field{sortinithash}{1c854ef9177a91bf894e66485bdbd3ed}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{title}{Why develop for offline?}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://developer.chrome.com/apps/offline_apps
       \endverb
     \endentry
     \entry{indexeddb-moz}{online}{}
@@ -124,6 +182,34 @@
       \verb https://developer.mozilla.org/nl/docs/IndexedDB
       \endverb
     \endentry
+    \entry{promise-info}{online}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=502f1bd97b0e7d80b88e1f45ae1bfdb8}{%
+           family={Mozilla},
+           family_i={M\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{organization}{1}{%
+        {Mozilla}%
+      }
+      \strng{namehash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
+      \strng{fullhash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
+      \field{sortinit}{M}
+      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{extrayear}{1}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{title}{Explanation on Promises}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+      \endverb
+    \endentry
     \entry{mozilla-overview}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=502f1bd97b0e7d80b88e1f45ae1bfdb8}{%
@@ -140,9 +226,9 @@
       \strng{fullhash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
       \field{sortinit}{M}
       \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{extrayear}{2}
       \field{labelyear}{2017}
       \field{datelabelsource}{year}
-      \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
@@ -181,6 +267,64 @@
       \verb https://github.com/ngrx/store
       \endverb
     \endentry
+    \entry{reactivex-intro}{online}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=cc229767f12338f8e71290551ae4dee5}{%
+           family={ReactiveX},
+           family_i={R\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{organization}{1}{%
+        {ReactiveX}%
+      }
+      \strng{namehash}{cc229767f12338f8e71290551ae4dee5}
+      \strng{fullhash}{cc229767f12338f8e71290551ae4dee5}
+      \field{sortinit}{R}
+      \field{sortinithash}{c7387613477035a752d935acfc3e3ea2}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{title}{Documentation on how to use RX}
+      \field{year}{2017}
+      \verb{url}
+      \verb http://reactivex.io/intro.html
+      \endverb
+    \endentry
+    \entry{aws-documentation}{online}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=d42d62d6d3bfc2b889e4616093f39333}{%
+           family={Services},
+           family_i={S\bibinitperiod},
+           given={Amazon\bibnamedelima Web},
+           given_i={A\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{organization}{1}{%
+        {Amazon Web Services}%
+      }
+      \strng{namehash}{d42d62d6d3bfc2b889e4616093f39333}
+      \strng{fullhash}{d42d62d6d3bfc2b889e4616093f39333}
+      \field{sortinit}{S}
+      \field{sortinithash}{fd1e7c5ab79596b13dbbb67f8d70fb5a}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web and pdf}
+      \field{title}{Overview of the different AWS services}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://aws.amazon.com/documentation/
+      \endverb
+    \endentry
     \entry{websql-specification}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=446a1ae6601a5c59360c7d591c3992da}{%
@@ -197,9 +341,9 @@
       \strng{fullhash}{446a1ae6601a5c59360c7d591c3992da}
       \field{sortinit}{W}
       \field{sortinithash}{99e3ba1b3f78bb6f073e7fa7ac11636b}
+      \field{extrayear}{1}
       \field{labelyear}{2017}
       \field{datelabelsource}{year}
-      \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
@@ -207,6 +351,34 @@
       \field{year}{2017}
       \verb{url}
       \verb https://www.w3.org/TR/webdatabase/
+      \endverb
+    \endentry
+    \entry{webworker-reference}{online}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=446a1ae6601a5c59360c7d591c3992da}{%
+           family={W3C},
+           family_i={W\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{organization}{1}{%
+        {W3C}%
+      }
+      \strng{namehash}{446a1ae6601a5c59360c7d591c3992da}
+      \strng{fullhash}{446a1ae6601a5c59360c7d591c3992da}
+      \field{sortinit}{W}
+      \field{sortinithash}{99e3ba1b3f78bb6f073e7fa7ac11636b}
+      \field{extrayear}{2}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{title}{Specification for Webworkers}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://w3c.github.io/workers/
       \endverb
     \endentry
     \entry{WHATWG-storage-API}{online}{}

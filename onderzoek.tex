@@ -61,7 +61,30 @@ In het onderzoek zijn twee verschillende mogelijkheden voor caching onderzocht. 
 Om het aantal requests drastisch te verminderen is het ook mogelijk om bepaalde data te bundelen. Zo kunnen alle observaties voor patienten worden gebundeld worden in 1 object en de webworker vormt die response dan om naar een geldig state object. Zo worden intensieve berekeningen in de applicatie vermeden. Een andere mogelijkheid is het opzetten van een applicatie state in de backend en dit dan door te sturen. Op die manier moet enkel het state object worden toegevoegd aan de store wanneer het is opgevraagd van de server. een nadeel van deze methode is de state van de client die nu sterk gekoppeld is aan de backend.
 
 \subsection{Toepassing op de business case}
-In de business case wordt de request serieel bevraagd van de server. Nadat de pati\"entenlijst is opgevraagd, worden voor alle pati\"enten de relevante data opgevraagd. In de piloot versie waren dat ongeveer 75 personen die elk taken, notities, observaties, medische parameters en wondzorgdossiers kunnen bevatten. Dit leidt tot een 500 requests die in een zeer korte periode worden uitgevoerd. Het gebruik van web workers gecombineerd met een gebundelde data zou het aantal requests sterk kunnen verminderen. In de businsess case is er ook sprake van afbeeldingen die moeten worden gesynchroniseerd met de applicatie maar het cachen van BLOBs valt buiten de scope van dit onderzoek.
+In de business case wordt de request serieel bevraagd van de server. Nadat de pati\"entenlijst is opgevraagd, worden voor alle pati\"enten de relevante data opgevraagd. In de piloot versie waren dat ongeveer 75 personen die elk taken, notities, observaties, medische parameters en wondzorgdossiers kunnen bevatten. Dit leidt tot een 500 requests die in een zeer korte periode worden uitgevoerd. Het gebruik van web workers \autocite{webworker-reference} gecombineerd met een gebundelde data zou het aantal requests sterk kunnen verminderen. In de business case is er ook sprake van afbeeldingen die moeten worden gesynchroniseerd met de applicatie maar het cachen van BLOBs valt buiten de scope van dit onderzoek.
+
+\section{Data synchronisatie: planning bij development}
+Wanneer een synchronisatieoplossing moet worden ontwikkeld voor een applicatie, is het belangrijk om alle use cases in kaart te brengen waarbij er rekening moet worden gehouden met synchronisatie. Dit zorgt ervoor dat er geen functionaliteit over het hoofd wordt gezien bij het ontwikkelen van de synchronisatieoplossing. Ter illustratie wordt in de onderstaande voorbeeld de business case van Pridiktiv ontleed.
+
+\section{Data synchronisatie: planning bij development}
+Wanneer een synchronisatieoplossing moet worden ontwikkeld voor een applicatie, is het belangrijk om alle use cases in kaart te brengen waarbij er rekening moet worden gehouden met synchronisatie. Dit zorgt ervoor dat er geen functionaliteit over het hoofd wordt gezien bij het ontwikkelen van de synchronisatieoplossing. Ter illustratie wordt in de onderstaande voorbeeld de business case van Pridiktiv ontleed.
+
+\begin{center}
+    \begin{tabular}{ l | r }
+    \hline
+    Functionaliteit & Synchronisatie \\ \hline
+    Taken & First-Write Wins of conflict resolution \\
+    Observaties & geen conflict mogelijk \\
+    Medische data & geen conflict mogelijk \\
+    Wondzorg & First-Write Wins of conflict resolution \\
+    Notities & Geen conflict mogelijk \\
+    \hline
+    \end{tabular}
+\end{center}
+
+De onderverdeling is het uitgangspunt voor de volgende stap namelijk het bepalen van de verschillende synchronisatie mogelijkheden. Zo kan bijvoorbeeld worden bepaald dat de gebruiker bij een conflict zelf een beslissing moet nemen. Of indien er een conflict optreedt bij een synchronisatie van bepaalde data, dat er automatisch voor Last/First Write Wins wordt gekozen. In het geval waarbij er conflict resolution moet gebeuren door de gebruiker, kunnen kan worden bepaald welke keuzes de gebruiker krijgen en welke keuzes de server zelf kan maken. Bovenstaande overzicht vormt dan als het ware de basis voor de ontwikkeling van de synchronisatie. Een ander voorbeeld is het deactiveren van bepaalde functionaliteit bij wanneer de applicatie offline is. Hierdoor kunnen potentieel complexe synchronisatieproblemen worden vermeden. Dit heeft echter als nadeel dat de applicatie niet meer de volledige functionaliteit kan aanbieden wanneer de verbinding is verbroken. Het al dan niet uitschakelen van bepaalde functionaliteit bij offline gebruik is sterk afhankelijk van de business case
+
+De onderverdeling is het uitgangspunt voor de volgende stap namelijk het bepalen van de verschillende synchronisatie mogelijkheden. Zo kan bijvoorbeeld worden bepaald dat de gebruiker bij een conflict zelf een beslissing moet nemen. Of indien er een conflict optreedt bij een synchronisatie van bepaalde data, dat er automatisch voor Last/First Write Wins wordt gekozen. In het geval waarbij er conflict resolution moet gebeuren door de gebruiker, kunnen kan worden bepaald welke keuzes de gebruiker krijgen en welke keuzes de server zelf kan maken. Bovenstaande overzicht vormt dan als het ware de basis voor de ontwikkeling van de synchronisatie. Een ander voorbeeld is het deactiveren van bepaalde functionaliteit bij wanneer de applicatie offline is. Hierdoor kunnen potentieel complexe synchronisatieproblemen worden vermeden. Dit heeft echter als nadeel dat de applicatie niet meer de volledige functionaliteit kan aanbieden wanneer de verbinding is verbroken. Het al dan niet uitschakelen van bepaalde functionaliteit bij offline gebruik is sterk afhankelijk van de business case
 
 \section{Read-Only Optimised}
 De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client. Read-Only Optimised is dan ook eerder een optimalisatietechniek dan een synchronisatiemethode. Deze techniek laat toe om enkel nieuwe data binnen te halen waardoor data die de client reeds bezit niet opnieuw worden opgevraagd. De complexiteit van deze methode stijgt evenredig met het aantal parameters dat in de data kan worden aangepast. Van alle methodes die in dit hoofdstuk worden besproken, is dit de enige methode waarbij enkel een HTTP GET wordt gebruikt. Deze methode is ook enkel maar belangrijk bij het caching van data voor offline en online gebruik.
@@ -128,21 +151,82 @@ Pridiktiv maakt gebruik van DynamoDB voor het bijhouden van de data. In DynamoDB
 \subsubsection{DELETE operatie}
 Het is in de business case van Pridiktiv niet mogelijk om date te verwijderen. Alle data moet zichtbaar blijven in een historiek. Hierdoor is het niet toegelaten om DELETE operaties uit voeren, enkel UPDATE operaties. 
 \section{Open-source libraries}
-Voor het synchroniseren van de data bij Pridiktiv in AWS wordt er gebruik gemaakt van twee verschillende Open Source libraries. Deze zijn gemaakt om een oplossing aan te bieden voor Pridiktiv en in kader van dit onderzoek. De componenten zijn geschreven in JavaScript voor NodeJS 4.3 en hoger. Hierdoor is het mogelijk om nieuwere features uit ES6 te gebruiken zoals Promises. Het is specifiek ontwikkeld om te werken met Simple Queue Service van AWS maar biedt de flexibiliteit om gebruikt te worden buiten AWS Lambda, bv in AWS EC2 instances die ook NodeJS gebruiken.
+Voor het synchroniseren van de data bij Pridiktiv in AWS wordt er gebruik gemaakt van twee verschillende Open Source libraries. Deze zijn gemaakt om een oplossing aan te bieden voor Pridiktiv en in kader van dit onderzoek. De componenten zijn geschreven in JavaScript voor NodeJS 4.3 en hoger. Hierdoor is het mogelijk om nieuwere features uit ES6 te gebruiken zoals Promises. Het is specifiek ontwikkeld om te werken met Simple Queue Service van AWS maar biedt de flexibiliteit om gebruikt te worden buiten AWS Lambda, bv in AWS EC2 instances die ook NodeJS gebruiken. Deze libraries zijn ontwikkeld in kader van dit onderzoek en worden gebruikt binnen de productieomgeving van de Pridiktiv applicaties.
 \subsection{aws-sqs-push}
 Deze library heeft een functie die berichten op de SQS queue plaatst en een Promise retourneert wanneer er een bericht op de queue is geplaatst. De naam van de queue wordt met een hulpfunctie aws-sqs-geturl opgevraagd. Op deze manier is de gebruiker van deze library niet verplicht om de volledige ARN naam van de SQS door te geven. Wanneer de mesage een object bevat is dan wordt het object met JSON.stringify() automatisch omgevormd naar een string.
-<INSERT DOCUMENTATION EXAMPLE>
+
+\begin{lstlisting}[caption=Voorbeeld dat data plaatst op een SQS queue met behulp van de aws-sqs-push library]
+
+	const sqsPush = require('aws-sqs-push');
+
+	sqsPush('QueueName', 'SomeMessage').then(messageId => {
+    		console.log(messageId);
+    	//=> '8a98f4d0-078b-5176-9af2-bbd871660ecb'
+	});
+
+	sqsPush('QueueName', 'SomeMessage', {awsAccountId: '123456789101'}).then(messageId => {
+    		console.log(messageId);
+    	//=> '8a98f4d0-078b-5176-9af2-bbd871660ecb'
+	});
+	
+\end{lstlisting}
+\clearpage
 \subsection{aws-sqs-poll}
 De aws-sqs-poll library vraagt aan de SQS queue berichten. Die worden dan geretourneerd als een string of indien het een stringified object is, als een object. Net zoals bij de aws-sqs-push wordt er gebruikt gemaakt van een hulplibrary voor het opvragen van de ARN naam van de queue.
-<INSERT DOCUMENTATION EXAMPLE>
+
+\begin{lstlisting}[caption=Voorbeeld hoe berichten worden opgehaald van de SQS queue]
+
+	const awsSqsPoll = require('aws-sqs-poll');
+
+	awsSqsPoll('QueueName')
+    	//  ["MessageId": "28f61fd2-b9ca-4cb9-879a-71ea8bce4636",
+    	//   "ReceiptHandle": "AQEB9mnsxtAZlwnDERxn3yADAP96QRe0KPbqaKXLvvchqmD4jAr",
+    	//   "MD5OfBody": "098f6bcd4621d373cade4e832627b4f6",
+    	//   "Body": "test"]
+
+
+	awsSqsPoll('QueueName', {AwsAccountId: '123456789012', numberOfMessages: 1, timeout: 20, json: false})
+  	  //  ["MessageId": "28f61fd2-b9ca-4cb9-879a-71ea8bce4636",
+    	//   "ReceiptHandle": "AQEB9mnsxtAZlwnDERxn3yADAP96QRe0KPbqaKXLvvchqmD4jAr",
+    	//   "MD5OfBody": "098f6bcd4621d373cade4e832627b4f6",
+    	//   "Body": "test"]
+	
+\end{lstlisting}
+
 \subsection{aws-sqs-deletemessage}
 Een kleine functie die SQS messages verwijderd op basis van de ReceiptHandle die wordt meegestuurd wanneer er een bericht wordt opgevraagd. De message is verwerkt dan mag het bericht zonder problemen worden verwijderd van de queue. Net zoals bij de andere bovenstaande functies, heb je altijd de ARN naam nodig van de SQS queue die je wenst op te roepen. Dus hier wordt opnieuw de hulpfunctie aws-sqs-geturl nodig.
-<INSERT DOCUMENTATION EXAMPLE>
+
+\begin{lstlisting}[caption=Voorbeeld hoe een bericht wordt verwijderd van SQS nadat het is verwerkt]
+
+	const awsSqsDeletemessage = require('aws-sqs-deletemessage');
+
+	awsSqsDeletemessage('somequeue', 'SasuWXPJB+CwLj1FjgXUv1uSj1gUPAWV66FU/').then(id => {
+		console.log(id);
+		//=> 'b5293cb5-d306-4a17-9048-b263635abe4
+	});
+
+	awsSqsDeletemessage('somequeue', 'SasuWXPJB+CwLj1FjgXUv1uSj1gUPAWV66FU/', {awsAccountId: '123456789012'}).then(id => {
+		console.log(id);
+	//=> 'b5293cb5-d306-4a17-9048-b263635abe4
+});
+	
+\end{lstlisting}
+
 \subsection{aws-sqs-geturl}
 Hulplibrary die de ARN naam opvraagt van een specifieke SQS queue. Aan de hand van de AWS root account id, die automatisch wordt meegestuurd in een request, kan samen met de naam de ARN naam van een bepaalde SQS queue worden opgehaald. De AWS JavaScript SDK laat dit ook toe maar de functie gebruikt callbacks en een complexere configuratie. Door het gebruik van deze hulplibrary is de configuratie verwaarloosbaar en wordt er geen gebruik gemaakt van callbacks maar van promises
-<INSERT DOCUMENTATION EXAMPLE>
-\section{Conflict resolution policies}
-Bij het ontwikkelen van synchronisatie om alle use cases onder te verdelen volgens synchronisatie methode. In de onderstaande tabel wordt dergelijk onderscheid gemaakt voor de mobiele applicatie van Pridiktiv.
-<VOORBEELD TABEL MAKEN VOOR MEDAPP>
-De onderverdeling is het uitgangspunt voor de volgende stap namelijk het bepalen van de verschillende synchronisatie policies. Een policy kan bijvoorbeeld bepalen dat de gebruiker bij een conflict zelf een beslissing moet nemen. Of indien er een conflict optreedt bij een synchronisatie van bepaalde data, dat er automatisch voor Last/First Write Wins wordt gekozen. In het geval waarbij er conflict resolution moet gebeuren door de gebruiker, kunnen de policies bepalen welke keuzes de gebruiker krijgen en welke keuzes de server zelf kan maken. Deze policies vormen dan als het ware de basis voor de ontwikkeling van de synchronisatie. Een ander voorbeeld van een policy is het deactiveren van bepaalde functionaliteit bij wanneer de applicatie offline is. Hierdoor kunnen potentieel complexe synchronisatieproblemen worden vermeden. Dit heeft echter als nadeel dat de applicatie niet meer de volledige functionaliteit kan aanbieden wanneer de verbinding is verbroken.
-<VOORBEELD TABEL POLICY VOOR MEDAPP>
+
+\begin{lstlisting}[caption=Voorbeeld hoe de ARN van een SQS wordt opgehaald]
+
+	const awsGetSqsUrl = require('aws-sqs-geturl');
+
+	awsGetSqsUrl('somequeue').then(url => {
+		console.log(url);
+		//=> https://sqs.eu-west-1.amazonaws.com/123456789111/somequeue
+	});
+
+	awsGetSqsUrl('anotherqueue', {awsAccountId: '123456789012'}).then(url => {
+		console.log(url);
+	//=> https://sqs.us-west-1.amazonaws.com/123456789012/anotherqueue
+	});
+	
+\end{lstlisting}

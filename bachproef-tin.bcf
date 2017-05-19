@@ -2271,6 +2271,7 @@
     <bcf:citekey order="13">offline-first</bcf:citekey>
     <bcf:citekey order="14">aws-documentation</bcf:citekey>
     <bcf:citekey order="15">chrome-offline-first-statement</bcf:citekey>
+    <bcf:citekey order="16">webworker-reference</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="apa/global/" type="entry" sortscheme="apa" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>
