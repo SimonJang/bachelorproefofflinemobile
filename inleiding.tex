@@ -3,7 +3,7 @@
 %%=============================================================================
 \chapter{Inleiding}
 \label{ch:inleiding}
-Het onderzoek zal verschillende methodes voor offline opslag en synchronisatie analyseren en onderzoeken. Het onderzoek zal van elke methode de voor- en nadelen overlopen en de toepassing tonen met behulp van een prototype. In de sectie 'Business Case' wordt de business case van Pridiktiv.care - into.care toegelicht. Daarna worden in 'Terminologie' de verschillende relevante termen overlopen. In 'Stand van zaken' komt de context en noodzaak van het onderzoek aan bod. Tenslotte volgt de probleemstelling, de onderzoeksvraag en de opzet van de bachelorproef.
+Het onderzoek zal verschillende methodes voor offline opslag en synchronisatie analyseren en onderzoeken. Het onderzoek zal van elke methode de voor- en nadelen overlopen. In de sectie ~\ref{sec:business-case} wordt de business case van Pridiktiv.care - into.care toegelicht. Daarna worden in ~\ref{sec:terminologie} de verschillende relevante termen overlopen. In ~\ref{sec:stand-van-zaken}komt de context en noodzaak van het onderzoek aan bod. Tenslotte volgt de probleemstelling, de onderzoeksvraag en de opzet van de bachelorproef.
 %% literatuurstudie. Vergeet niet telkens je bronnen te vermelden!
 \section{Business Case}
 \label{sec:business-case}
@@ -13,8 +13,8 @@ De business case van Pridiktiv vormt het vertrekpunt van deze studie en wordt nu
 In deze sectie komen de verschillende begrippen met betrekking tot de componenten van het onderzoek, het prototype en tools aan bod. De volledige lijst met begrippen en termen kan u terugvinden onder het hoofdstuk 'Glossarium'. Er is een minimum kennis in verband met software ontwikkeling vereist van de lezer om deze sectie volledig te begrijpen.
 \subsection{Huidige Web APIs voor lokale opslag}
 Er zijn momenteel 4 APIs \autocite{mozilla-overview} voor lokale opslag die ondersteund worden door verschillende browsers. Deze APIs worden ondersteund \autocite{WHATWG-storage-API} door de Web Hypertext Application Technology Working Group, aangegeven door WHATWG en de specificatie van de API wordt dan gestandardiseerd door het World Wide Web Consortium, aangegeven door W3C. Dit proces is belangrijk omdat de APIs dan door de populaire browsers (Chrome, Firefox, Safari en Opera, Internet Explorer en Edge) worden ge\"integreerd. Op die manier kunnen webapplicaties gebruik maken van de verschillende APIs. Het is belangrijk om deze APIs kort te overlopen omdat ze steeds gebruikt worden bij de verschillende caching technieken om data lokaal op te slaan.
-\subsubsection{localStorage en sessionStorage}
-Deze 2 APIs vallen onder Web Storage of DOM Storage \autocite{clientside-storage}. Wanneer de browser ondersteuning biedt voor Web Storage, zijn beide beschikbaar als een globaal object. Web Storage wordt vaak vergeleken met cookies. Terwijl die vergelijkbaar zijn in functie, verschilt web storage in volgende aspecten: 
+\subsection{DOM Storage}
+localStorage en sessionStorageAPIs vallen onder Web Storage of DOM Storage \autocite{clientside-storage}. Wanneer de browser ondersteuning biedt voor Web Storage, zijn beide beschikbaar als een globaal object. Web Storage wordt vaak vergeleken met cookies. Terwijl die vergelijkbaar zijn in functie, verschilt web storage in volgende aspecten: 
 \begin{itemize}  
 \item Opslag ruimte: Afhankelijk van browser maar meestal 5 MB beschikbare opslagruimte in vergelijking met maar 4 kb voor cookies.
 \item Client-side interface: Cookies kunnen zowel door server als client side worden gebruikt. Web storage valt exclusief onder client-side scripting.
