@@ -9,6 +9,14 @@
 
 In dit hoofdstuk worden enkele synchronisatie methodes en technieken besproken die data kan synchroniseren met de databank. Indien van toepassing, wordt telkens een concrete situatie van de use case van Pridiktiv gebruikt ter illustratie. Op het einde van dit hoofdstuk worden ook nog andere technieken besproken die niet meteen kunnen worden onderverdeeld onder een specifiek pattern.
 
+\subsection{Conclusie research}
+Op basis van die research en de beperkingen van de business case was het immers eenvoudiger om te bepalen welke technologie\"en al dan niet in aanmerking komen voor het onderzoek. Synchronisatie technologie\"en zoals Firebase, CouchBase en Azure Mobile Apps laten toe dat een applicatie offline functioneert met conflict resolution. Dit proces verloopt nagenoeg automatisch verloopt aan de hand van synchronisatie policies of door tussenkomst van de gebruiker. Door de manier\footnote{Met databank replicatie, waarbij rechtstreeks op de database wordt gewerkt} hoe bestaande synchronisatie oplossingen zoals Firebase en Azure werken, is het niet mogelijk de bestaande oplossingen toe te passen op de business case. 
+
+CouchDB en PouchDB zijn twee andere technologie\"en waarbij er geen 'all-in-one' oplossing wordt aangeboden. Helaas is PouchDB enkel compatibel met CouchDB en derivaten. Waardoor het niet geschikt is voor deze business case om een oplossing te bieden naar synchronisatie.
+
+Wanneer een synchronisatie framework wordt gebruikt, dan gebruikt de client applicatie een specifieke library die de data lokaal beheert indien de gebruiker offline gaat of de applicatie de data wil cachen. Wanneer de gebruiker terug online gaat of de applicatie de gecachte data wil synchroniseren, dan gebeurt de synchronisatie en conflict resolution volledig automatisch. Voorwaarden om dit te kunnen realiseren is de implementatie van een specifieke library om de lokale data te beheren en het gebruik van de correcte backend frameworks of databases.
+Door de beperkingen van de business case ~\ref{subsec:beperkingen-business-case} was er ook nood aan onderzoek naar synchronisatie patterns. Deze patterns zijn vaak ge\"integreerd in de vermelde synchronisatie technologie\"en.
+
 \section{Read-Only Data}
 Dit data synchronisatie patroon wordt gebruikt wanneer de end user enkel maar data moet kunnen opvragen terwijl de applicatie offline is en die data niet hoeft te manipuleren of de manipulaties op die data niet belangrijk genoeg zijn om te persisteren. Bij Read-Only Data is de richting van het dataverkeer unidirectioneel, van server naar end-user applicatie. Het Read-Only pattern hanteert volgende logica:
 \begin{enumerate}

@@ -4,29 +4,25 @@
 
 \chapter{Methodologie}
 \label{ch:methodologie}
-
+In dit hoofdstuk wordt de modus operandi overlopen die gehanteerd werd tijdens dit onderzoek.
 %% TODO: Hoe ben je te werk gegaan? Verdeel je onderzoek in grote fasen, en
 %% licht in elke fase toe welke stappen je gevolgd hebt. Verantwoord waarom je
 %% op deze manier te werk gegaan bent. Je moet kunnen aantonen dat je de best
 %% mogelijke manier toegepast hebt om een antwoord te vinden op de
 %% onderzoeksvraag.
+\section{Research}
+De eerste fase van het onderzoek bestond uit research naar de gebruikte technologie\"en in de business case en naar bestaande synchronisatie mogelijkheden. Bij het uitvoeren van deze fase, viel het op dat er weinig literatuur over het onderwerp. Hierdoor bestaat het overgrote deel van de bronvermeldingen en referenties uit hyperlinks naar documentatie, blogs en artikelen van experts.
+\subsection{Research naar gebruikte technologie\"en in de business case}
+In de eerste grote fase van het onderzoek bestond uit het in kaart brengen van de verschillende technologie\"en die gebruikt worden in de business case. Op basis van die resultaten zijn de grenzen bepaald waar binnen dit onderzoek wordt uitgevoerd.
+\subsection{Beperkingen in de business case}
+\label{subsec:beperkingen-business-case}
+De business case van Pridiktiv laat geen drastische aanpassingen aan de backend toe. De technologie stack maakt gebruik van DynamoDB voor het persisteren van de data en helaas biedt DynamoDB geen automatische synchronisatie aan. 
+\subsection{Research naar bestaande synchronisatie methodes}
+De tweede deel van de research fase bestond uit research naar bestaande synchronisatie mogelijkheden. Op basis van het resultaat van het eerste deel en de beperkingen van de technologie stack van de business case, is er een selectie uitgevoerd op de geschikte technologie\"en. Er zijn heel wat oplossingen voor synchronisatie van offline data out-of-the-box maar die hebben bepaalde voorwaarden die niet voldoen aan de constraints van de business case.
+\subsection{Bespreken research met co-promoter}
 
-\section{Research naar gebruikte technologie\"en in de business case}
-In de eerste grote fase van het onderzoek bestond uit het in kaart brengen van de verschillende technologie\"en die gebruikt worden in de business case. Met die informatie was het in het gemakkelijker om in het tweede deel van het onderzoek een selectie te maken uit de bestaande synchronisatie oplossingen.
-\section{Research naar bestaande synchronisatie methodes}
-De tweede deel van de research fase bestond uit research naar bestaande synchronisatie mogelijkheden.
-\section{Beperkingen in de business case}
-\label{sec:beperkingen-business-case}
-Er zijn heel wat oplossingen voor synchronisatie van offline data out-of-the-box maar die hebben bepaalde voorwaarden die niet voldoen aan de constraints van de business case. De use case van Pridiktiv laat immers geen volledige refactor van de backend toe. Men heeft gekozen voor DynamoDB voor de persistentie van de data en helaas biedt DynamoDB geen automatische synchronisatie toe. Door deze beperking ligt de focus van dit onderzoek eerder om synchronisatie methodes te bespreken.
-\subsection{Conclusie research}
- Op basis van die research en de beperkingen van de business case was het immers eenvoudiger om te bepalen welke technologie\"en al dan niet in aanmerking komen voor het onderzoek. Synchronisatie technologie\"en zoals Firebase, CouchBase en Azure Mobile Apps laten toe dat een applicatie offline functioneert met conflict resolution. Dit proces verloopt nagenoeg automatisch verloopt aan de hand van synchronisatie policies of door tussenkomst van de gebruiker. CouchDB en PouchDB zijn twee andere technologie\"en waarbij er geen 'all-in-one' oplossing wordt aangeboden. Helaas is PouchDB enkel compatibel met CouchDB en derivaten. Waardoor het niet geschikt is voor deze business case om een oplossing te bieden naar synchronisatie.
- 
-Wanneer een synchronisatie framework wordt gebruikt, dan gebruikt de client applicatie een specifieke library die de data lokaal beheert indien de gebruiker offline gaat of de applicatie de data wil cachen. Wanneer de gebruiker terug online gaat of de applicatie de gecachte data wil synchroniseren, dan gebeurt de synchronisatie en conflict resolution volledig automatisch. Voorwaarden om dit te kunnen realiseren is de implementatie van een specifieke library om de lokale data te beheren en het gebruik van de correcte backend frameworks of databases.
-Door de beperkingen van de business case (.cfr "Beperkingen door business case") was er ook nood aan onderzoek naar synchronisatie patterns. Deze patterns zijn vaak ge\"integreerd in de vermelde synchronisatie technologie\"en.
-\clearpage
-\section{Protoyping}
-Voor het onderzoek is er een eenvoudige Angular applicatie ontwikkeld die bepaalde use cases van de business case nabootst. Het grootste deel van de synchronisatie vindt echter plaatst in de backend. Daarom dient de client applicatie voornamelijk voor het tonen van gesynchroniseerde data en om caching en pre-caching methodes te onderzoeken. Caching is niet de focus van dit onderzoek maar speelt een niet-onbelangrijke rol bij de transitie van online naar offline en omgekeerd. In het hoofdstuk 'Onderzoek' wordt voornamelijk in detail ingegaan op de interactie van de client en server.
-\section{Onderzoeken synchronisatiemethodes}
-Het grootste deel van het onderzoek van de synchronisatiemethodes vond plaatst tijdens de stage periode bij Pridiktiv. Met behulp van de literatuurstudie en research in de documentatie van verschillende technologie\"en en APIs, is het mogelijk geweest om een oplossing aan te bieden bij de synchronisatie van de data die offline werd gegenereerd.
+\section{Ontwerpen en prototyping van architectuur voor synchronisatie oplossing}
+\section{Toepassen van synchronisatie oplossing op business case}
+Het grootste deel van de synchronisatie vindt echter plaatst in de backend. Daarom dient de client applicatie voornamelijk voor het tonen van gesynchroniseerde data en om caching en pre-caching methodes te onderzoeken. Caching is niet de focus van dit onderzoek maar speelt een niet-onbelangrijke rol bij de transitie van online naar offline en omgekeerd. In het hoofdstuk ~\ref{ch:onderzoek} 'Onderzoek' wordt voornamelijk in detail ingegaan op de caching in de client en de synchronisatie in de server. De toepassing van de synchronisatie van het onderzoek van de synchronisatiemethodes vond plaatst tijdens de stage periode bij Pridiktiv. Met behulp van de literatuurstudie en research in de documentatie van verschillende technologie\"en en APIs, is het mogelijk geweest om een oplossing aan te bieden bij de synchronisatie van de data die offline werd gegenereerd. 
 \section{Conclusie}
 In het laatste onderdeel van het onderzoek wordt er op basis van de resultaten van het onderzoek een synthese gevormd.
