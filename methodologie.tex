@@ -14,6 +14,7 @@ In dit hoofdstuk wordt de modus operandi overlopen die gehanteerd werd tijdens h
 Het onderzoek begon met research naar de gebruikte technologie\"en in de business case en bestaande synchronisatie mogelijkheden. Bij het uitvoeren van deze fase, viel het op dat er weinig literatuur over het onderwerp te vinden is. Hierdoor bestaat het overgrote deel van de bronvermeldingen en referenties uit hyperlinks naar documentatie, blogs en artikelen van experts. 
 \subsection{Research naar gebruikte technologie\"en in de business case}
 Tijdens deze fase lag de focus van het onderzoek om de verschillende technologie\"en die gebruikt worden in de business case in kaart brengen. Op basis van die resultaten zijn de grenzen bepaald waar binnen dit onderzoek wordt uitgevoerd.
+\clearpage
 \subsection{Beperkingen in de business case}
 \label{subsec:beperkingen-business-case}
 De business case van Pridiktiv laat wijzigingen aan de bestaande backend toe. Een belangrijke voorwaarde echter is het behouden van DynamoDB als database maar die biedt geen synchronisatie aan. Een andere belangrijke beperking is de eis dat er een abstractielaag\footnote{Bij complexe use cases is het niet wenselijk om een client rechtstreeks te laten communiceren met de database. Client en databank zijn te sterk aan elkaar gekoppeld waardoor database refactoring zeer moeilijk wordt.} is tussen de database en de client.
@@ -23,6 +24,7 @@ Het tweede deel van de researchfase bestond uit onderzoek naar bestaande synchro
 Na het uitvoeren van de researchfase werden de voorlopige conclusies van de researchfase getoetst bij de expert en co-promoter Sam Verschueren. Bij deze bespreking werden verschillende onderzoekspistes uitgestippeld voor het ontwikkelen van een oplossing.
 \section{Ontwerpen en prototyping van architectuur voor synchronisatie}
 Met behulp van een sandbox\footnote{Een sandbox is een omgeving waar zonder neveneffecten bepaalde prototypes of tests kunnen worden uitgevoerd als 'proof of concept'. Deze dienen dan als basis voor een concrete implementatie} AWS account was het mogelijk om een architectuur te ontwerpen voor de oplossing. Er werden ook prototype lambda's ontwikkeld voor het testen van de libraries die gebruikt worden bij de synchronisatie.
+\clearpage
 \section{Toepassen van synchronisatie oplossing op business case}
 Terwijl synchronisatie voornamelijk afspeelt server side heeft de client binnen 'Offline First' ook een rol. De grootste uitdagingen in de client applicatie zijn de caching en de pre-caching van data in het geval de applicatie plots van status\footnote{Van offline naar online en omgekeerd} zou veranderen. Caching is niet de focus van dit onderzoek maar speelt een niet-onbelangrijke rol bij de transitie van online naar offline en omgekeerd. In het hoofdstuk ~\ref{ch:onderzoek} 'Onderzoek' wordt verder in detail ingegaan op de caching in de client en de synchronisatie op server. De implementatie op basis van de resultaten van het onderzoek vond plaatst tijdens de stage periode bij Pridiktiv. De oplossing is opgenomen in de pilootversie van de Pridiktiv applicatie en is momenteel operationeel in productie.
 \section{Conclusie}
