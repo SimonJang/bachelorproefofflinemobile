@@ -19,13 +19,13 @@ Door de beperkingen van de business case is het noodzakelijk om andere methodes 
 
 \subsection{Read-Only}
 Deze caching methode laat toe dat de gebruiker de applicatie verder kan gebruiken wanneer die offline is. Door het beperken van de interacties in de client naar Read-Only is in dit scenario geen sprake van synchronisatie. De gebruiker mag immers de data niet manipuleren. Bij Read-Only is de richting van het dataverkeer unidirectioneel, van server naar client applicatie. De methode heeft volgende eigenschappen.
-\begin{enumerate}
+\begin{itemize}
 \item De client vraagt de data\footnote{Applicatie moet online zijn om de initi\"ele state op te bouwen.} op van de server. De server is de SSOT en houdt alle data bij. Die data kan wijzigen wanneer de client offline is.
 \item De server retourneert de data. De opgevraagde data wordt gecached in de store. De store is nu de nieuwe SSOT voor de client.
 \item Alle manipulaties op de data worden geblokkeerd wanneer de applicatie offline is. De client dient enkel als view voor de data die lokaal is bijgehouden.
 \item De client synchroniseren wanneer die terug online is houdt in dat de oude data lokaal worden overschreven door de nieuwe opgevraagde data.
 \item Wanneer een view in de client wordt geladen, probeert de client de server te pollen voor nieuwe data. Indien de applicatie offline is, wordt de gecachte data uit de store gebruikt.
-\end{enumerate}
+\end{itemize}
 
 \subsection{Read-Only Optimized}
 Het Read-Only Optimized caching methode is  bijna identiek aan de Read-Only methode maar met enkele verschillen. Bij het synchroniseren worden enkel de data opgevraagd die gewijzigd zijn. Dit kan op verschillende manieren worden ge\"implementeerd. Er kan een timestamp worden bijgehouden van de laatste wijziging of een version number die incrementeert bij elke wijziging. Op basis van de vergelijking tussen de lokale data en de data in de databank, kan de applicatie al dan niet beslissen om de lokale data te overschrijven. De richting van het dataverkeer is bidirectioneel omdat de client data moet meesturen met de request. Een nadeel van de Read-Only Optimised caching is de complexiteit die deze methode introduceert.

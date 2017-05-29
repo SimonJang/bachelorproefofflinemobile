@@ -143,4 +143,30 @@
   url          = {http://microservices.io/patterns/microservices.html},
 }
 
+@Misc{offline-spec-mozilla,
+  author       = {Mozilla},
+  title        = {Online and Offline Events},
+  howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 3 maart 2017},
+  url          = {https://developer.mozilla.org/en-US/docs/Online_and_offline_events},
+}
+
+@Misc{offline-online-examples,
+  author       = {StackOverflow},
+  title        = {How to detect online and offline events cross-browser},
+  howpublished = {Web},
+  year         = {2015},
+  note         = {Geraadpleegd op 20 april},
+  url          = {https://stackoverflow.com/questions/3181080/how-to-detect-online-offline-event-cross-browser},
+}
+
+@Misc{webworker-explained,
+  author       = {Mozilla},
+  title        = {Using Web Workers},
+  howpublished = {Web},
+  year         = {2017},
+  url          = {https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}

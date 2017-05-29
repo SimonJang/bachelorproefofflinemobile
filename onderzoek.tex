@@ -5,22 +5,25 @@
 \chapter{Onderzoek}
 \label{ch:onderzoek}
 
-In dit hoofdstuk wordt dieper ingegaan op de verschillende methodes  en de real-world toepassing van die methodes met de testopstelling en de businesscase. De invalshoek voor dit onderzoek is steeds een statusverandering van offline naar online.Volgende methodes komen aan bod:
+In dit hoofdstuk wordt dieper ingegaan op de verschillende caching -en synchronisatie methodes, hun toepassing op de businesscase en het proces voor het implementeren van synchronisatie. Volgende onderdelen komen aan bod in dit hoofdstuk:
 \begin{itemize}
-\item Read-only Optimised
-\item Last/First Write Wins
-\item Conflict resolution
+\item Online/Offline status registstratie
+\item Caching, preloading en Read-Only Optimised
+\item Planning bij het bepalen van synchronisatie
+\item Last/First Write Wins en Conflict resolution
+\item De gebruikte AWS services voor de synchronisatie in de backend
 \end{itemize}
 
 \section{Online/Offline status registratie}
-Voor bovenstaande synchronisatie methodes worden besproken is het belangrijk om aan te geven welke methode er wordt gebruikt zodat de applicatie kan waarnemen dat die al dan niet online is. Er zijn 2 mogelijkheden:
+Voor dat de verschillende caching- en synchronisatie methodes kunnen worden overlopen, is het belangrijk om te onderzoeken hoe de applicatie op een betrouwbare manier de status van de internetverbinding kan controleren. De status van de verbinding vormt immers de belangrijkste voorwaarde bij de beslissing om de data\footnote{de request, in het geval van de business case}  al dan niet te cachen.
+\clearpage
 \begin{enumerate}
-\item DOM API's aanspreken vanuit JavaScript: helaas is er geen consistente crossbrowser support op het controleren van de status van de verbinding zonder gebruik te maken van van requests naar externe data. Bijvoorbeeld luisteren naar events van het document.window object om online en offline status te controleren werkt niet op alle browsers. Een andere optie waarbij de status van de verbinding wordt opgevraagd met window.navigator.onLine werkt ook niet consistent in alle browsers.
-\item Een request uitvoeren naar een externe bron: als de applicatie een request uitvoert naar een externe bron en de HTTP code controleert van de respons, dan kan de applicatie gemakkelijk afleiden wat de status van de verbinding is. Deze methode garandeert dat de applicatie correct kan vaststellen wanneer de status van de verbinding verandert. Deze methode ook gebruikt in libraries zoals Offline.js.
+\item DOM API's aanspreken vanuit JavaScript. Helaas is er geen consistente\autocite{offline-spec-mozilla} cross-browser support op het controleren van de status van de verbinding zonder gebruik te maken van van requests naar externe data. Een voorbeeld is luisteren naar events van het document.window object om online en offline status te controleren werkt niet op alle browsers. Een andere optie waarbij de status van de verbinding wordt opgevraagd met window.navigator.onLine werkt ook niet consistent in alle browsers.
+\item Een request uitvoeren naar een externe bron: als de applicatie een request uitvoert naar een externe bron en de HTTP code controleert van de respons, dan kan de applicatie gemakkelijk afleiden wat de status van de verbinding is. Deze methode garandeert dat de applicatie correct kan vaststellen wanneer de status van de verbinding verandert. Deze methode ook gebruikt in libraries zoals Offline.js\footnote{Zie https://github.com/hubspot/offline}.
 \end{enumerate}
 
-\begin{lstlisting}[caption=DOM API's voor controleren offline en online status]
-    // FIREFOX met jQuery
+\begin{lstlisting}[caption=Verschillende methodes\autocite{offline-online-examples} voor controleren offline en online status.]
+    // met jQuery
     $(window).bind("online", applicationBackOnline); 
     $(window).bind("offline", applicationOffline);
 
@@ -29,6 +32,13 @@ Voor bovenstaande synchronisatie methodes worden besproken is het belangrijk om 
         document.body.ononline = ConnectionEvent;
         document.body.onoffline = ConnectionEvent;
     }
+    // Met gebruik van event listeners
+    document.body.addEventListener("offline", function () {
+    //alert("offline")
+    }, false);
+    document.body.addEventListener("online", function () {
+    //alert("online")
+    }, false);
     
     // met native window.navigator
     if (navigator.onLine) {
@@ -38,30 +48,61 @@ Voor bovenstaande synchronisatie methodes worden besproken is het belangrijk om 
 	}
     
 \end{lstlisting}
+\clearpage
+\section{Caching van requests}
+Voor het onderzoek werd geopteerd op gebruik te maken van de methode waarbij een call wordt uitgevoerd om te controleren of de client online of offline is. Wanneer de applicatie registreert dat er geen verbinding meer is, worden alle POST/PUT/UPDATE\footnote{Alle requests die geen POST/PUT/UPDATE request zijn worden genegeerd want die hebben geen invloed op de synchronisatie} requests gecached als afzonderlijke objecten in localStorage. Hiervoor wordt er gebruik gemaakt van localForage. Wanneer de applicatie terug online is, wordt er 1 request naar de server alle gecachte data doorgestuurd. Requests die een UPDATE uitvoeren op een object dat aangemaakt werd (CREATE) tijdens de offline status, worden allemaal gebundeld in een enkel object. Op die manier wordt de volgorde gegarandeerd voor het verwerken van de verschillende requests. Wanneer er dan synchronisatieproblemen optreden, moeten die in de lambda's worden opgevangen die de individuele request moeten verwerken.
 
-\subsection{Gecachte data doorsturen naar de server}
-Voor het onderzoek werd geopteerd op gebruik te maken van de tweede methode. Wanneer de applicatie registreert dat er geen verbinding meer is, worden alle requests gecached als afzonderlijke objecten. Wanneer de applicatie dan terug online is, wordt er in een request naar de server alle gecachte data doorgestuurd. De API Gateway geeft het object door aan een gateway lambda die de objecten op een queue plaatst.  Een andere lambda leest alle boodschappen uit de queue en stuurt elke request terug naar de gateway lambda. De API Gateway wijst de correcte lambda aan die verantwoordelijk is voor de verwerking van de oorspronkelijke request. Bij requests die een UPDATE uitvoeren op een object dat aangemaakt werd (CREATE) tijdens de offline status, worden allemaal gebundeld in een object. Op die manier wordt de volgorde gegarandeerd voor het verwerken van de verschillende requests. Wanneer er dan synchronisatieproblemen optreden, moeten die in de lambda's worden opgevangen die de individuele request moeten verwerken.
+\begin{lstlisting}[caption=Caching van een request]
+private cache(key: string, command: Request) {
+	// Haalt de huidige cache uit localStorage als Promise
+	return storage.getItem<Action[]>(key).then(actions => {
+		// Default lege array indien actions niet bestaat
+		actions = actions || [];
+	
+		// Omzetten van request naar data object
+		const data: any = command.serialize();
+		data.method = command.method;
+		data.path = command.path;
+		
+		// Toevoegen aan array van requestobjecten
+		actions.push(data);
+		
+		// Terug in storage plaatsen wanneer gecachte actie is toegevoegd
+		// localForage blibliotheek kiest opslagmedia (localStorage of IndexedDB)
+		return storage.setItem<Action[]>(key, actions);
+	});
+}
+\end{lstlisting}
 
+De connectie status van de de applicatie wordt bewaard als state in de redux store. Die kan worden opgevraagd als een Observable wanneer requests moeten worden uitgevoerd naar de backend of voor het tonen van een waarschuwing in de UI. Wanneer de status van de verbinding zou wijzingen, dan wordt de subscribe methode opnieuw aangeroepen. Op die manier kunnen verschillende configuraties worden ingesteld afhankelijk van de verbinding.
+
+\begin{lstlisting}
+	// Bevragen van de store
+	this.store.select(state => state.common.network.online)
+		// Retourneert een Observable
+		.subscribe( online => 
+		// reactie op boolean 'online'
+	)
+\end{lstlisting}
+		
 \begin{figure}[h]
 \caption{Caching van requests in de client}
 \centering
 \includegraphics[width=1\textwidth]{caching-requests}
 \end{figure}
 
-\section{Data caching uit backend}
-Bij een applicatie die zowel online als offline moet werken, is het belangrijk dat er data wordt gepreload in de applicatie. Zo kan de gebruiker blijven verder werken indien de applicatie plots offline zou zijn. Het belangrijkste aandachtspunt is hierbij de schaalbaarheid van de oplossing. In de business case van Pridiktiv worden verschillende requests naar de server uitgevoerd naar de server om de data op te vragen. Wanneer de functionaliteit en data capaciteit van de applicatie toeneemt kan het aantal requests kan wel dramatisch stijgen. Een mogelijke oplossing voor dat probleem kan een webworker zijn. Door het single-threaded karakter van JavaScript kan er een webworker worden gebruikt voor het parallel bevragen van de server.
-
-De connectie status van de de applicatie wordt bewaard als state in de ngrx store. Die kan worden bevraagd bij het uitvoeren wanneer er data uit de store moet worden geladen. Zo weet de applicatie of het al dan niet mogelijk is om een request naar de server uit te voeren. De ngrx store is de SSOT en bevat die de gecachte data in-memory. Wanneer de store wordt bevraagd kan de gecachte data uit de store worden geladen. Dit laat de gebruikers toe om zonder onderbreking de applicatie te gebruiken wanneer er verandering in de verbindingsstatus is.
+\section{Data preloading uit de backend}
+Bij een applicatie die zowel online als offline moet werken, is het belangrijk dat de data wordt preloaded\footnote{Preloading is het op voorhand inladen van data.} in de applicatie. Zo kan de gebruiker blijven verder werken indien de applicatie plots offline is. Het belangrijkste aandachtspunt is hierbij de schaalbaarheid van de oplossing. In de business case van Pridiktiv worden verschillende requests naar de server uitgevoerd naar de server om de data op te vragen. Wanneer de functionaliteit en data capaciteit van de applicatie toeneemt kan het aantal requests kan wel dramatisch stijgen. Door het single-threaded karakter van JavaScript is het echter niet mogelijk om parallel te werken. Een mogelijke oplossing voor dat probleem kan een web worker\autocite{webworker-explained} zijn. Door het preloaden van de data die de client nodig heeft, kan de gebruiker de applicatie blijven gebruiken wanneer de verbinding met de backend is onderbroken. De redux store is de SSOT en bevat de preloaded data in-memory. De applicatie kan de preloaded data uit de store gebruiken bij het laden van de views.
 
 \subsection{Beperkingen door single-threaded omgeving}
-JavaScript is een single-threaded omgeving waardoor meerdere scripts niet simultaan kunnen worden uitgevoerd. Dit vormt problemen wanneer een webapplicatie UI events, queries, een groot volume API data en tegelijk de DOM aanpassingen moet verwerken. Met technieken zoals setTimeout() en setInterval() is het mogelijk om concurrency te simuleren maar dit maakt de applicatie meteen een stuk complexer. Dankzij de HTML5 specificatie is het mogelijk om Web Workers te gebruiken. Deze laten toe om scripts in de achtergrond uit te voeren. Hierdoor is het mogelijk om complexe berekeningen concurrent uit te voeren zonder dat dit een performantie impact op de applicatie heeft.
+JavaScript is een single-threaded omgeving waardoor meerdere scripts niet parallel kunnen worden uitgevoerd. Dit vormt problemen wanneer een webapplicatie UI events, queries, een groot volume API data en tegelijk de DOM aanpassingen moet verwerken. Met technieken zoals setTimeout() en setInterval() is het mogelijk om concurrency te simuleren maar dit maakt de applicatie meteen een stuk complexer. Dankzij de HTML5 specificatie is het mogelijk om Web Workers te gebruiken. Deze laten toe om scripts in de achtergrond uit te voeren. Hierdoor is het mogelijk om complexe berekeningen concurrent uit te voeren zonder dat dit een performantie impact op de applicatie heeft.
 
-\subsection{Toepassing}
-In het onderzoek zijn drie verschillende mogelijkheden voor caching onderzocht. De eerste methode vraagt serieel alle data op van de server. Dit vormt geen probleem indien de data beperkt is, maar eenmaal het volume van de data stijgt, dan moeten er steeds meer requests wordt uitgevoerd naar de server. Dit heeft als nadeel dat de main thread geblocked wordt waardoor er geen UI kan worden gerenderd op het toestel. Dit is dus geen ideaal scenario. Bij de andere 2 methodes wordt er gebruik gemaakt van een webworker. Deze webworker laat doe om parallel met de applicatie bepaalde acties uit te voeren. Met behulp van de webworker is het dan mogelijk om de caching in de achtergrond uit te voeren. Met deze web workers kunnen dan volgende operaties worden uitgevoerd:
+\subsection{Preloading methodes}
+In het onderzoek zijn drie verschillende mogelijkheden voor preloading onderzocht. De eerste methode vraagt serieel alle data op van de server. Dit vormt geen probleem indien de data beperkt is, maar eenmaal het volume van de data stijgt, dan moeten er steeds meer requests wordt uitgevoerd naar de server. Dit heeft als nadeel dat de main thread geblocked wordt waardoor er geen UI kan worden gerenderd op het toestel. Dit is dus geen ideaal scenario. Bij de andere 2 methodes wordt er gebruik gemaakt van een webworker. Deze webworker laat doe om parallel met de applicatie bepaalde acties uit te voeren. Met behulp van de webworker is het dan mogelijk om de caching in de achtergrond uit te voeren. Met deze web workers kunnen dan volgende operaties worden uitgevoerd:
 
 \begin{enumerate}
 \item data ophalen van de server
-\item omzetten van opgehaalde data naar state object voor ngrx
+\item omzetten van opgehaalde data naar state object voor de redux store
 \end{enumerate}
 
 \begin{figure}[h]
@@ -70,9 +111,12 @@ In het onderzoek zijn drie verschillende mogelijkheden voor caching onderzocht. 
 \includegraphics[width=1\textwidth]{example-webworker}
 \end{figure}
 
-Om het aantal requests drastisch te verminderen is het ook mogelijk om bepaalde data te bundelen. Zo kunnen alle observaties voor patienten worden gebundeld worden in 1 object en de webworker vormt die response dan om naar een geldig state object. Zo worden intensieve berekeningen in de applicatie vermeden. Een derde mogelijkheid is het opzetten van een applicatie state in de backend en dit dan door te sturen. Op die manier moet enkel het state object worden toegevoegd aan de store wanneer het is opgevraagd van de server. een nadeel van deze methode is de state van de client die nu sterk gekoppeld is aan de backend. Grote voordeel is dat de backend nu verantwoordelijk is voor alle intensieve operaties en dat de client applicatie enkel maar zijn state moet injecteren in de store.
+Om het aantal requests drastisch te verminderen is het ook mogelijk om bepaalde data te bundelen. Zo kunnen alle observaties voor patienten worden gebundeld worden in 1 object en de webworker vormt die response dan om naar een geldig state object. Zo worden intensieve berekeningen in de applicatie vermeden. 
 
-\subsubsection{Toepassing op de business case}
+Een derde mogelijkheid is het opzetten van een applicatie state in de backend en dit dan door te sturen. Op die manier moet enkel het state object worden toegevoegd aan de store wanneer het is opgevraagd van de server. een nadeel van deze methode is de state van de client die nu sterk gekoppeld is aan de backend. Grote voordeel is dat de backend nu verantwoordelijk is voor alle intensieve operaties en dat de client applicatie enkel maar zijn state moet injecteren in de store. Bij deze methode kan de Read-Only Optimised techniek gebruikt worden bij het opstellen van de client state.
+
+
+\subsubsection{Toepassing business case}
 In de business case wordt de request serieel bevraagd van de server. Nadat de pati\"entenlijst is opgevraagd, worden voor alle pati\"enten de relevante data opgevraagd. In de piloot versie waren dat ongeveer 75 personen die elk taken, notities, observaties, medische parameters en wondzorgdossiers kunnen bevatten. Dit leidt tot een 500 requests die in een zeer korte periode worden uitgevoerd. Het gebruik van web workers \autocite{webworker-reference} gecombineerd met een gebundelde data zou het aantal requests sterk kunnen verminderen. In de business case is er ook sprake van afbeeldingen die moeten worden gesynchroniseerd met de applicatie maar het cachen van BLOBs valt buiten de scope van dit onderzoek.
 
 \section{Data synchronisatie: planning bij development}
@@ -131,6 +175,9 @@ First/Last Write wins is een aantrekkelijke methode wanneer er op korte termijn 
 \subsection{Toepassing}
 \subsubsection{Toepassing op de business case}
 Momenteel hanteert de backend van Pridiktiv enkel een First/Last Write principe bij data. Naar de toekomst zou dit moeten veranderen naar een een bredere oplossing die conflict resolution kan aanbieden.
+
+\section{TODO ergens tussenplaatsen}
+De API Gateway geeft het object door aan de proxy lambda die de objecten op een queue plaatst.  Een andere lambda leest alle boodschappen uit de queue en stuurt elke request terug naar de gateway lambda. De API Gateway wijst de correcte lambda aan die verantwoordelijk is voor de verwerking van de oorspronkelijke request.
 
 \section{Conflict Resolution}
 Bij synchronisatie gaat er idealiter geen informatie verloren of laat de business case gaan dataverlies toe. Daarom is het ook belangrijk om te kijken hoe data kan worden gesynchroniseerd op een manier waarbij geen data verloren gaan. Om het onderzoek binnen de restricties van de business case te laten passen, worden hier enkel AWS services gebruikt bij het synchronisatie. Een andere belangrijke opmerking dat het enkel maar gaat over UPDATE en DELETE operaties want Een CREATE operatie kan niet leiden tot een conflict wanneer het toestel offline is.

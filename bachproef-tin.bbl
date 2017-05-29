@@ -210,6 +210,29 @@
       \verb https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
       \endverb
     \endentry
+    \entry{offline-spec-mozilla}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=502f1bd97b0e7d80b88e1f45ae1bfdb8}{%
+           family={Mozilla},
+           family_i={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
+      \strng{fullhash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
+      \field{sortinit}{M}
+      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{extrayear}{2}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 3 maart 2017}
+      \field{title}{Online and Offline Events}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://developer.mozilla.org/en-US/docs/Online_and_offline_events
+      \endverb
+    \endentry
     \entry{mozilla-overview}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=502f1bd97b0e7d80b88e1f45ae1bfdb8}{%
@@ -226,7 +249,7 @@
       \strng{fullhash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
       \field{sortinit}{M}
       \field{sortinithash}{2684bec41e9697b92699b46491061da2}
-      \field{extrayear}{2}
+      \field{extrayear}{3}
       \field{labelyear}{2017}
       \field{datelabelsource}{year}
       \field{labelnamesource}{author}
@@ -265,6 +288,31 @@
       \field{year}{2017}
       \verb{url}
       \verb https://github.com/ngrx/store
+      \endverb
+    \endentry
+    \entry{offline-online-examples}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=928a3e3d99440ed892dda5028159a3aa}{%
+           family={Overflow},
+           family_i={O\bibinitperiod},
+           given={Stack},
+           given_i={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{928a3e3d99440ed892dda5028159a3aa}
+      \strng{fullhash}{928a3e3d99440ed892dda5028159a3aa}
+      \field{sortinit}{O}
+      \field{sortinithash}{7803d2715d5e795e70382b084ab8d00e}
+      \field{labelyear}{2015}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 20 april}
+      \field{title}{How to detect online and offline events cross-browser}
+      \field{year}{2015}
+      \verb{url}
+      \verb https://stackoverflow.com/questions/3181080/how-to-detect-online-offline-event-cross-browser
       \endverb
     \endentry
     \entry{reactivex-intro}{online}{}
@@ -320,36 +368,6 @@
       \field{year}{2015}
       \verb{url}
       \verb http://microservices.io/patterns/microservices.html
-      \endverb
-    \endentry
-    \entry{aws-documentation}{online}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=d42d62d6d3bfc2b889e4616093f39333}{%
-           family={Services},
-           family_i={S\bibinitperiod},
-           given={Amazon\bibnamedelima Web},
-           given_i={A\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
-      }
-      \list{language}{1}{%
-        {English}%
-      }
-      \list{organization}{1}{%
-        {Amazon Web Services}%
-      }
-      \strng{namehash}{d42d62d6d3bfc2b889e4616093f39333}
-      \strng{fullhash}{d42d62d6d3bfc2b889e4616093f39333}
-      \field{sortinit}{S}
-      \field{sortinithash}{fd1e7c5ab79596b13dbbb67f8d70fb5a}
-      \field{labelyear}{2017}
-      \field{datelabelsource}{year}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{howpublished}{Web and pdf}
-      \field{title}{Overview of the different AWS services}
-      \field{year}{2017}
-      \verb{url}
-      \verb https://aws.amazon.com/documentation/
       \endverb
     \endentry
     \entry{websql-specification}{online}{}
