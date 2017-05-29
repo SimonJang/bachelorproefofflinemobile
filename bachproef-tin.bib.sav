@@ -169,4 +169,12 @@
   url          = {https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers},
 }
 
+@Misc{web-worker-support,
+  author       = {CanIUse.com},
+  title        = {Web Workers browser support},
+  howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 20 mei 2017},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}

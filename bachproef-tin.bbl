@@ -68,6 +68,26 @@
       \field{title}{Client-Side Data Storage}
       \field{year}{2016}
     \endentry
+    \entry{web-worker-support}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=bb90ea85846530ef234e9c586c7ad50b}{%
+           family={CanIUse.com},
+           family_i={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{bb90ea85846530ef234e9c586c7ad50b}
+      \strng{fullhash}{bb90ea85846530ef234e9c586c7ad50b}
+      \field{sortinit}{C}
+      \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 20 mei 2017}
+      \field{title}{Web Workers browser support}
+      \field{year}{2017}
+    \endentry
     \entry{offline-first}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=d8a92b47376633f734f8d544f44c0566}{%
@@ -233,6 +253,28 @@
       \verb https://developer.mozilla.org/en-US/docs/Online_and_offline_events
       \endverb
     \endentry
+    \entry{webworker-explained}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=502f1bd97b0e7d80b88e1f45ae1bfdb8}{%
+           family={Mozilla},
+           family_i={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
+      \strng{fullhash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
+      \field{sortinit}{M}
+      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{extrayear}{3}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{title}{Using Web Workers}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
+      \endverb
+    \endentry
     \entry{mozilla-overview}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=502f1bd97b0e7d80b88e1f45ae1bfdb8}{%
@@ -249,7 +291,7 @@
       \strng{fullhash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
       \field{sortinit}{M}
       \field{sortinithash}{2684bec41e9697b92699b46491061da2}
-      \field{extrayear}{3}
+      \field{extrayear}{4}
       \field{labelyear}{2017}
       \field{datelabelsource}{year}
       \field{labelnamesource}{author}
@@ -288,31 +330,6 @@
       \field{year}{2017}
       \verb{url}
       \verb https://github.com/ngrx/store
-      \endverb
-    \endentry
-    \entry{offline-online-examples}{misc}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=928a3e3d99440ed892dda5028159a3aa}{%
-           family={Overflow},
-           family_i={O\bibinitperiod},
-           given={Stack},
-           given_i={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{928a3e3d99440ed892dda5028159a3aa}
-      \strng{fullhash}{928a3e3d99440ed892dda5028159a3aa}
-      \field{sortinit}{O}
-      \field{sortinithash}{7803d2715d5e795e70382b084ab8d00e}
-      \field{labelyear}{2015}
-      \field{datelabelsource}{year}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{howpublished}{Web}
-      \field{note}{Geraadpleegd op 20 april}
-      \field{title}{How to detect online and offline events cross-browser}
-      \field{year}{2015}
-      \verb{url}
-      \verb https://stackoverflow.com/questions/3181080/how-to-detect-online-offline-event-cross-browser
       \endverb
     \endentry
     \entry{reactivex-intro}{online}{}
@@ -368,6 +385,29 @@
       \field{year}{2015}
       \verb{url}
       \verb http://microservices.io/patterns/microservices.html
+      \endverb
+    \endentry
+    \entry{offline-online-examples}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=84d7dc19766c446f5e4084e8fce87f82}{%
+           family={StackOverflow},
+           family_i={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{84d7dc19766c446f5e4084e8fce87f82}
+      \strng{fullhash}{84d7dc19766c446f5e4084e8fce87f82}
+      \field{sortinit}{S}
+      \field{sortinithash}{fd1e7c5ab79596b13dbbb67f8d70fb5a}
+      \field{labelyear}{2015}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 20 april}
+      \field{title}{How to detect online and offline events cross-browser}
+      \field{year}{2015}
+      \verb{url}
+      \verb https://stackoverflow.com/questions/3181080/how-to-detect-online-offline-event-cross-browser
       \endverb
     \endentry
     \entry{websql-specification}{online}{}

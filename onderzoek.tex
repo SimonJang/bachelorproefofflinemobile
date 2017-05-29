@@ -76,7 +76,7 @@ private cache(key: string, command: Request) {
 
 De connectie status van de de applicatie wordt bewaard als state in de redux store. Die kan worden opgevraagd als een Observable wanneer requests moeten worden uitgevoerd naar de backend of voor het tonen van een waarschuwing in de UI. Wanneer de status van de verbinding zou wijzingen, dan wordt de subscribe methode opnieuw aangeroepen. Op die manier kunnen verschillende configuraties worden ingesteld afhankelijk van de verbinding.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=Opvragen van de status van de verbinding aan de hand van de redux store]
 	// Bevragen van de store
 	this.store.select(state => state.common.network.online)
 		// Retourneert een Observable
@@ -91,18 +91,26 @@ De connectie status van de de applicatie wordt bewaard als state in de redux sto
 \includegraphics[width=1\textwidth]{caching-requests}
 \end{figure}
 
-\section{Data preloading uit de backend}
-Bij een applicatie die zowel online als offline moet werken, is het belangrijk dat de data wordt preloaded\footnote{Preloading is het op voorhand inladen van data.} in de applicatie. Zo kan de gebruiker blijven verder werken indien de applicatie plots offline is. Het belangrijkste aandachtspunt is hierbij de schaalbaarheid van de oplossing. In de business case van Pridiktiv worden verschillende requests naar de server uitgevoerd naar de server om de data op te vragen. Wanneer de functionaliteit en data capaciteit van de applicatie toeneemt kan het aantal requests kan wel dramatisch stijgen. Door het single-threaded karakter van JavaScript is het echter niet mogelijk om parallel te werken. Een mogelijke oplossing voor dat probleem kan een web worker\autocite{webworker-explained} zijn. Door het preloaden van de data die de client nodig heeft, kan de gebruiker de applicatie blijven gebruiken wanneer de verbinding met de backend is onderbroken. De redux store is de SSOT en bevat de preloaded data in-memory. De applicatie kan de preloaded data uit de store gebruiken bij het laden van de views.
-
+\section{Data preloading in de client}
+Bij een applicatie die zowel online als offline moet werken, is het belangrijk dat de data wordt preloaded\footnote{Preloading is het op voorhand inladen van data.} in de applicatie. Zo kan de gebruiker blijven verder werken indien de applicatie plots offline is. De redux store is de SSOT en bevat de preloaded data in-memory. De applicatie kan de preloaded data uit de store gebruiken bij het laden van de views.
+ Het belangrijkste aandachtspunt is hierbij de schaalbaarheid van de oplossing. In de business case van Pridiktiv worden verschillende requests naar de server uitgevoerd naar de server om de data op te vragen. Wanneer de functionaliteit en data capaciteit van de applicatie toeneemt kan het aantal requests kan wel dramatisch stijgen. Door het single-threaded karakter van JavaScript is het echter niet mogelijk om parallel te werken. Een mogelijke oplossing voor dat probleem kan een web worker\autocite{webworker-explained} zijn.
+ 
 \subsection{Beperkingen door single-threaded omgeving}
 JavaScript is een single-threaded omgeving waardoor meerdere scripts niet parallel kunnen worden uitgevoerd. Dit vormt problemen wanneer een webapplicatie UI events, queries, een groot volume API data en tegelijk de DOM aanpassingen moet verwerken. Met technieken zoals setTimeout() en setInterval() is het mogelijk om concurrency te simuleren maar dit maakt de applicatie meteen een stuk complexer. Dankzij de HTML5 specificatie is het mogelijk om Web Workers te gebruiken. Deze laten toe om scripts in de achtergrond uit te voeren. Hierdoor is het mogelijk om complexe berekeningen concurrent uit te voeren zonder dat dit een performantie impact op de applicatie heeft.
 
 \subsection{Preloading methodes}
-In het onderzoek zijn drie verschillende mogelijkheden voor preloading onderzocht. De eerste methode vraagt serieel alle data op van de server. Dit vormt geen probleem indien de data beperkt is, maar eenmaal het volume van de data stijgt, dan moeten er steeds meer requests wordt uitgevoerd naar de server. Dit heeft als nadeel dat de main thread geblocked wordt waardoor er geen UI kan worden gerenderd op het toestel. Dit is dus geen ideaal scenario. Bij de andere 2 methodes wordt er gebruik gemaakt van een webworker. Deze webworker laat doe om parallel met de applicatie bepaalde acties uit te voeren. Met behulp van de webworker is het dan mogelijk om de caching in de achtergrond uit te voeren. Met deze web workers kunnen dan volgende operaties worden uitgevoerd:
+Er zijn 3 methodes voor preloading die van toepassing zijn voor de business case.
+
+\subsubsection{Serieel inladen van de data}
+Bij deze methode wordt de data serieel opgevraagd van de server. Dit is de minst complexe oplossing en is ideaal wanneer het volume van de data beperkt is. Echter, hoe groter het data volume, hoe groter de impact op de performantie van de client applicatie. Door de vele requests en de vele aanpassingen van de in-memory Redux state wordt de main thread geblocked waardoor de UI niet kan worden gerenderd. Dit wekt de indruk bij de gebruiker dat de applicatie niet responsief is. Deze methode is dus enkel geschikt wanneer er maar een beperkt aantal requests zijn.
+
+\subsubsection{Web worker}
+\label{sssec: web-worker}
+Aan de hand van web workers is het mogelijk om parallel een ander Javascript applicatie te gebruiken. De API voor web workers wordt door alle \autocite{web-worker-support} moderne browsers ondersteund. Met behulp van web workers is het mogelijk om CPU-intensieve taken onafhankelijk van de web pagina uit te voeren. Als men dit toepast op preloading kunnen web workers een van de volgende taken op zich nemen.
 
 \begin{enumerate}
-\item data ophalen van de server
-\item omzetten van opgehaalde data naar state object voor de redux store
+\item Data ophalen van de server en verwerken naar een state object.
+\item Omzetten van response/data object naar state object voor de redux store
 \end{enumerate}
 
 \begin{figure}[h]
@@ -111,10 +119,19 @@ In het onderzoek zijn drie verschillende mogelijkheden voor preloading onderzoch
 \includegraphics[width=1\textwidth]{example-webworker}
 \end{figure}
 
-Om het aantal requests drastisch te verminderen is het ook mogelijk om bepaalde data te bundelen. Zo kunnen alle observaties voor patienten worden gebundeld worden in 1 object en de webworker vormt die response dan om naar een geldig state object. Zo worden intensieve berekeningen in de applicatie vermeden. 
+Een nadeel bij web workers is de complexiteit wanneer externe scripts worden gebruikt. Als er meerdere dependencies zijn voor het uitvoeren van de code of als een superset zoals TypeScript wordt gebruikt, dan moet men gebruik maken van SystemJS\footnote{SystemJS is een dynamische module loader voor JavaScript ES6}. SystemJS is echter niet combineerbaar met Angular CLI, de build tool die gebruikt wordt bij de business case. Door deze beperking is het werken met web workers niet de ideale oplossing voor de business case. Het is ook mogelijk om de Webpack\footnote{Webpack is een module bundler. Webpack laadt net als SystemJS de verschillende modules in maar bundelt die ook netjes in verschillende files. Op die manier moet een applicatie die heel wat dependencies heeft, enkel maar een file inladen. }-configuratie file die Angular CLI gebruikt handmatig te configureren. Dit wordt echter sterk afgeraden omdat de meerwaarde van de bundling die door Angular CLI wordt uitgevoerddan volledig verloren gaat.
 
-Een derde mogelijkheid is het opzetten van een applicatie state in de backend en dit dan door te sturen. Op die manier moet enkel het state object worden toegevoegd aan de store wanneer het is opgevraagd van de server. een nadeel van deze methode is de state van de client die nu sterk gekoppeld is aan de backend. Grote voordeel is dat de backend nu verantwoordelijk is voor alle intensieve operaties en dat de client applicatie enkel maar zijn state moet injecteren in de store. Bij deze methode kan de Read-Only Optimised techniek gebruikt worden bij het opstellen van de client state.
+\begin{lstlisting}[caption=Creatie van een web worker]
+TODO
+\end{lstlisting}
 
+\begin{lstlisting}[caption=Communicatie tussen applicatie en webworker]
+TODO
+\end{lstlisting}
+
+\subsubsection{Redux state server side opbouwen met Read-Only Optimised}
+\label{sssec: redux-server-side}
+Een derde methode is het opzetten van een redux state in de backend die door de client kan worden opgevraagd. Op die manier moet enkel het state object worden toegevoegd aan de store wanneer het is opgevraagd van de server. Een nadeel van deze methode is de state van de client die nu sterk gekoppeld is aan de backend. Grote voordeel is dat de backend nu verantwoordelijk is voor alle intensieve operaties en dat de client applicatie enkel maar zijn state moet injecteren in de store. Bij deze methode kan de Read-Only Optimised techniek gebruikt worden bij het opstellen van de client state.
 
 \subsubsection{Toepassing business case}
 In de business case wordt de request serieel bevraagd van de server. Nadat de pati\"entenlijst is opgevraagd, worden voor alle pati\"enten de relevante data opgevraagd. In de piloot versie waren dat ongeveer 75 personen die elk taken, notities, observaties, medische parameters en wondzorgdossiers kunnen bevatten. Dit leidt tot een 500 requests die in een zeer korte periode worden uitgevoerd. Het gebruik van web workers \autocite{webworker-reference} gecombineerd met een gebundelde data zou het aantal requests sterk kunnen verminderen. In de business case is er ook sprake van afbeeldingen die moeten worden gesynchroniseerd met de applicatie maar het cachen van BLOBs valt buiten de scope van dit onderzoek.
