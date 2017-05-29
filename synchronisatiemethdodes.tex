@@ -2,42 +2,49 @@
 %% Synchronisatie methodes
 %%=============================================================================
 
-\chapter{Synchronisatie patterns}
+\chapter{Synchronisatie methodes}
 \label{ch:synchronisatiemethdodes}
 
 %% Bespreken synchronisatie patterns
 
-In dit hoofdstuk worden enkele synchronisatie methodes en technieken besproken die data kan synchroniseren met de databank. Indien van toepassing, wordt telkens een concrete situatie van de use case van Pridiktiv gebruikt ter illustratie. Op het einde van dit hoofdstuk worden ook nog andere technieken besproken die niet meteen kunnen worden onderverdeeld onder een specifiek pattern.
+In dit hoofdstuk worden enkele synchronisatie methodes en technieken besproken die data kunnen synchroniseren met de databank. In sectie~\ref{sec:bestaande} 'Bestaande synchronisatie mogelijkheden' worden kort de bestaande oplossingen overlopen. Alternatieve synchronisatie patronen worden overlopen in sectie~\ref{sec:alternatieven} 'Alternatieve synchronisatie mogelijkheden'.
 
-\subsection{Conclusie research}
-Op basis van die research en de beperkingen van de business case was het immers eenvoudiger om te bepalen welke technologie\"en al dan niet in aanmerking komen voor het onderzoek. Synchronisatie technologie\"en zoals Firebase, CouchBase en Azure Mobile Apps laten toe dat een applicatie offline functioneert met conflict resolution. Dit proces verloopt nagenoeg automatisch verloopt aan de hand van synchronisatie policies of door tussenkomst van de gebruiker. Door de manier\footnote{Met databank replicatie, waarbij rechtstreeks op de database wordt gewerkt} hoe bestaande synchronisatie oplossingen zoals Firebase en Azure werken, is het niet mogelijk de bestaande oplossingen toe te passen op de business case. 
+\section{Bestaande synchronisatie mogelijkheden}
+\label{sec:bestaande}
+Op basis van die research en de beperkingen van de business case was het immers eenvoudiger om te bepalen welke technologie\"en al dan niet in aanmerking komen voor het onderzoek. Synchronisatie technologie\"en zoals Firebase, CouchDB en Azure Mobile Apps laten eenvoudig toe dat een applicatie de data synchroniseert met de backend. De oplossingen maken gebruik van database replicatie. De client kopie\"ert een deel van de database en bij het synchroniseren wordt de database in de backend dan aangepast op basis van de lokale kopie die de client bezit. De database rechtstreeks vanuit de client applicatie manipuleren brengt ook enkele andere nadelen met zich mee. De client applicatie en de databankstructuur zijn hard gekoppeld. Hierdoor is het moeilijk om de database te refactoren dan moet de client ook worden aangepast. De client kan ook bepaalde handelingen op de database uitvoeren die niet wenselijk zijn. Dit maakt bestaande synchronisatie oplossingen niet aantrekkelijk om het probleem van de business case op te lossen.
 
-CouchDB en PouchDB zijn twee andere technologie\"en waarbij er geen 'all-in-one' oplossing wordt aangeboden. Helaas is PouchDB enkel compatibel met CouchDB en derivaten. Waardoor het niet geschikt is voor deze business case om een oplossing te bieden naar synchronisatie.
+\section{Alternatieve synchronisatie mogelijkheden}
+\label{sec:alternatieven}
+Door de beperkingen van de business case is het noodzakelijk om andere methodes te onderzoeken. In het volgende deel worden methodes overlopen die zowel kunnen gebruikt worden bij caching als bij synchronisatie. In hoofdstuk~\ref{ch:onderzoek} 'Onderzoek' wordt er dieper ingegaan op de toepassing van de verschillende methodes op de business case.
 
-Wanneer een synchronisatie framework wordt gebruikt, dan gebruikt de client applicatie een specifieke library die de data lokaal beheert indien de gebruiker offline gaat of de applicatie de data wil cachen. Wanneer de gebruiker terug online gaat of de applicatie de gecachte data wil synchroniseren, dan gebeurt de synchronisatie en conflict resolution volledig automatisch. Voorwaarden om dit te kunnen realiseren is de implementatie van een specifieke library om de lokale data te beheren en het gebruik van de correcte backend frameworks of databases.
-Door de beperkingen van de business case ~\ref{subsec:beperkingen-business-case} was er ook nood aan onderzoek naar synchronisatie patterns. Deze patterns zijn vaak ge\"integreerd in de vermelde synchronisatie technologie\"en.
-
-\section{Read-Only Data}
-Dit data synchronisatie patroon wordt gebruikt wanneer de end user enkel maar data moet kunnen opvragen terwijl de applicatie offline is en die data niet hoeft te manipuleren of de manipulaties op die data niet belangrijk genoeg zijn om te persisteren. Bij Read-Only Data is de richting van het dataverkeer unidirectioneel, van server naar end-user applicatie. Het Read-Only pattern hanteert volgende logica:
+\subsection{Read-Only}
+Deze caching methode laat toe dat de gebruiker de applicatie verder kan gebruiken wanneer die offline is. Door het beperken van de interacties in de client naar Read-Only is in dit scenario geen sprake van synchronisatie. De gebruiker mag immers de data niet manipuleren. Bij Read-Only is de richting van het dataverkeer unidirectioneel, van server naar client applicatie. De methode heeft volgende eigenschappen.
 \begin{enumerate}
-\item de end-user (client) vraagt de data op van de server. De server is de SSOT en houdt alle data bij. Die data kan wijzigen wanneer de end-user bijvoorbeeld offline is
-\item server retourneert de data. De opgevraagde data wordt lokaal opgeslagen
-\item alle manipulaties op de data worden geblokkeerd en worden nooit doorgegeven aan de server. De client kan dus enkel maar GET HTTP requests sturen voor de data op te vragen
-\item bij synchronisatie wordt de oude data lokaal verwijderd en vervangen door de nieuwe data
-\item de applicatie controleert op regelmatige tijdstippen de data
+\item De client vraagt de data\footnote{Applicatie moet online zijn om de initi\"ele state op te bouwen.} op van de server. De server is de SSOT en houdt alle data bij. Die data kan wijzigen wanneer de client offline is.
+\item De server retourneert de data. De opgevraagde data wordt gecached in de store. De store is nu de nieuwe SSOT voor de client.
+\item Alle manipulaties op de data worden geblokkeerd wanneer de applicatie offline is. De client dient enkel als view voor de data die lokaal is bijgehouden.
+\item De client synchroniseren wanneer die terug online is houdt in dat de oude data lokaal worden overschreven door de nieuwe opgevraagde data.
+\item Wanneer een view in de client wordt geladen, probeert de client de server te pollen voor nieuwe data. Indien de applicatie offline is, wordt de gecachte data uit de store gebruikt.
 \end{enumerate}
-Een voorbeeld van het Read-Only pattern van in de use case van Pridiktiv is het opvragen van de pati\"entenlijst. Die lijst kan worden gewijzigd door de hoofdverpleger in het dashboard maar niet in de applicatie zelf. Wanneer de applicatie offline is, kan eenvoudig worden verder gewerkt met de applicatie. Indien er een nieuwe pati\"ent wordt toegevoegd, dan is die vanaf de volgende synchronisatie zichtbaar.
-\section{Read-Only Data Optimized}
-Het Read-Only Data Optimized pattern is identiek aan het Read-Only Data pattern maar met 1 verschil. Bij de synchronisatie worden enkel de data opgevraagd die gewijzigd zijn en niet alle data. Dit kan op verschillende manieren worden ge\"implementeerd. Er kan een timestamp worden bijgehouden van de laatste wijziging of een version number die incrementeert bij elke wijziging. Op basis van de vergelijking tussen de bestaande data en de data in de databank, kan de applicatie al dan niet beslissen om de lokale data te updaten. De richting van het dataverkeer is bidirectioneel, wat ook verschilt met de standaard implementatie van het Read-Only pattern. Omdat de server eerst moet worden gevraagd of er al dan niet data zijn gewijzigd, moet de applicatie ook kunnen communieren met de server.
-\section{Read/Write Data Last Write Wins}
-In dit pattern gaat de server er van uit dat writes altijd in de juiste volgorde worden uitgevoerd en de laatste write die naar de databank wordt gestuurd ook de werkelijke laatste wijziging is van de client applicatie. Er wordt geen conflict resolution uitgevoerd. Het pattern blinkt uit wanneer er enkel wordt toegevoegd en de data nooit wordt gemanipuleerd. In de use case van Pridiktiv kan dit worden toegepast bij bijvoorbeeld het toevoegen van notities bij een patient. De notities van een patient worden niet gewijzigd waardoor er geen data kunnen worden overschreven.
-\section{Read/Write with Conflict Detection}
-Het Read/Write with Conflict Detection pattern is het meest complexe waarbij verschillende end-users dezelfde data wijzigen op het moment dat de applicatie offline is. Bij dit pattern wordt er gesproken van multi-way synchronisatie waarbij een applicatie zowel de data van de server kan updaten en dat de server op zijn beurt alle andere apparaten moet updaten. Een mogelijke flow van het proces zou er als volgt kunnen uitzien:
+
+\subsection{Read-Only Optimized}
+Het Read-Only Optimized caching methode is  bijna identiek aan de Read-Only methode maar met enkele verschillen. Bij het synchroniseren worden enkel de data opgevraagd die gewijzigd zijn. Dit kan op verschillende manieren worden ge\"implementeerd. Er kan een timestamp worden bijgehouden van de laatste wijziging of een version number die incrementeert bij elke wijziging. Op basis van de vergelijking tussen de lokale data en de data in de databank, kan de applicatie al dan niet beslissen om de lokale data te overschrijven. De richting van het dataverkeer is bidirectioneel omdat de client data moet meesturen met de request. Een nadeel van de Read-Only Optimised caching is de complexiteit die deze methode introduceert.
+
+Read-Only Optimized kan ook server side wordt gebruikt voor het samenstellen van de state\footnote{Redux state in JSON, voor de redux store in de client}. Hier wordt verder op ingegaan in het hoofdstuk~\ref{ch:onderzoek} 'Onderzoek'.
+
+\subsection{First/Last Write Wins}
+Bij de First/Last Write Wins techniek gaat de server er van uit dat writes steeds in de juiste volgorde worden uitgevoerd. Er zijn twee varianten die elk, afhankelijk van de use case, de data kunnen synchroniseren. Bij First Write Wins zijn de data impliciet final. De data kunnen dan maar een keer worden aangepast. Alle andere pogingen worden verworpen. Bij de tweede variant Last Write Wins, worden de data steeds overschreven door de meest recente versie en kunnen de data op ieder moment worden aangepast door recentere data. De techniek wordt enkel maar server side gebruikt en verwerkt de gecachte\footnote{De client cachet de acties wanneer er geen verbinding is met de server. Zie hoofdstuk~\ref{ch:onderzoek}} transacties van de client.
+
+Met deze methode gaat er onherroepelijk data verloren. Bij sommige use cases kan deze compromis worden gemaakt. Indien dit niet mogelijk is dan biedt~\ref{subsec: conflict-detection} 'Write with Conflict Detection' een betere oplossing.
+
+\subsection{Write with Conflict Detection}
+\label{subsec: conflict-detection}
+Het Read/Write with Conflict Detection methode is het complexere variant van First/Last Write Wins waarbij verschillende clients dezelfde data manipuleren op het moment dat de applicatie offline is. Bij deze techniek ligt de focus om minimale data te verliezen bij de synchronisatie. Wanneer er server side data moet worden overschreven zoals bij Last Write Wins, dan wordt de bestaande data toegevoegd aan de nieuwe data. Bij First-Write Wins kan er ook data worden toegevoegd zonder dat de oorspronkelijke data wordt overschreven. Indien de server een conflict vaststelt waarbij er geen beslissing kan worden genomen\footnote{Bv. een UPDATE op een record dat verwijderd is door een DELETE operatie}, dan moet de eindgebruiker worden verwittigd. De gebruiker maakt dan de keuze welke data er moeten worden bewaard en welke er mogen worden overschreven. Bij voorkeur lost de server het conflict autonoom op, zonder tussenkomst van de gebruiker. Dit is echter niet bij elke use case mogelijk. 
+Write with Conflict Detection zou volgende stappen kunnen doorlopen: 
 \begin{enumerate}
-\item de server database houdt alle data bij
+\item de server database houdt al de data bij
 \item de applicatie houdt lokaal een subset van de data bij die kan worden gewijzigd
 \item bij synchronisatie worden de aangepaste data die lokaal wordt opgeslagen naar de server en omgekeerd
-\item in de server worden de data aangepast en alle conflicting changes worden geregistreerd voor verdere behandeling
-\item Vraagt de gebruiker voor conflict resolution of de applicatie kan zelf het conflict oplossen en de data aanpassen
+\item in de server worden de data aangepast en alle conflicten worden geregistreerd voor verdere behandeling
+\item de server verwittigt de gebruiker voor een conflict of de server kan zelf het conflict oplossen en de data aanpassen
 \end{enumerate}
-Een voorbeeld uit de use case van Pridiktiv die gebruik zou kunnen maken van het Read/Write with Conflict Resolution pattern is de opvolging bij wondzorg. Wanneer een end-user een bepaalde wijziging aanbrengt in het dossier van de patient, is het belangrijk dat die data niet verloren gaan indien een andere end-user ook het wondzorg dossier van een patient aanpast. Het is belangrijk om conflict resolution 'achter de schermen' op te lossen om op die manier ervoor te zorgen dat er geen aanpassingen verloren gaan.
