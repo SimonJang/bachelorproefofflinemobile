@@ -185,4 +185,13 @@
   url          = {http://www.dataintegration.info/data-synchronization},
 }
 
+@Misc{structured-cloning-algoritme,
+  author       = {Mozilla},
+  title        = {Structured Cloning Algoritme},
+  howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 25 mei 2017},
+  url          = {https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}

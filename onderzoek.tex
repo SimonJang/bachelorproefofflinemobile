@@ -120,25 +120,49 @@ Aan de hand van web workers is het mogelijk om parallel een ander Javascript app
 \includegraphics[width=1\textwidth]{example-webworker}
 \end{figure}
 
-Een nadeel bij het gebruik van web workers is de complexiteit wanneer externe scripts worden gebruikt. Als er meerdere dependencies zijn voor het uitvoeren van de code of als een superset van JavaScript zoals TypeScript wordt gebruikt, dan moet men gebruik maken van SystemJS\footnote{SystemJS is een dynamische module loader voor JavaScript ES6}. SystemJS is echter niet combineerbaar met Angular CLI, de build tool die gebruikt wordt bij de business case. Door deze beperking is het werken met web workers niet de ideale oplossing voor de business case. Het is ook mogelijk om de Webpack\footnote{Webpack is een module bundler. Webpack laadt net als SystemJS de verschillende modules in maar bundelt die ook netjes in verschillende files. Op die manier moet een applicatie die heel wat dependencies heeft, enkel maar een file inladen.}-configuratie file die Angular CLI gebruikt handmatig te configureren. Dit wordt echter sterk afgeraden omdat de meerwaarde van de bundling die door Angular CLI wordt uitgevoerddan volledig verloren gaat.
+Een nadeel bij het gebruik van web workers is de complexiteit wanneer externe scripts worden gebruikt. Als er meerdere dependencies zijn voor het uitvoeren van de code of als een superset van JavaScript zoals TypeScript wordt gebruikt, dan moet men gebruik maken van SystemJS\footnote{SystemJS is een dynamische module loader voor JavaScript ES6}. SystemJS is echter niet combineerbaar met Angular CLI, de build tool die gebruikt wordt bij de business case. Door deze beperking is het werken met web workers niet de ideale oplossing voor de business case. Het is ook mogelijk om de Webpack\footnote{Webpack is een module bundler. Webpack laadt net als SystemJS de verschillende modules in maar bundelt die ook netjes in verschillende files. Op die manier moet een applicatie die heel wat dependencies heeft maar een beperkt (4) aantal files inladen.}-configuratie file die Angular CLI gebruikt handmatig te configureren. Dit wordt echter sterk afgeraden omdat de meerwaarde van de bundling die door Angular CLI wordt uitgevoerd dan volledig verloren gaat.
 
 \begin{lstlisting}[caption=Creatie van een web worker]
-TODO
+var myWorker = new Worker('my_worker_jsfile.js');
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Communicatie tussen applicatie en webworker]
-TODO
+Bij de creatie van een web worker moet het pad naar de JavaScript file die de code van de web worker bevat worden opgegeven. Wanneer Angular CLI wordt gebruikt, dan moet het pad ook worden toegevoegd aan de scripts in de configuratie file. 
+
+\begin{lstlisting}[caption=Communicatie tussen applicatie en web worker]
+// data1 en data2 worden doorgegeven aan de web worker
+myWorker.postMessage([data1, data2]);
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Voorbeeld van verwerken web worker]
-TODO
+Met behulp van berichten kan er worden gecommuniceerd tussen de web worker en de applicatie die de web worker aanspreekt. De data wordt gekopieerd aan de hand van een algoritme\autocite{structured-cloning-algoritme}\footnote{Structured Cloning Algoritme laat doe om complexe JavaScript objecten te kopi\"eren en biedt meer flexibiliteit dan JSON. Net zoals bij JSON worden functies niet toegestaan. } en doorgestuurd naar de web worker. Omdat de data niet wordt geshared tussen de applicatie en de web worker
+
+\begin{lstlisting}[caption=Voorbeeld hoe een web worker een boodschap verwerkt]
+// Importeren van externe scripts of libraries
+importScripts('foo.js'); 
+
+// functie die het bericht verwerkt dat de client heeft verstuurd naar de web worker
+onmessage = function(e) {
+	var workerResult = 'Result: ' + (e.data[0] * e.data[1]);
+	postMessage(workerResult);
+}
 \end{lstlisting}
+
+Met behulp van importScript kunnen externe libraries worden gebruikt in de web worker. In de business case zou dat bijvoorbeeld kunnen de API Gateway client kunnen zijn die de communicatie voorziet met de backend. Daarnaast maakt de web worker gebruik van een eenvoudige API om de boodschappen van de applicatie te verwerken.
+
+\begin{lstlisting}[caption=Voorbeeld van hoe de applicatie de respons van een web worker verwerkt]
+// Methode voor het verwerken van de boodschap
+myWorker.onmessage = function(e) {
+  result = e.data; // Dit result kan dan worden gebruikt in de applicatie
+  console.log('Message received from worker');
+}
+\end{lstlisting}
+
+Tenslotte moet de applicatie die de web worker aanroept de boodschap die wordt teruggestuurd van de web worker nog verwerken. Bij de business case zou dit bijvoorbeeld de opgebouwde state kunnen zijn of deel van de state.
 
 \subsubsection{Redux state server side opbouwen met Read-Only Optimised}
 \label{sssec: redux-server-side}
 Een derde methode is het opzetten van een redux state in de backend de client kan opvragen. Op die manier moet enkel het state object worden toegevoegd aan de store wanneer het is opgevraagd van de server. Een nadeel van deze methode is de state van de client die nu sterk gekoppeld is aan de backend. Grote voordeel is dat de backend nu verantwoordelijk is voor alle intensieve operaties en dat de client applicatie enkel maar zijn state moet injecteren in de store. 
 
-Bij deze methode kan de Read-Only Optimised techniek gebruikt worden bij het opstellen van de client state. De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client of processortijd server side. Read-Only Optimised is dan ook eerder een optimalisatietechniek dan een synchronisatiemethode. De caching techniek zorgt ervoor dat de state op een effici\"ente manier kan worden gegeneerd. De state kan worden onderverdeeld in de verschillende features de die client applicatie bevat. Daarnaast kan er ook per 'feature state' een timestamp  worden bijgehouden van de laatste creatie. Dankzij AWS SNS is het echter gemakkelijker om de state opnieuw te genereren wanneer een event plaatsvind\footnote{SNS bevat een topic waarop een AWS service een boodschap kan 'publishen'. Andere lambda's kunnen 'subscriben' op de SNS en kunnen dan die boodschap verwerken.} en zo event-driven te werken in plaats van timestamps te vergelijken. Op die manier bevat elke 'feature state' de laatste versie. Wanneer de volledige state dan wordt opgevraagd voor de preloading in de client, wordt via deze methode gegarandeerd dat de client de laatste informatie ontvangt.
+Bij deze methode kan de Read-Only Optimised techniek gebruikt worden bij het opstellen van de client state. De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client of processortijd server side. Read-Only Optimised is dan ook eerder een optimalisatietechniek dan een synchronisatiemethode. De caching techniek zorgt ervoor dat de state op een effici\"ente manier kan worden gegeneerd. De state kan worden onderverdeeld in de verschillende features de die client applicatie bevat. Daarnaast kan er ook per 'feature state' een timestamp  worden bijgehouden van de laatste creatie. Dankzij AWS SNS is het echter gemakkelijker om de state opnieuw te genereren wanneer een event plaatsvind\footnote{SNS bevat een topic waarop een AWS service een boodschap kan 'publishen'. Andere lambda's kunnen 'subscriben' op de SNS en kunnen dan die boodschap verwerken.} en zo event-driven te werken in plaats van timestamps te vergelijken. Op die manier bevat elke 'feature state' de laatste versie. Wanneer de volledige state dan wordt opgevraagd tijdens het preloaden in de client, wordt via deze methode gegarandeerd dat de client de laatste informatie ontvangt.
 
 \subsubsection{Toepassing business case}
 In de business case wordt momenteel de data serieel opgevraagd aan de server. Bijvoorbeeld nadat de pati\"entenlijst is opgevraagd, worden voor alle pati\"enten de relevante data opgevraagd. In de piloot versie zijn dat ongeveer 75 personen die elk taken, notities, observaties, medische parameters en wondzorgdossiers kunnen bevatten. Dit leidt gemakkelijk tot een 500 requests die in een zeer korte periode worden uitgevoerd. De state in de backend opbouwen is de volgende stap die wordt gepland voor het optimaliseren van de preloading. 
@@ -196,9 +220,12 @@ Pridiktiv maakt gebruik van DynamoDB voor het bijhouden van de data. In DynamoDB
 Het is in de business case van Pridiktiv niet mogelijk om date te verwijderen. Alle data moet zichtbaar blijven in een historiek. Hierdoor is het niet toegelaten om DELETE operaties uit voeren, enkel UPDATE operaties. Bij DELETE operaties is het altijd noodzakelijk om de gebruiker een keuze aan te bieden indien er een synchronisatieconflict is. Aangezien dit niet van toepassing is binnen de business case wordt hier niet verder op in gegaan.
 
 \section{Architectuur server side voor de synchronisatie}
-Server side zijn er enkele aanpassingen uitgevoerd zodat de synchronisatie automatisch kan verlopen. De API Gateway, die de mapping\footnote{Mapping van de request houdt in dat de parameters van de querystring worden gemapped naar een object en de body van een request bij een HTTP POST wordt gemapped naar een object.} van de requests tot zijn rekening nam, gebruikt nu een proxy lambda integratie. Deze lambda is nu verantwoordelijk voor de mapping van de request. Wanneer de client gecachte data heeft, wordt die doorgestuurd naar de aparte\footnote{ organisatie/sync } route in het URL path. Hierdoor weet de proxy lambda dat de payload\footnote{De payload is de data die de body bevat, de optionele querystring parameters, het pad (bv /observations ) en de methode(POST, UPDATE, PUT)} acties bevat die moeten worden gesynchroniseerd. Deze lambda plaatst vervolgens alle acties op een SQS queue.
+Server side zijn er enkele aanpassingen uitgevoerd zodat de synchronisatie automatisch kan verlopen. De API Gateway, die de mapping\footnote{Mapping van de request houdt in dat de parameters van de querystring worden gemapped naar een object en de body van een request bij een HTTP POST wordt gemapped naar een object.} van de requests tot zijn rekening nam, gebruikt nu een proxy lambda integratie. Deze lambda is nu verantwoordelijk voor de mapping van de request. Wanneer de client gecachte data heeft, wordt die doorgestuurd naar de aparte\footnote{ organisatie/sync } route in het URL path. Hierdoor weet de proxy lambda dat de payload\footnote{De payload is de data die de body bevat, de optionele querystring parameters, het pad (bv /observations ) en de methode(POST, UPDATE, PUT)} acties bevat die moeten worden gesynchroniseerd. Deze lambda plaatst vervolgens alle acties op een SQS queue. 
 
-Een polling lambda vraagt op vaste intervallen berichten van de queue op aan de hand van een CRON\footnote{Bij een CRON job wordt op vaste intervallen een AWS service aangeroepen.} job. De opgehaalde objecten uit de queue bevatten de methode, body en optionele querystrings en die worden dan terug gestuurd als een enkele request naar de proxy lambda. De proxy lambda vervult dan zijn taak als proxy lambda en stuurt de request naar de correcte lambda om te verwerken.
+Een polling lambda vraagt op vaste intervallen berichten van de queue op aan de hand van een CRON\footnote{Bij een CRON job wordt op vaste intervallen een AWS service aangeroepen.} job. De opgehaalde objecten uit de queue bevatten de methode, body en optionele querystrings en die worden dan terug gestuurd als een enkele request naar de proxy lambda. De proxy lambda vervult dan zijn taak als proxy lambda en stuurt de request naar de correcte lambda om te verwerken. Wanneer de Lambda succesvol is uitgevoerd, dan wordt message van de queue verwijderd.
+
+Er is voor SQS gekozen omdat SNS een push strategie voor zijn berichten hanteert. Indien er bij de synchronisatie een fout voorvalt, dan is het bericht onherroepelijk verloren. Met SQS moeten de boodschappen expliciet worden verwijderd. Wanneer de afhandeling van een bericht meerdere keren zou falen, dan komt de  terecht in de 'dead letter queue'. Afhankelijk van de configuratie van die 'dead letter queue' blijft het bericht nog 30 dagen bestaan. De berichten in de 'dead letter queue' kunnen dan nog altijd manueel worden verwerkt.
+
 \subsection{Open-source libraries}
 Voor het synchroniseren van de data bij Pridiktiv in AWS wordt er gebruik gemaakt van twee verschillende Open Source libraries. Deze zijn ontwikkeld in kader van dit onderzoek en bieden een oplossing aan voor het synchroniseren van data bij Pridiktiv. De componenten zijn geschreven in JavaScript voor NodeJS 4.3 en hoger. Hierdoor is het mogelijk om nieuwe features uit ES6 te gebruiken zoals Promises. Het is specifiek ontwikkeld om te werken met Simple Queue Service van AWS maar biedt de flexibiliteit om gebruikt te worden buiten AWS Lambda, bijvoorbeeld in AWS EC2 instances die ook NodeJS gebruiken. Deze libraries zijn ontwikkeld in kader van dit onderzoek en worden gebruikt binnen de productieomgeving van de Pridiktiv applicaties.
 \subsubsection{aws-sqs-push}
@@ -262,7 +289,7 @@ Een kleine functie die SQS messages verwijderd op basis van de ReceiptHandle die
 \end{lstlisting}
 
 \subsubsection{aws-sqs-geturl}
-Hulplibrary die de ARN naam opvraagt van een specifieke SQS queue. Aan de hand van de AWS root account id, die automatisch wordt meegestuurd in een request, kan samen met de naam de ARN naam van een bepaalde SQS queue worden opgehaald. De AWS JavaScript SDK laat dit ook toe maar de functie gebruikt callbacks en een complexere configuratie. Door het gebruik van deze hulplibrary is de configuratie verwaarloosbaar en wordt er geen gebruik gemaakt van callbacks maar van promises
+Hulplibrary die de ARN naam opvraagt van een specifieke SQS queue. Aan de hand van de AWS root account id, die automatisch wordt meegestuurd in een request, kan samen met de naam de ARN naam van een bepaalde SQS queue worden opgehaald. De AWS JavaScript SDK laat dit ook toe maar de functie gebruikt callbacks\footnote{Een callback is een functie die als argument wordt meegegeven in een functie. De callback wordt uitgevoerd op een bepaald moment tijdens de executie van de functie.}  en een complexere configuratie. Door het gebruik van deze hulplibrary is de configuratie verwaarloosbaar en wordt er geen gebruik gemaakt van callbacks maar van promises
 
 \begin{lstlisting}[caption=Voorbeeld hoe de ARN van een SQS wordt opgehaald]
 
@@ -280,4 +307,4 @@ Hulplibrary die de ARN naam opvraagt van een specifieke SQS queue. Aan de hand v
 	
 \end{lstlisting}
 
-
+Met behulp van deze libraries is het mogelijk om event-driven en serverless de synchronisatie in de backend uit te voeren. De grootste verdienste van de libraries is het introduceren van een gemakkelijke interface om te werken met SQS. Standaard maakt de AWS NodeJS SDK gebruik van een callback bij het uitvoeren van de verschillende functies. Met behulp van pify\footnote{Pify is een JavaScript library die functies die een callback-argument hebben omzet naar een functie die een Promise retourneert.} retourneren de verschillende functies nu promises.

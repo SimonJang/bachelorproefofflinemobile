@@ -88,6 +88,28 @@
       \field{title}{Web Workers browser support}
       \field{year}{2017}
     \endentry
+    \entry{data-integration-steps}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=5a0b34ab3c0861cfea84dabe49148ad2}{%
+           family={DataIntegration},
+           family_i={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{5a0b34ab3c0861cfea84dabe49148ad2}
+      \strng{fullhash}{5a0b34ab3c0861cfea84dabe49148ad2}
+      \field{sortinit}{D}
+      \field{sortinithash}{78f7c4753a2004675f316a80bdb31742}
+      \field{labelyear}{2015}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{title}{Data Synchronisation steps}
+      \field{year}{2015}
+      \verb{url}
+      \verb http://www.dataintegration.info/data-synchronization
+      \endverb
+    \endentry
     \entry{offline-first}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=d8a92b47376633f734f8d544f44c0566}{%
@@ -253,7 +275,7 @@
       \verb https://developer.mozilla.org/en-US/docs/Online_and_offline_events
       \endverb
     \endentry
-    \entry{webworker-explained}{misc}{}
+    \entry{structured-cloning-algoritme}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=502f1bd97b0e7d80b88e1f45ae1bfdb8}{%
            family={Mozilla},
@@ -264,6 +286,29 @@
       \field{sortinit}{M}
       \field{sortinithash}{2684bec41e9697b92699b46491061da2}
       \field{extrayear}{3}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 25 mei 2017}
+      \field{title}{Structured Cloning Algoritme}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
+      \endverb
+    \endentry
+    \entry{webworker-explained}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=502f1bd97b0e7d80b88e1f45ae1bfdb8}{%
+           family={Mozilla},
+           family_i={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
+      \strng{fullhash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
+      \field{sortinit}{M}
+      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{extrayear}{4}
       \field{labelyear}{2017}
       \field{datelabelsource}{year}
       \field{labelnamesource}{author}
@@ -291,7 +336,7 @@
       \strng{fullhash}{502f1bd97b0e7d80b88e1f45ae1bfdb8}
       \field{sortinit}{M}
       \field{sortinithash}{2684bec41e9697b92699b46491061da2}
-      \field{extrayear}{4}
+      \field{extrayear}{5}
       \field{labelyear}{2017}
       \field{datelabelsource}{year}
       \field{labelnamesource}{author}
@@ -426,9 +471,9 @@
       \strng{fullhash}{446a1ae6601a5c59360c7d591c3992da}
       \field{sortinit}{W}
       \field{sortinithash}{99e3ba1b3f78bb6f073e7fa7ac11636b}
-      \field{extrayear}{1}
       \field{labelyear}{2017}
       \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
@@ -436,34 +481,6 @@
       \field{year}{2017}
       \verb{url}
       \verb https://www.w3.org/TR/webdatabase/
-      \endverb
-    \endentry
-    \entry{webworker-reference}{online}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=446a1ae6601a5c59360c7d591c3992da}{%
-           family={W3C},
-           family_i={W\bibinitperiod}}}%
-      }
-      \list{language}{1}{%
-        {English}%
-      }
-      \list{organization}{1}{%
-        {W3C}%
-      }
-      \strng{namehash}{446a1ae6601a5c59360c7d591c3992da}
-      \strng{fullhash}{446a1ae6601a5c59360c7d591c3992da}
-      \field{sortinit}{W}
-      \field{sortinithash}{99e3ba1b3f78bb6f073e7fa7ac11636b}
-      \field{extrayear}{2}
-      \field{labelyear}{2017}
-      \field{datelabelsource}{year}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{howpublished}{Web}
-      \field{title}{Specification for Webworkers}
-      \field{year}{2017}
-      \verb{url}
-      \verb https://w3c.github.io/workers/
       \endverb
     \endentry
     \entry{WHATWG-storage-API}{online}{}
