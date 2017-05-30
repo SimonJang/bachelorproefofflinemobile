@@ -224,12 +224,18 @@ Server side zijn er enkele aanpassingen uitgevoerd zodat de synchronisatie autom
 
 Een polling lambda vraagt op vaste intervallen berichten van de queue op aan de hand van een CRON\footnote{Bij een CRON job wordt op vaste intervallen een AWS service aangeroepen.} job. De opgehaalde objecten uit de queue bevatten de methode, body en optionele querystrings en die worden dan terug gestuurd als een enkele request naar de proxy lambda. De proxy lambda vervult dan zijn taak als proxy lambda en stuurt de request naar de correcte lambda om te verwerken. Wanneer de Lambda succesvol is uitgevoerd, dan wordt message van de queue verwijderd.
 
-Er is voor SQS gekozen omdat SNS een push strategie voor zijn berichten hanteert. Indien er bij de synchronisatie een fout voorvalt, dan is het bericht onherroepelijk verloren. Met SQS moeten de boodschappen expliciet worden verwijderd. Wanneer de afhandeling van een bericht meerdere keren zou falen, dan komt de  terecht in de 'dead letter queue'. Afhankelijk van de configuratie van die 'dead letter queue' blijft het bericht nog 30 dagen bestaan. De berichten in de 'dead letter queue' kunnen dan nog altijd manueel worden verwerkt.
+Er is voor SQS gekozen omdat SNS een push strategie voor zijn berichten hanteert. Indien er bij de synchronisatie een fout voorvalt, dan is het bericht en de data onherroepelijk verloren. Met SQS moeten de boodschappen expliciet worden verwijderd. Wanneer de afhandeling van een bericht meerdere keren zou falen, dan komt de  terecht in de 'dead letter queue'. Afhankelijk van de configuratie van die 'dead letter queue' blijft het bericht nog 30 dagen in de dead letter queue alvorens het wordt verwijderd. De berichten in de 'dead letter queue' kunnen dan nog altijd manueel worden verwerkt. AWS SNS wordt wel gebruikt wanneer de proxy lambda de lambda die de queue pollt wil laten weten als er nieuwe requests op de queue zijn geplaatst. Voor de kosteneffici\"entie kan de CRON-job dan op een interval van 10 minuten worden geplaatst want een SNS boodschap kan de lambda ook triggeren.
+
+\begin{figure}[h]
+\caption{De server side architectuur voor de synchronisatie}
+\centering
+\includegraphics[width=0.9\textwidth]{offline-syncing-architecture}
+\end{figure}
 
 \subsection{Open-source libraries}
 Voor het synchroniseren van de data bij Pridiktiv in AWS wordt er gebruik gemaakt van twee verschillende Open Source libraries. Deze zijn ontwikkeld in kader van dit onderzoek en bieden een oplossing aan voor het synchroniseren van data bij Pridiktiv. De componenten zijn geschreven in JavaScript voor NodeJS 4.3 en hoger. Hierdoor is het mogelijk om nieuwe features uit ES6 te gebruiken zoals Promises. Het is specifiek ontwikkeld om te werken met Simple Queue Service van AWS maar biedt de flexibiliteit om gebruikt te worden buiten AWS Lambda, bijvoorbeeld in AWS EC2 instances die ook NodeJS gebruiken. Deze libraries zijn ontwikkeld in kader van dit onderzoek en worden gebruikt binnen de productieomgeving van de Pridiktiv applicaties.
 \subsubsection{aws-sqs-push}
-Deze library heeft een functie die berichten op de SQS queue plaatst en een Promise retourneert wanneer er een bericht op de queue is geplaatst. De naam van de queue wordt met een hulpfunctie aws-sqs-geturl opgevraagd. Op deze manier is de gebruiker van deze library niet verplicht om de volledige ARN naam van de SQS door te geven. Wanneer de mesage een object bevat is dan wordt het object met JSON.stringify() automatisch omgevormd naar een string.
+Deze library heeft een functie die berichten op de SQS queue plaatst en een Promise retourneert wanneer er een bericht op de queue is geplaatst. De naam van de queue wordt met een hulpfunctie aws-sqs-geturl opgevraagd. Op deze manier is de gebruiker van deze library niet verplicht om de volledige ARN naam van de SQS door te geven. Wanneer de message een object bevat is dan wordt het object met JSON.stringify() automatisch omgevormd naar een string.
 
 \begin{lstlisting}[caption=Voorbeeld dat data plaatst op een SQS queue met behulp van de aws-sqs-push library]
 
