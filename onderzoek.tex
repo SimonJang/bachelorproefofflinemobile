@@ -7,11 +7,12 @@
 
 In dit hoofdstuk wordt dieper ingegaan op de verschillende caching -en synchronisatie methodes, hun toepassing op de businesscase en het proces voor het implementeren van synchronisatie. Volgende onderdelen komen aan bod in dit hoofdstuk:
 \begin{itemize}
-\item Online/Offline status registstratie
-\item Caching, preloading en Read-Only Optimised
-\item Planning bij het bepalen van synchronisatie
+\item online/Offline status registstratie
+\item caching, preloading en Read-Only Optimised
+\item planning bij het bepalen van synchronisatie
 \item Last/First Write Wins en Conflict resolution
-\item De gebruikte AWS services voor de synchronisatie in de backend
+\item de gebruikte AWS services voor de synchronisatie in de backend
+\item libraries ontwikkeld in kader van het onderzoek 
 \end{itemize}
 
 \section{Online/Offline status registratie}
@@ -119,7 +120,7 @@ Aan de hand van web workers is het mogelijk om parallel een ander Javascript app
 \includegraphics[width=1\textwidth]{example-webworker}
 \end{figure}
 
-Een nadeel bij web workers is de complexiteit wanneer externe scripts worden gebruikt. Als er meerdere dependencies zijn voor het uitvoeren van de code of als een superset zoals TypeScript wordt gebruikt, dan moet men gebruik maken van SystemJS\footnote{SystemJS is een dynamische module loader voor JavaScript ES6}. SystemJS is echter niet combineerbaar met Angular CLI, de build tool die gebruikt wordt bij de business case. Door deze beperking is het werken met web workers niet de ideale oplossing voor de business case. Het is ook mogelijk om de Webpack\footnote{Webpack is een module bundler. Webpack laadt net als SystemJS de verschillende modules in maar bundelt die ook netjes in verschillende files. Op die manier moet een applicatie die heel wat dependencies heeft, enkel maar een file inladen. }-configuratie file die Angular CLI gebruikt handmatig te configureren. Dit wordt echter sterk afgeraden omdat de meerwaarde van de bundling die door Angular CLI wordt uitgevoerddan volledig verloren gaat.
+Een nadeel bij het gebruik van web workers is de complexiteit wanneer externe scripts worden gebruikt. Als er meerdere dependencies zijn voor het uitvoeren van de code of als een superset van JavaScript zoals TypeScript wordt gebruikt, dan moet men gebruik maken van SystemJS\footnote{SystemJS is een dynamische module loader voor JavaScript ES6}. SystemJS is echter niet combineerbaar met Angular CLI, de build tool die gebruikt wordt bij de business case. Door deze beperking is het werken met web workers niet de ideale oplossing voor de business case. Het is ook mogelijk om de Webpack\footnote{Webpack is een module bundler. Webpack laadt net als SystemJS de verschillende modules in maar bundelt die ook netjes in verschillende files. Op die manier moet een applicatie die heel wat dependencies heeft, enkel maar een file inladen.}-configuratie file die Angular CLI gebruikt handmatig te configureren. Dit wordt echter sterk afgeraden omdat de meerwaarde van de bundling die door Angular CLI wordt uitgevoerddan volledig verloren gaat.
 
 \begin{lstlisting}[caption=Creatie van een web worker]
 TODO
@@ -129,15 +130,23 @@ TODO
 TODO
 \end{lstlisting}
 
+\begin{lstlisting}[caption=Voorbeeld van verwerken web worker]
+TODO
+\end{lstlisting}
+
 \subsubsection{Redux state server side opbouwen met Read-Only Optimised}
 \label{sssec: redux-server-side}
-Een derde methode is het opzetten van een redux state in de backend die door de client kan worden opgevraagd. Op die manier moet enkel het state object worden toegevoegd aan de store wanneer het is opgevraagd van de server. Een nadeel van deze methode is de state van de client die nu sterk gekoppeld is aan de backend. Grote voordeel is dat de backend nu verantwoordelijk is voor alle intensieve operaties en dat de client applicatie enkel maar zijn state moet injecteren in de store. Bij deze methode kan de Read-Only Optimised techniek gebruikt worden bij het opstellen van de client state.
+Een derde methode is het opzetten van een redux state in de backend de client kan opvragen. Op die manier moet enkel het state object worden toegevoegd aan de store wanneer het is opgevraagd van de server. Een nadeel van deze methode is de state van de client die nu sterk gekoppeld is aan de backend. Grote voordeel is dat de backend nu verantwoordelijk is voor alle intensieve operaties en dat de client applicatie enkel maar zijn state moet injecteren in de store. 
+
+Bij deze methode kan de Read-Only Optimised techniek gebruikt worden bij het opstellen van de client state. De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client of processortijd server side. Read-Only Optimised is dan ook eerder een optimalisatietechniek dan een synchronisatiemethode. De caching techniek zorgt ervoor dat de state op een effici\"ente manier kan worden gegeneerd. De state kan worden onderverdeeld in de verschillende features de die client applicatie bevat. Daarnaast kan er ook per 'feature state' een timestamp  worden bijgehouden van de laatste creatie. Dankzij AWS SNS is het echter gemakkelijker om de state opnieuw te genereren wanneer een event plaatsvind\footnote{SNS bevat een topic waarop een AWS service een boodschap kan 'publishen'. Andere lambda's kunnen 'subscriben' op de SNS en kunnen dan die boodschap verwerken.} en zo event-driven te werken in plaats van timestamps te vergelijken. Op die manier bevat elke 'feature state' de laatste versie. Wanneer de volledige state dan wordt opgevraagd voor de preloading in de client, wordt via deze methode gegarandeerd dat de client de laatste informatie ontvangt.
 
 \subsubsection{Toepassing business case}
-In de business case wordt de request serieel bevraagd van de server. Nadat de pati\"entenlijst is opgevraagd, worden voor alle pati\"enten de relevante data opgevraagd. In de piloot versie waren dat ongeveer 75 personen die elk taken, notities, observaties, medische parameters en wondzorgdossiers kunnen bevatten. Dit leidt tot een 500 requests die in een zeer korte periode worden uitgevoerd. Het gebruik van web workers \autocite{webworker-reference} gecombineerd met een gebundelde data zou het aantal requests sterk kunnen verminderen. In de business case is er ook sprake van afbeeldingen die moeten worden gesynchroniseerd met de applicatie maar het cachen van BLOBs valt buiten de scope van dit onderzoek.
+In de business case wordt momenteel de data serieel opgevraagd aan de server. Bijvoorbeeld nadat de pati\"entenlijst is opgevraagd, worden voor alle pati\"enten de relevante data opgevraagd. In de piloot versie zijn dat ongeveer 75 personen die elk taken, notities, observaties, medische parameters en wondzorgdossiers kunnen bevatten. Dit leidt gemakkelijk tot een 500 requests die in een zeer korte periode worden uitgevoerd. De state in de backend opbouwen is de volgende stap die wordt gepland voor het optimaliseren van de preloading. 
 
-\section{Data synchronisatie: planning bij development}
-Wanneer een synchronisatieoplossing moet worden ontwikkeld voor een applicatie, is het belangrijk om alle use cases in kaart te brengen waarbij er rekening moet worden gehouden met synchronisatie. Dit zorgt ervoor dat er geen functionaliteit over het hoofd wordt gezien bij het ontwikkelen van de synchronisatieoplossing. Ter illustratie wordt in de onderstaande voorbeeld de business case van Pridiktiv ontleed.
+In de business case is er ook sprake van afbeeldingen die moeten worden gesynchroniseerd met de applicatie maar het cachen van BLOBs valt buiten de scope van dit onderzoek.
+
+\section{Data synchronisatie: planning van het proces}
+Data synchronisatie moet worden beschouwd als een continue proces\autocite{data-integration-steps} waarbij synchronisatie niet mag worden beschouwd als een eenmalige gebeurtenis. Het is daarom belangrijk om alle use cases in kaart te brengen waarbij er rekening moet worden gehouden met synchronisatie. Dit zorgt ervoor dat er geen functionaliteit over het hoofd wordt gezien bij het ontwikkelen van een synchronisatie oplossing. Bij de business case was dit dan ook de eerste stap voor het in kaart brengen van de verschillende use cases. Ter illustratie wordt in de onderstaande voorbeeld de business case van Pridiktiv ontleed.
 
 \begin{center}
     \begin{tabular}{ l | r }
@@ -152,65 +161,47 @@ Wanneer een synchronisatieoplossing moet worden ontwikkeld voor een applicatie, 
     \end{tabular}
 \end{center}
 
-De onderverdeling is het uitgangspunt voor de volgende stap namelijk het bepalen van de verschillende synchronisatie mogelijkheden. Zo kan bijvoorbeeld worden bepaald dat de gebruiker bij een conflict zelf een beslissing moet nemen. Of indien er een conflict optreedt bij een synchronisatie van bepaalde data, dat er automatisch voor Last/First Write Wins wordt gekozen. In het geval waarbij er conflict resolution moet gebeuren door de gebruiker, kunnen kan worden bepaald welke keuzes de gebruiker krijgen en welke keuzes de server zelf kan maken. Bovenstaande overzicht vormt dan als het ware de basis voor de ontwikkeling van de synchronisatie. Een ander voorbeeld is het deactiveren van bepaalde functionaliteit bij wanneer de applicatie offline is. Hierdoor kunnen potentieel complexe synchronisatieproblemen worden vermeden. Dit heeft echter als nadeel dat de applicatie niet meer de volledige functionaliteit kan aanbieden wanneer de verbinding is verbroken. Het al dan niet uitschakelen van bepaalde functionaliteit bij offline gebruik is sterk afhankelijk van de business case
+De onderverdeling is het uitgangspunt voor de volgende stap namelijk het bepalen van de verschillende synchronisatie mogelijkheden. Zo kan bijvoorbeeld worden bepaald dat de gebruiker bij een conflict zelf een beslissing moet nemen. Of indien er een conflict optreedt bij een synchronisatie van bepaalde data, dat er automatisch voor Last/First Write Wins wordt gekozen. In het geval waarbij er conflict resolution moet gebeuren door de gebruiker, kunnen kan worden bepaald welke keuzes de gebruiker krijgen en welke keuzes de server zelf kan maken. Bovenstaande overzicht vormt dan als het ware de basis voor de ontwikkeling van de synchronisatieoplossing. Een ander voorbeeld is het deactiveren van bepaalde functionaliteit bij wanneer de applicatie offline is. Hierdoor kunnen potentieel complexe synchronisatieproblemen worden vermeden. Dit heeft echter als nadeel dat de applicatie niet meer de volledige functionaliteit kan aanbieden wanneer de verbinding is verbroken. Het al dan niet uitschakelen van bepaalde functionaliteit bij offline gebruik is sterk afhankelijk van de use case.
 
-\section{Read-Only Optimised}
-De belangrijkste insteek voor deze methode is om zo effici\"ent mogelijk gebruik te maken van de bandbreedte van de client of processor tijd serverside. Read-Only Optimised is dan ook eerder een optimalisatietechniek dan een synchronisatiemethode. Deze techniek laat toe om enkel nieuwe data binnen te halen waardoor data die de applicatie reeds bezit niet opnieuw worden opgevraagd. De complexiteit van deze methode stijgt evenredig met het aantal parameters dat in de data kan worden aangepast. Deze methode wordt vooral gebruikt bij het cachen van data voor offline gebruik.
-\subsection{Overzicht: Client}
-Bij Read-Only Optimised staat de synchronisatie van de client centraal. Tijdens de periode dat de client offline was, is het mogelijk dat er nieuwe data zijn aangemaakt. Om deze data te synchroniseren kan de client alle data opnieuw opvragen maar deze manier heeft enkele nadelen. Indien de data klein is zoals enkel tekst, dan is Read-Only Optimised triviaal en kunnen alle data opnieuw worden opgevraagd. Wanneer er echter grotere data moet worden ingeladen zoals afbeeldingen, dan kan Read-Only Optimised heel wat bandbreedte uitsparen. Dankzij de ngrx store is het ook gemakkelijk om manipulaties uit te voeren op de data, waardoor er eenvoudig objecten kunnen worden toegevoegd aan de data in de store. Belangrijke voorwaarde voor het uitvoeren van deze actie is het bijhouden in de client van de timestamp van de laatste update indien de data aanwezig zijn. Indien er geen timestamp aanwezig is, dan weet de client dat alle data moeten worden opgevraagd.
-\subsection{Overzicht: Server}
-De server houdt rekening met de verschillende timestamps om te bepalen welke data er moet worden geretourneerd.
-
-\subsection{Opmerkingen}
-Ondanks de perceptie dat dit een eenvoudige methode is om te implementeren, zijn er enkele opmerkingen zij deze methode:
-\begin{enumerate}
-\item In bovenstaand scenario wordt er enkel maar uitgegaan van nieuwe data, dus CREATE operaties. Indien de methode ook voor UPDATE moet werken is het in bepaalde gevallen noodzakelijk om ook de databank structuur aan te passen.
-\item Bij klassieke SQL databanken kan gemakkelijk worden gefilterd op bepaalde velden zoals een 'updated veld' binnen een tabel. Bij DynamoDB is dit moeilijker als de waarde van de query geen deel uitmaakt van de sort -of partition key. In dat geval moet er dan gebruik worden gemaakt van een extra secondary index niet telkens alle partition key moet worden overlopen telkens wanneer er een GET request is.
-\item Het is bij kleine data vaak eenvoudiger om steeds alle data op te vragen en geen gebruik te maken van de Read-Only Optimised methode. De complexiteit die Read-Only Optimised toevoegt bij eenvoudige scenario's maakt deze methode soms overbodig.
-\end{enumerate}
-\subsection{Toepassing}
-Met behulp van twee timestamps wordt er bijgehouden wanneer de laatste GET is uitgevoerd en wanneer de laatste aanpassing in een tabel heeft plaatsgevonden. Op die manier kan de backend bepalen welke informatie er moet worden geretourneerd. Wanneer er maar een beperkt volume data wordt geretourneerd dan zorgt de Read-Only Optimised methode nodeloos voor extra complexiteit. Het is daarom enkel aangeraden om enkel Read-Only Optimised te gebruiken indien er met grotere datasets wordt gewerkt.
-\subsubsection{Toepassing op de business case}
-In de backoffice en mobiele applicatie van Pridiktiv wordt er momenteel geen gebruikt gemaakt van Read-Only Optimised. Het Read-Only Optimised patroon zou in de business case van Pridiktiv eerder geschikt zijn wanneer de state server side wordt opgebouwd. Als de state voor de caching serverside wordt opgebouwd, dan zou men gebruik kunnen maken van Read-Only Optimised. Door de opgebouwde state te persisteren en de tegelijk  de timestamps van de laatste change binnen een bepaalde categorie bij te houden in een 'changes' tabel zou het aantal queries dat nodig is om de state op te bouwen sterk kunnen verminderen. 
-
-\section{Last/First Write Wins}
-Bij Last/First Write Wins gaat er onherroepelijk informatie verloren. Afhankelijk van de gekozen conflict resolution methode is het wordt de eerste of laatste write bijgehouden. Dit is de eenvoudigste manier van conflict resolution maar men moet bereidt zijn om een compromis te sluiten en informatie op te offeren in ruil voor minder complexiteit bij het synchroniseren. Wanneer heel snel naar een offline/online synchronisatiemethode moet worden gezocht, biedt die de gemakkelijkste oplossing.
-\subsection{Overzicht: Client}
-Bij deze methode is de impact van de client miniem want de client weet niet dat er een synchronisatieprobleem zal optreden wanneer die data doorstuurt naar de server.
-\subsection{Overzicht: Server}
+\section{Synchronisatie}
+\subsection{Last/First Write Wins}
+Bij Last/First Write Wins gaat er onherroepelijk informatie verloren. Afhankelijk van de gekozen conflict resolution methode is het wordt de eerste of laatste write bijgehouden. Dit is de eenvoudigste manier van conflict resolution maar men moet bereidt zijn om een compromis te sluiten en informatie op te offeren in ruil voor minder complexiteit bij het synchroniseren. Wanneer heel snel naar een offline/online synchronisatiemethode moet worden gezocht, biedt deze methode de gemakkelijkste oplossing.
+\subsubsection{Overzicht: Client}
+Bij deze methode is de impact van de client miniem want de client weet niet dat er een synchronisatieprobleem zal optreden wanneer die data doorstuurt naar de server. De client is enkel verantwoordelijk voor het correct cachen van de requests wanneer de applicatie offline is.
+\subsubsection{Overzicht: Server}
 Deze methode vind plaats wanneer verschillende clients een verandering aanbrengen bij hetzelfde bestaande object. Hierdoor krijgt de databank verschillende waarden binnen en moet dat verplicht de databank er toe om te reageren. Afhankelijk van de methode die gekozen zijn er twee scenario's mogelijk bij deze synchronisatiemethode.
 \begin{enumerate}
 \item First Write Wins. Hier wordt enkel de eerste write van een object of row bijgehouden. Indien hetzelfde object opnieuw wordt aangepast dan wordt er een exceptie geworpen. Dit is enkel maar mogelijk in use cases waarbij een aanpassing in een object finaal is. Een voorbeeld uit de use case is bijvoorbeeld het volbrengen van een taak. Wanneer een taak is volbracht, is het niet meer mogelijk om die aan te passen. Met behulp van een completed flag kan de state van de taak worden bijgehouden. Wanneer de aanpassingen in een object niet finaal zijn, is een last Write wins een betere methode.
 \item Last Write Wins. Bij Last Write Wins wordt enkel maar de laatste write operatie behouden. Er wordt geen vergelijking gemaakt met de waarde die reeds in de databank beschikbaar is en de nieuwe waarde die wordt doorgegeven. Men hanteert deze methode dan best enkel bij bestaande objecten waarbij het mogelijk is om UPDATE operaties op uit te voeren.
 \end{enumerate}
-\subsection{Opmerkingen}
+\subsubsection{Opmerkingen}
 First/Last Write wins is een aantrekkelijke methode wanneer er op korte termijn synchronisatie moet worden gerealiseerd maar er zijn wel enkele bemerkingen bij deze methode.
 \begin{itemize}
-\item Er gaat onherroepelijk data verloren op deze manier. Indien de use case dit niet toelaat dan moet er worden gekeken naar andere conflict resolution policy.
-\item Het type van de data (finaal of niet-finaal) sluit de andere methode uit. Niet-finale data met First Write Wins maken de data impliciet finaal en immutable.
+\item Er gaat onherroepelijk data verloren op deze manier. Indien de use case dit niet toelaat dan moet er worden gekeken naar andere conflict resolution methode.
+\item Het type van de data (finaal of niet-finaal) sluit de andere methode uit. Niet-finale data met First Write Wins maken de data impliciet finaal.
 \end{itemize}
-\subsection{Toepassing}
 \subsubsection{Toepassing op de business case}
 Momenteel hanteert de backend van Pridiktiv enkel een First/Last Write principe bij data. Naar de toekomst zou dit moeten veranderen naar een een bredere oplossing die conflict resolution kan aanbieden.
 
-\section{TODO ergens tussenplaatsen}
-De API Gateway geeft het object door aan de proxy lambda die de objecten op een queue plaatst.  Een andere lambda leest alle boodschappen uit de queue en stuurt elke request terug naar de gateway lambda. De API Gateway wijst de correcte lambda aan die verantwoordelijk is voor de verwerking van de oorspronkelijke request.
-
-\section{Conflict Resolution}
+\subsection{Conflict Resolution}
 Bij synchronisatie gaat er idealiter geen informatie verloren of laat de business case gaan dataverlies toe. Daarom is het ook belangrijk om te kijken hoe data kan worden gesynchroniseerd op een manier waarbij geen data verloren gaan. Om het onderzoek binnen de restricties van de business case te laten passen, worden hier enkel AWS services gebruikt bij het synchronisatie. Een andere belangrijke opmerking dat het enkel maar gaat over UPDATE en DELETE operaties want Een CREATE operatie kan niet leiden tot een conflict wanneer het toestel offline is.
-\subsection{Overzicht: Client}
-Net zoals bij First/Last Write Wins, is de rol van de client beperkt. Wanneer de data zonder timestamp in de database wordt bewaard, is het belangrijk om een timestamp bij te houden wanneer nieuwe data zijn aangemaakt of aangepast. Zo heeft de server een referentiepunt om de data te verwerken.
-\subsection{Overzicht: Server}
-Timestamps bieden een eenvoudige oplossing om de controleren wanneer een bepaalde actie heeft plaatsgevonden. De timestamp van het nieuwe aangepaste object wordt vergeleken met de timestamp van het object dat reeds aanwezig is in de database. Zo kan bijvoorbeeld een timestamp worden bijgehouden in een 'modified' veld. Dat veld kan worden vergeleken met de timestamp van de UPDATE of DELETE die wordt doorgestuurd. Zo kan de server bepalen of er al dan niet een conflict is en wat er in het geval van een conflict moet gebeuren. Indien er geen timestamp sinds de laatste update wordt bewaard in het object, dan wordt synchroniseren zeer moeilijk en is First/Last Write Wins een betere oplossing. Het bijhouden van een timestamp alleen is echter niet voldoende. Het is belangrijk om op voorhand te bepalen wat de conflict resolution policies zijn en welke uses cases er allemaal van toepassing zijn. Niet alle conflicten kunnen worden opgevangen door de server. Zo kan de server geen beslissing nemen wanneer een DELETE actie wordt uitgevoerd op een object en er na nog een update wordt doorgestuurd. De gebruiker moet dan een waarschuwing krijgen dat zijn object is verwijderd en dan zijn aanpassingen niet zijn opgeslagen. Indien de gebruiker geen boodschap zou krijgen, dan wekt de server de perceptie dat er iets fout is gegaan bij de verwerking van de data.
-\subsection{Toepassing}
+\subsubsection{Overzicht: Client}
+Net zoals bij First/Last Write Wins, is de rol van de client beperkt. Wanneer de data zonder timestamp in de database wordt bewaard, is het belangrijk om een timestamp bij te houden wanneer nieuwe data zijn aangemaakt of aangepast. Zo heeft de server een referentiepunt om de data te verwerken. De belangrijkste bijdrage van de client is het correct cachen van de request voor verdere afhandeling wanneer de applicatie terug online is.
+\subsubsection{Overzicht: Server}
+Timestamps bieden een eenvoudige oplossing om om te  controleren wanneer een bepaalde actie heeft plaatsgevonden. De timestamp van het nieuwe aangepaste object wordt vergeleken met de timestamp van het object dat reeds aanwezig is in de database. Zo kan bijvoorbeeld een timestamp worden bijgehouden in een 'modified' veld. Dat veld kan worden vergeleken met de timestamp van de UPDATE of DELETE die wordt doorgestuurd. Zo kan de server bepalen of er al dan niet een conflict is en wat er in het geval van een conflict moet gebeuren. Indien er geen timestamp sinds de laatste update wordt bewaard in het object, dan wordt synchroniseren zeer moeilijk en is First/Last Write Wins een betere oplossing. Niet alle conflicten kunnen worden opgevangen door de server. Zo kan de server geen beslissing nemen wanneer een DELETE actie wordt uitgevoerd op een object en er na nog een update wordt doorgestuurd. De gebruiker moet dan een waarschuwing krijgen dat zijn object is verwijderd en dan zijn aanpassingen niet zijn opgeslagen. Indien de gebruiker geen boodschap zou krijgen, dan wekt de server de perceptie dat er iets fout is gegaan bij de verwerking van de data. Naar user experience toe is het beter om het conflict in de server op te lossen. Soms is dat niet mogelijk, zoals een DELETE operatie, en moet de eindgebruiker zelf een keuze maken.
 \subsubsection{Toepassing op de business case}
 \subsubsection{UPDATE operatie}
-Pridiktiv maakt gebruik van DynamoDB voor het bijhouden van de data. In DynamoDB wordt er gewerkt met een Partition Key die kan worden vergeleken met een Primary Key in SQL-terminologie en optioneel een Sort Key die  de Partition Key bevat in combinatie met een attribuut van het object. Daarnaast is het ook nog mogelijk om Secondary Indices te cre\"eren die functioneren zoals Sort keys.  Het is belangrijk dat de timestamp de Partition Key is of deel uitmaakt van de samengestelde Sort Key. Indien niet, is de DynamoDB verplicht om een full table scan uit te voeren op de tabel en over die data set te filteren. Omdat de timestamp deel uitmaakt van de Primary Key, is het bij updates eenvoudig om bij te houden wanneer de laatste update is uitgevoerd en om te voorkomen dat een UPDATE gedupliceerd wordt. Dit laatste wordt vermeden doordat de Partition Key unique moet zijn en dus met andere woorden kan die niet worden gedupliceerd zonder dat DynamoDB een exceptie gooit.
+Pridiktiv maakt gebruik van DynamoDB voor het bijhouden van de data. In DynamoDB wordt er gewerkt met een Partition Key die kan worden vergeleken met een Primary Key in SQL-terminologie en optioneel een Sort Key. Daarnaast is het ook nog mogelijk om Secondary Indices te cre\"eren die functioneren zoals Sort keys.  Het is belangrijk dat de timestamp de Partition Key is of deel uitmaakt van de samengestelde Sort Key. Indien niet, is de DynamoDB verplicht om een full table scan uit te voeren op de tabel en over die data set te filteren. Omdat de timestamp deel uitmaakt van de Primary Key, is het bij updates eenvoudig om bij te houden wanneer de laatste update is uitgevoerd en om te voorkomen dat een UPDATE gedupliceerd wordt. Dit laatste wordt vermeden doordat de Partition Key unique moet zijn en dus met andere woorden kan die niet worden gedupliceerd zonder dat DynamoDB een exceptie gooit.
 \subsubsection{DELETE operatie}
-Het is in de business case van Pridiktiv niet mogelijk om date te verwijderen. Alle data moet zichtbaar blijven in een historiek. Hierdoor is het niet toegelaten om DELETE operaties uit voeren, enkel UPDATE operaties. 
-\section{Open-source libraries}
-Voor het synchroniseren van de data bij Pridiktiv in AWS wordt er gebruik gemaakt van twee verschillende Open Source libraries. Deze zijn gemaakt om een oplossing aan te bieden voor Pridiktiv en in kader van dit onderzoek. De componenten zijn geschreven in JavaScript voor NodeJS 4.3 en hoger. Hierdoor is het mogelijk om nieuwere features uit ES6 te gebruiken zoals Promises. Het is specifiek ontwikkeld om te werken met Simple Queue Service van AWS maar biedt de flexibiliteit om gebruikt te worden buiten AWS Lambda, bv in AWS EC2 instances die ook NodeJS gebruiken. Deze libraries zijn ontwikkeld in kader van dit onderzoek en worden gebruikt binnen de productieomgeving van de Pridiktiv applicaties.
-\subsection{aws-sqs-push}
+Het is in de business case van Pridiktiv niet mogelijk om date te verwijderen. Alle data moet zichtbaar blijven in een historiek. Hierdoor is het niet toegelaten om DELETE operaties uit voeren, enkel UPDATE operaties. Bij DELETE operaties is het altijd noodzakelijk om de gebruiker een keuze aan te bieden indien er een synchronisatieconflict is. Aangezien dit niet van toepassing is binnen de business case wordt hier niet verder op in gegaan.
+
+\section{Architectuur server side voor de synchronisatie}
+Server side zijn er enkele aanpassingen uitgevoerd zodat de synchronisatie automatisch kan verlopen. De API Gateway, die de mapping\footnote{Mapping van de request houdt in dat de parameters van de querystring worden gemapped naar een object en de body van een request bij een HTTP POST wordt gemapped naar een object.} van de requests tot zijn rekening nam, gebruikt nu een proxy lambda integratie. Deze lambda is nu verantwoordelijk voor de mapping van de request. Wanneer de client gecachte data heeft, wordt die doorgestuurd naar de aparte\footnote{ organisatie/sync } route in het URL path. Hierdoor weet de proxy lambda dat de payload\footnote{De payload is de data die de body bevat, de optionele querystring parameters, het pad (bv /observations ) en de methode(POST, UPDATE, PUT)} acties bevat die moeten worden gesynchroniseerd. Deze lambda plaatst vervolgens alle acties op een SQS queue.
+
+Een polling lambda vraagt op vaste intervallen berichten van de queue op aan de hand van een CRON\footnote{Bij een CRON job wordt op vaste intervallen een AWS service aangeroepen.} job. De opgehaalde objecten uit de queue bevatten de methode, body en optionele querystrings en die worden dan terug gestuurd als een enkele request naar de proxy lambda. De proxy lambda vervult dan zijn taak als proxy lambda en stuurt de request naar de correcte lambda om te verwerken.
+\subsection{Open-source libraries}
+Voor het synchroniseren van de data bij Pridiktiv in AWS wordt er gebruik gemaakt van twee verschillende Open Source libraries. Deze zijn ontwikkeld in kader van dit onderzoek en bieden een oplossing aan voor het synchroniseren van data bij Pridiktiv. De componenten zijn geschreven in JavaScript voor NodeJS 4.3 en hoger. Hierdoor is het mogelijk om nieuwe features uit ES6 te gebruiken zoals Promises. Het is specifiek ontwikkeld om te werken met Simple Queue Service van AWS maar biedt de flexibiliteit om gebruikt te worden buiten AWS Lambda, bijvoorbeeld in AWS EC2 instances die ook NodeJS gebruiken. Deze libraries zijn ontwikkeld in kader van dit onderzoek en worden gebruikt binnen de productieomgeving van de Pridiktiv applicaties.
+\subsubsection{aws-sqs-push}
 Deze library heeft een functie die berichten op de SQS queue plaatst en een Promise retourneert wanneer er een bericht op de queue is geplaatst. De naam van de queue wordt met een hulpfunctie aws-sqs-geturl opgevraagd. Op deze manier is de gebruiker van deze library niet verplicht om de volledige ARN naam van de SQS door te geven. Wanneer de mesage een object bevat is dan wordt het object met JSON.stringify() automatisch omgevormd naar een string.
 
 \begin{lstlisting}[caption=Voorbeeld dat data plaatst op een SQS queue met behulp van de aws-sqs-push library]
@@ -229,7 +220,7 @@ Deze library heeft een functie die berichten op de SQS queue plaatst en een Prom
 	
 \end{lstlisting}
 \clearpage
-\subsection{aws-sqs-poll}
+\subsubsection{aws-sqs-poll}
 De aws-sqs-poll library vraagt aan de SQS queue berichten. Die worden dan geretourneerd als een string of indien het een stringified object is, als een object. Net zoals bij de aws-sqs-push wordt er gebruikt gemaakt van een hulplibrary voor het opvragen van de ARN naam van de queue.
 
 \begin{lstlisting}[caption=Voorbeeld hoe berichten worden opgehaald van de SQS queue]
@@ -251,7 +242,7 @@ De aws-sqs-poll library vraagt aan de SQS queue berichten. Die worden dan gereto
 	
 \end{lstlisting}
 
-\subsection{aws-sqs-deletemessage}
+\subsubsection{aws-sqs-deletemessage}
 Een kleine functie die SQS messages verwijderd op basis van de ReceiptHandle die wordt meegestuurd wanneer er een bericht wordt opgevraagd. De message is verwerkt dan mag het bericht zonder problemen worden verwijderd van de queue. Net zoals bij de andere bovenstaande functies, heb je altijd de ARN naam nodig van de SQS queue die je wenst op te roepen. Dus hier wordt opnieuw de hulpfunctie aws-sqs-geturl nodig.
 
 \begin{lstlisting}[caption=Voorbeeld hoe een bericht wordt verwijderd van SQS nadat het is verwerkt]
@@ -270,7 +261,7 @@ Een kleine functie die SQS messages verwijderd op basis van de ReceiptHandle die
 	
 \end{lstlisting}
 
-\subsection{aws-sqs-geturl}
+\subsubsection{aws-sqs-geturl}
 Hulplibrary die de ARN naam opvraagt van een specifieke SQS queue. Aan de hand van de AWS root account id, die automatisch wordt meegestuurd in een request, kan samen met de naam de ARN naam van een bepaalde SQS queue worden opgehaald. De AWS JavaScript SDK laat dit ook toe maar de functie gebruikt callbacks en een complexere configuratie. Door het gebruik van deze hulplibrary is de configuratie verwaarloosbaar en wordt er geen gebruik gemaakt van callbacks maar van promises
 
 \begin{lstlisting}[caption=Voorbeeld hoe de ARN van een SQS wordt opgehaald]
@@ -288,3 +279,5 @@ Hulplibrary die de ARN naam opvraagt van een specifieke SQS queue. Aan de hand v
 	});
 	
 \end{lstlisting}
+
+

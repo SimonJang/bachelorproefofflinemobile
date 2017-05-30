@@ -177,4 +177,12 @@
   note         = {Geraadpleegd op 20 mei 2017},
 }
 
+@Misc{data-integration-steps,
+  author       = {DataIntegration},
+  title        = {Data Synchronisation steps},
+  howpublished = {Web},
+  year         = {2015},
+  url          = {http://www.dataintegration.info/data-synchronization},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}
