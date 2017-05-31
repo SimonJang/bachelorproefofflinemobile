@@ -42,7 +42,7 @@
       \verb http://docs.couchdb.org/en/2.0.0/replication/
       \endverb
     \endentry
-    \entry{brechtbilliet-scalable}{online}{}
+    \entry{brechtbilliet-scalable}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=e018d3fbf9a85c1d01c905bcb1b0f733}{%
            family={Billiet},
@@ -62,6 +62,8 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 3 maart 2017}
       \field{title}{Scalable Angular 2 Architecture}
       \field{year}{2016}
       \verb{url}
@@ -130,6 +132,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 6 maart 2017}
       \field{title}{Data Synchronisation steps}
       \field{year}{2015}
       \verb{url}
@@ -151,7 +154,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
-      \field{note}{Geraadpleegd op 5 december}
+      \field{note}{Geraadpleegd op 5 december 2016}
       \field{title}{Study for EC: Broadband coverage in Europe 2015}
       \field{year}{2015}
       \verb{url}
@@ -173,14 +176,14 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{https://ec.europa.eu/digital-single-market/en/integration-digital-technology}
-      \field{note}{Geraadpleegd op 6 december}
+      \field{note}{Geraadpleegd op 6 december 2016}
       \field{title}{Integration of Digital Technology in the EU}
       \field{year}{2016}
       \verb{url}
       \verb https://ec.europa.eu/digital-single-market/en/integration-digital-technology
       \endverb
     \endentry
-    \entry{minko-gechev-scalable}{online}{}
+    \entry{minko-gechev-scalable}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=effaf90e988f01d5b55464d6f2bf438a}{%
            family={Gechev},
@@ -200,6 +203,8 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 3 maart 2017}
       \field{title}{Scalable Angular applications}
       \field{year}{2016}
       \verb{url}
@@ -252,7 +257,7 @@
       \verb https://firebase.google.com/docs/database/web/offline-capabilities
       \endverb
     \endentry
-    \entry{chrome-offline-first-statement}{online}{}
+    \entry{chrome-offline-first-statement}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=8b36e9207c24c76e6719268e49201d94}{%
            family={Google},
@@ -274,13 +279,14 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 3 maart 2017}
       \field{title}{Why develop for offline?}
       \field{year}{2017}
       \verb{url}
       \verb https://developer.chrome.com/apps/offline_apps
       \endverb
     \endentry
-    \entry{indexeddb-moz}{online}{}
+    \entry{indexeddb-moz}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=3618561cced624c55147d2f9ad89dfac}{%
            family={Leemans},
@@ -304,6 +310,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 14 maart 2017}
       \field{title}{Overview of the IndexedDB API}
       \field{year}{2013}
       \verb{url}
@@ -358,7 +365,7 @@
       \verb https://docs.microsoft.com/en-us/azure/app-service-mobile/app-service-mobile-cordova-get-started-offline-data
       \endverb
     \endentry
-    \entry{promise-info}{online}{}
+    \entry{promise-info}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=502f1bd97b0e7d80b88e1f45ae1bfdb8}{%
            family={Mozilla},
@@ -380,6 +387,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 23 april 2017}
       \field{title}{Explanation on Promises}
       \field{year}{2017}
       \verb{url}
@@ -448,13 +456,14 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 23 april 2017}
       \field{title}{Using Web Workers}
       \field{year}{2017}
       \verb{url}
       \verb https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
       \endverb
     \endentry
-    \entry{mozilla-overview}{online}{}
+    \entry{mozilla-overview}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=502f1bd97b0e7d80b88e1f45ae1bfdb8}{%
            family={Mozilla},
@@ -476,14 +485,14 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
-      \field{note}{Overview of Web APIs}
+      \field{note}{Geraadpleegd op 14 maart 2017}
       \field{title}{Web API Overview}
       \field{year}{2017}
       \verb{url}
       \verb https://developer.mozilla.org/nl/docs/WebAPI
       \endverb
     \endentry
-    \entry{ngrx-info}{online}{}
+    \entry{ngrx-info}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=05c052e4900cdc0a5430471193101e75}{%
            family={ngrx},
@@ -505,13 +514,14 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 3 maart 2017}
       \field{title}{Documentation for ngrx}
       \field{year}{2017}
       \verb{url}
       \verb https://github.com/ngrx/store
       \endverb
     \endentry
-    \entry{offline-first}{online}{}
+    \entry{offline-first}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=5e17fbf500531781851224a3da4e1544}{%
            family={{Offline First}},
@@ -533,6 +543,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 24 november 2016}
       \field{title}{Offline first mission statement}
       \field{year}{2017}
       \verb{url}
@@ -562,7 +573,7 @@
       \verb https://success.outsystems.com/Documentation/10/Developing_an_Application/Use_Data/Offline/Offline_Data_Synchronization_Patterns
       \endverb
     \endentry
-    \entry{reactivex-intro}{online}{}
+    \entry{reactivex-intro}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=cc229767f12338f8e71290551ae4dee5}{%
            family={ReactiveX},
@@ -584,13 +595,14 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 17 maart 2017}
       \field{title}{Documentation on how to use RX}
       \field{year}{2017}
       \verb{url}
       \verb http://reactivex.io/intro.html
       \endverb
     \endentry
-    \entry{scalable-theorie}{online}{}
+    \entry{scalable-theorie}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=d0740bcf48754b8fa2cd3549a1d73461}{%
            family={Richardson},
@@ -611,6 +623,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 17 maart 2017}
       \field{title}{Overview of microservices}
       \field{year}{2015}
       \verb{url}
@@ -633,14 +646,14 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
-      \field{note}{Geraadpleegd op 20 april}
+      \field{note}{Geraadpleegd op 20 april 2017}
       \field{title}{How to detect online and offline events cross-browser}
       \field{year}{2015}
       \verb{url}
       \verb https://stackoverflow.com/questions/3181080/how-to-detect-online-offline-event-cross-browser
       \endverb
     \endentry
-    \entry{websql-specification}{online}{}
+    \entry{websql-specification}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=446a1ae6601a5c59360c7d591c3992da}{%
            family={W3C},
@@ -662,13 +675,14 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 3 maart 2017}
       \field{title}{Overview of W3C Specification}
       \field{year}{2017}
       \verb{url}
       \verb https://www.w3.org/TR/webdatabase/
       \endverb
     \endentry
-    \entry{WHATWG-storage-API}{online}{}
+    \entry{WHATWG-storage-API}{misc}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=4eff95d9319057962e5e815abde2ab62}{%
            family={WHATWG},
@@ -690,6 +704,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 14 maart 2017}
       \field{title}{Standard for storage by WHATWG}
       \field{year}{2017}
       \verb{url}
