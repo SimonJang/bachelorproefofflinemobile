@@ -20,7 +20,7 @@ Voor dat de verschillende caching- en synchronisatie methodes kunnen worden over
 \clearpage
 \begin{enumerate}
 \item DOM API's aanspreken vanuit JavaScript. Helaas is er geen consistente\autocite{offline-spec-mozilla} cross-browser support op het controleren van de status van de verbinding zonder gebruik te maken van van requests naar externe data. Een voorbeeld is luisteren naar events van het document.window object om online en offline status te controleren werkt niet op alle browsers. Een andere optie waarbij de status van de verbinding wordt opgevraagd met window.navigator.onLine werkt ook niet consistent in alle browsers.
-\item Een request uitvoeren naar een externe bron: als de applicatie een request uitvoert naar een externe bron en de HTTP code controleert van de respons, dan kan de applicatie gemakkelijk afleiden wat de status van de verbinding is. Deze methode garandeert dat de applicatie correct kan vaststellen wanneer de status van de verbinding verandert. Deze methode ook gebruikt in libraries zoals Offline.js\footnote{Zie https://github.com/hubspot/offline}.
+\item Een request uitvoeren naar een externe bron: als de applicatie een request uitvoert naar een externe bron en de HTTP code controleert van de respons, dan kan de applicatie gemakkelijk afleiden wat de status van de verbinding is. Deze methode garandeert dat de applicatie correct kan vaststellen wanneer de status van de verbinding verandert. Deze methode wordt ook gebruikt in libraries zoals Offline.js\footnote{Zie https://github.com/hubspot/offline}.
 \end{enumerate}
 
 \begin{lstlisting}[caption=Verschillende methodes\autocite{offline-online-examples} voor controleren offline en online status.]
