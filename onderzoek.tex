@@ -51,7 +51,7 @@ Voor dat de verschillende caching- en synchronisatie methodes kunnen worden over
 \end{lstlisting}
 \clearpage
 \section{Caching van requests}
-Voor het onderzoek werd geopteerd op gebruik te maken van de methode waarbij een call wordt uitgevoerd om te controleren of de client online of offline is. Wanneer de applicatie registreert dat er geen verbinding meer is, worden alle POST/PUT/UPDATE\footnote{Alle requests die geen POST/PUT/UPDATE request zijn worden genegeerd want die hebben geen invloed op de synchronisatie} requests gecached als afzonderlijke objecten in localStorage. Hiervoor wordt er gebruik gemaakt van localForage. Wanneer de applicatie terug online is, wordt er 1 request naar de server alle gecachte data doorgestuurd. Requests die een UPDATE uitvoeren op een object dat aangemaakt werd (CREATE) tijdens de offline status, worden allemaal gebundeld in een enkel object. Op die manier wordt de volgorde gegarandeerd voor het verwerken van de verschillende requests. Wanneer er dan synchronisatieproblemen optreden, moeten die in de lambda's worden opgevangen die de individuele request moeten verwerken.
+Voor het onderzoek werd geopteerd op gebruik te maken van de methode waarbij een call wordt uitgevoerd om te controleren of de client online of offline is. Wanneer de applicatie registreert dat er geen verbinding meer is, worden alle POST/PUT/UPDATE\footnote{Alle requests die geen POST/PUT/UPDATE request zijn worden genegeerd want die hebben geen invloed op de synchronisatie} requests gecached als afzonderlijke objecten in localStorage. Hiervoor wordt er gebruik gemaakt van localForage. Wanneer de applicatie terug online is, wordt er 1 request naar de server alle gecachte data doorgestuurd. Requests die een UPDATE uitvoeren op een object dat aangemaakt werd (CREATE) tijdens de offline status, worden allemaal gebundeld in een enkel object. Op die manier wordt de volgorde gegarandeerd voor het verwerken van de verschillende requests. Wanneer er dan synchronisatieproblemen optreden, moeten die in de lambda's worden opgevangen die de individuele request verwerken.
 
 \begin{lstlisting}[caption=Caching van een request]
 private cache(key: string, command: Request) {
@@ -120,7 +120,7 @@ Aan de hand van web workers is het mogelijk om parallel een ander Javascript app
 \includegraphics[width=1\textwidth]{example-webworker}
 \end{figure}
 
-Een nadeel bij het gebruik van web workers is de complexiteit wanneer externe scripts worden gebruikt. Als er meerdere dependencies zijn voor het uitvoeren van de code of als een superset van JavaScript zoals TypeScript wordt gebruikt, dan moet men gebruik maken van SystemJS\footnote{SystemJS is een dynamische module loader voor JavaScript ES6}. SystemJS is echter niet combineerbaar met Angular CLI, de build tool die gebruikt wordt bij de business case. Door deze beperking is het werken met web workers niet de ideale oplossing voor de business case. Het is ook mogelijk om de Webpack\footnote{Webpack is een module bundler. Webpack laadt net als SystemJS de verschillende modules in maar bundelt die ook netjes in verschillende files. Op die manier moet een applicatie die heel wat dependencies heeft maar een beperkt (4) aantal files inladen.}-configuratie file die Angular CLI gebruikt handmatig te configureren. Dit wordt echter sterk afgeraden omdat de meerwaarde van de bundling die door Angular CLI wordt uitgevoerd dan volledig verloren gaat.
+Een nadeel bij het gebruik van web workers is de complexiteit wanneer externe scripts worden gebruikt. Als er meerdere dependencies zijn voor het uitvoeren van de code of als een superset van JavaScript zoals TypeScript wordt gebruikt, dan moet men gebruik maken van SystemJS\footnote{SystemJS is een dynamische module loader voor JavaScript ES6}. SystemJS is echter niet combineerbaar met Angular CLI, de build tool die gebruikt wordt bij de business case. Door deze beperking is het werken met web workers niet de ideale oplossing voor de business case. Het is ook mogelijk om de Webpack\footnote{Webpack is een module bundler }-configuratie file die Angular CLI gebruikt handmatig te configureren. Dit wordt echter sterk afgeraden omdat de meerwaarde van de bundling die door Angular CLI wordt uitgevoerd dan volledig verloren gaat.
 
 \begin{lstlisting}[caption=Creatie van een web worker]
 var myWorker = new Worker('my_worker_jsfile.js');
@@ -180,17 +180,16 @@ Bij de business case was dit dan ook de eerste stap voor het in kaart brengen va
 \begin{tabular}{ l | r }
 \hline
 Functionaliteit & Synchronisatie \\ \hline
-   Taken & First-Write Wins of conflict resolution \\
+   Taken & First-Write Wins of conflict resolution with conflict detection \\
    Observaties & geen conflict mogelijk \\
    Medische data & geen conflict mogelijk \\
-   Wondzorg & First-Write Wins of conflict resolution \\
+   Wondzorg & First-Write Wins of conflict resolution with conflict detection \\
    Notities & Geen conflict mogelijk \\
    \hline
 \end{tabular}
 \end{center}
 \label{default}
 \end{table}%
-
 
 De onderverdeling is het uitgangspunt voor de volgende stap namelijk het bepalen van de verschillende synchronisatie mogelijkheden. Zo kan bijvoorbeeld worden bepaald dat de gebruiker bij een conflict zelf een beslissing moet nemen. Of indien er een conflict optreedt bij een synchronisatie van bepaalde data, dat er automatisch voor Last/First Write Wins wordt gekozen. In het geval waarbij er conflict resolution moet gebeuren door de gebruiker, kunnen kan worden bepaald welke keuzes de gebruiker krijgen en welke keuzes de server zelf kan maken. Bovenstaande overzicht vormt dan als het ware de basis voor de ontwikkeling van de synchronisatieoplossing. Een ander voorbeeld is het deactiveren van bepaalde functionaliteit bij wanneer de applicatie offline is. Hierdoor kunnen potentieel complexe synchronisatieproblemen worden vermeden. Dit heeft echter als nadeel dat de applicatie niet meer de volledige functionaliteit kan aanbieden wanneer de verbinding is verbroken. Het al dan niet uitschakelen van bepaalde functionaliteit bij offline gebruik is sterk afhankelijk van de use case.
 
@@ -214,7 +213,7 @@ First/Last Write wins is een aantrekkelijke methode wanneer er op korte termijn 
 \subsubsection{Toepassing op de business case}
 Momenteel hanteert de backend van Pridiktiv enkel een First/Last Write principe bij data. Naar de toekomst zou dit moeten veranderen naar een een bredere oplossing die conflict resolution kan aanbieden.
 
-\subsection{Conflict Resolution}
+\subsection{Conflict Resolution with conflict detection}
 Bij synchronisatie gaat er idealiter geen informatie verloren of laat de business case gaan dataverlies toe. Daarom is het ook belangrijk om te kijken hoe data kan worden gesynchroniseerd op een manier waarbij geen data verloren gaan. Om het onderzoek binnen de restricties van de business case te laten passen, worden hier enkel AWS services gebruikt bij het synchronisatie. Een andere belangrijke opmerking dat het enkel maar gaat over UPDATE en DELETE operaties want Een CREATE operatie kan niet leiden tot een conflict wanneer het toestel offline is.
 \subsubsection{Overzicht: Client}
 Net zoals bij First/Last Write Wins, is de rol van de client beperkt. Wanneer de data zonder timestamp in de database wordt bewaard, is het belangrijk om een timestamp bij te houden wanneer nieuwe data zijn aangemaakt of aangepast. Zo heeft de server een referentiepunt om de data te verwerken. De belangrijkste bijdrage van de client is het correct cachen van de request voor verdere afhandeling wanneer de applicatie terug online is.
