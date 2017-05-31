@@ -104,12 +104,13 @@
   url          = {http://offlinefirst.org/},
 }
 
-@Electronic{aws-documentation,
+@Misc{aws-documentation,
   author       = {AWS},
-  year         = {2017},
   title        = {Overview of the different AWS services},
+  howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 10 maart 2017},
   language     = {English},
-  howpublished = {Web and pdf},
   organization = {Amazon Web Services},
   url          = {https://aws.amazon.com/documentation/},
 }

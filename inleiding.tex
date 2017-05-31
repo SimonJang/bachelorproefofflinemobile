@@ -3,7 +3,7 @@
 %%=============================================================================
 \chapter{Inleiding}
 \label{ch:inleiding}
-Het onderzoek zal verschillende methodes voor offline opslag en synchronisatie analyseren, onderzoeken en toepassing op de business case. In de sectie~\ref{sec:business-case} 'Business case' wordt de business case van Pridiktiv.care - into.care toegelicht. Daarna in sectie~\ref{sec:terminologie} 'Terminologie' worden de belangrijkste begrippen van dit onderzoek overlopen. In sectie~\ref{sec:stand-van-zaken} 'Stand van zaken' komt de context en noodzaak van het onderzoek aan bod. Tenslotte volgt de probleemstelling, de onderzoeksvraag en de opzet van de bachelorproef.
+Het onderzoek zal verschillende methodes voor offline opslag en synchronisatie analyseren, onderzoeken en toepassen op de business case. In de sectie~\ref{sec:business-case} 'Business case' wordt de business case van Pridiktiv.care - into.care toegelicht. Daarna in sectie~\ref{sec:terminologie} 'Terminologie' worden de belangrijkste begrippen van dit onderzoek overlopen. In sectie~\ref{sec:stand-van-zaken} 'Stand van zaken' komt de context en noodzaak van het onderzoek aan bod. Tenslotte volgt de probleemstelling, de onderzoeksvraag en de opzet van de bachelorproef.
 %% literatuurstudie. Vergeet niet telkens je bronnen te vermelden!
 \section{Business Case}
 \label{sec:business-case}
@@ -60,7 +60,7 @@ Redux store is een container die de state van de applicatie bijhoudt waarbij per
 \begin{itemize}  
 \item de state is een single immutable JSON data structure, alle aanpassingen in de state cree\"eren een nieuwe state die de oude state overschrijft
 \item trigger of dispatch events initialiseren acties in de reducers
-\item reducers verwerken acties en wijzigen de state door een nieuwe state te cree\"en. Een reducer is een idempotente\footnote{Een idempotente functie is een functie die een operatie uitvoert zonder neveneffecten als die meerdere keren met dezelfde input wordt opgeroepen} functie die een actie moet verwerken
+\item reducers verwerken acties en wijzigen de state door een nieuwe state te cree\"en. Een reducer\footnote{Een reducer 'verandert' de state door een nieuwe state te genereren. Op die manier wordt de immutability van redux gerespecteerd. De action bepaalt of er al dan niet een nieuwe state moet worden gegenereerd.} is een functie die een actie moet verwerken.
 \item de state van de store kan asynchroon worden opgevraagd
 \end{itemize}
 In de applicatie van de business case wordt er gebruikt gemaakt van een Angular implementatie van Redux, de ngrx store. Net als Angular maakt ngrx gebruikt van RxJS. Zo is het mogelijk om RxJS componenten zoals Observables en Subjects te gebruiken bij het opvragen van de state.

@@ -7,7 +7,7 @@
 
 In dit hoofdstuk wordt dieper ingegaan op de verschillende caching -en synchronisatie methodes, hun toepassing op de businesscase en het proces voor het implementeren van synchronisatie. Volgende onderdelen komen aan bod in dit hoofdstuk:
 \begin{itemize}
-\item online/Offline status registstratie
+\item online en offline status registratie
 \item caching, preloading en Read-Only Optimised
 \item planning bij het bepalen van synchronisatie
 \item Last/First Write Wins en Conflict resolution
@@ -170,20 +170,27 @@ In de business case wordt momenteel de data serieel opgevraagd aan de server. Bi
 In de business case is er ook sprake van afbeeldingen die moeten worden gesynchroniseerd met de applicatie maar het cachen van BLOBs valt buiten de scope van dit onderzoek.
 
 \section{Data synchronisatie: planning van het proces}
-Data synchronisatie moet worden beschouwd als een continue proces\autocite{data-integration-steps} waarbij synchronisatie niet mag worden beschouwd als een eenmalige gebeurtenis. Het is daarom belangrijk om alle use cases in kaart te brengen waarbij er rekening moet worden gehouden met synchronisatie. Dit zorgt ervoor dat er geen functionaliteit over het hoofd wordt gezien bij het ontwikkelen van een synchronisatie oplossing. Bij de business case was dit dan ook de eerste stap voor het in kaart brengen van de verschillende use cases. Ter illustratie wordt in de onderstaande voorbeeld de business case van Pridiktiv ontleed.
+Data synchronisatie moet worden beschouwd als een continue proces\autocite{data-integration-steps} waarbij synchronisatie niet mag worden beschouwd als een eenmalige gebeurtenis. Het is daarom belangrijk om alle use cases in kaart te brengen waarbij er rekening moet worden gehouden met synchronisatie. Dit zorgt ervoor dat er geen functionaliteit over het hoofd wordt gezien bij het ontwikkelen van een synchronisatie oplossing. 
+\clearpage
+Bij de business case was dit dan ook de eerste stap voor het in kaart brengen van de verschillende use cases. Ter illustratie wordt in de onderstaande voorbeeld de business case van Pridiktiv ontleed.
 
+\begin{table}[htp]
+\caption{Overzicht planning synchronisatie}
 \begin{center}
-    \begin{tabular}{ l | r }
-    \hline
-    Functionaliteit & Synchronisatie \\ \hline
-    Taken & First-Write Wins of conflict resolution \\
-    Observaties & geen conflict mogelijk \\
-    Medische data & geen conflict mogelijk \\
-    Wondzorg & First-Write Wins of conflict resolution \\
-    Notities & Geen conflict mogelijk \\
-    \hline
-    \end{tabular}
+\begin{tabular}{ l | r }
+\hline
+Functionaliteit & Synchronisatie \\ \hline
+   Taken & First-Write Wins of conflict resolution \\
+   Observaties & geen conflict mogelijk \\
+   Medische data & geen conflict mogelijk \\
+   Wondzorg & First-Write Wins of conflict resolution \\
+   Notities & Geen conflict mogelijk \\
+   \hline
+\end{tabular}
 \end{center}
+\label{default}
+\end{table}%
+
 
 De onderverdeling is het uitgangspunt voor de volgende stap namelijk het bepalen van de verschillende synchronisatie mogelijkheden. Zo kan bijvoorbeeld worden bepaald dat de gebruiker bij een conflict zelf een beslissing moet nemen. Of indien er een conflict optreedt bij een synchronisatie van bepaalde data, dat er automatisch voor Last/First Write Wins wordt gekozen. In het geval waarbij er conflict resolution moet gebeuren door de gebruiker, kunnen kan worden bepaald welke keuzes de gebruiker krijgen en welke keuzes de server zelf kan maken. Bovenstaande overzicht vormt dan als het ware de basis voor de ontwikkeling van de synchronisatieoplossing. Een ander voorbeeld is het deactiveren van bepaalde functionaliteit bij wanneer de applicatie offline is. Hierdoor kunnen potentieel complexe synchronisatieproblemen worden vermeden. Dit heeft echter als nadeel dat de applicatie niet meer de volledige functionaliteit kan aanbieden wanneer de verbinding is verbroken. Het al dan niet uitschakelen van bepaalde functionaliteit bij offline gebruik is sterk afhankelijk van de use case.
 
@@ -220,11 +227,15 @@ Pridiktiv maakt gebruik van DynamoDB voor het bijhouden van de data. In DynamoDB
 Het is in de business case van Pridiktiv niet mogelijk om date te verwijderen. Alle data moet zichtbaar blijven in een historiek. Hierdoor is het niet toegelaten om DELETE operaties uit voeren, enkel UPDATE operaties. Bij DELETE operaties is het altijd noodzakelijk om de gebruiker een keuze aan te bieden indien er een synchronisatieconflict is. Aangezien dit niet van toepassing is binnen de business case wordt hier niet verder op in gegaan.
 
 \section{Architectuur server side voor de synchronisatie}
+Server side wordt er gebruik gemaakt van een queue voor het bewaren van de verschillende acties. Deze queue bevat alle acties die moeten verwerkt door de server voor het synchroniseren van de data. De reden dat er server side een queue wordt gebruikt is omdat die op een eenvoudige manier\footnote{met behulp van buffers of throttling} gemakkelijk overweg kan met een groot aantal requests. Een poll-functie kan dan gemakkelijk van de data uitlezen uit de queue en doorsturen naar de correcte functie.
+\subsection{Toepassing in de business case}
 Server side zijn er enkele aanpassingen uitgevoerd zodat de synchronisatie automatisch kan verlopen. De API Gateway, die de mapping\footnote{Mapping van de request houdt in dat de parameters van de querystring worden gemapped naar een object en de body van een request bij een HTTP POST wordt gemapped naar een object.} van de requests tot zijn rekening nam, gebruikt nu een proxy lambda integratie. Deze lambda is nu verantwoordelijk voor de mapping van de request. Wanneer de client gecachte data heeft, wordt die doorgestuurd naar de aparte\footnote{ organisatie/sync } route in het URL path. Hierdoor weet de proxy lambda dat de payload\footnote{De payload is de data die de body bevat, de optionele querystring parameters, het pad (bv /observations ) en de methode(POST, UPDATE, PUT)} acties bevat die moeten worden gesynchroniseerd. Deze lambda plaatst vervolgens alle acties op een SQS queue. 
 
 Een polling lambda vraagt op vaste intervallen berichten van de queue op aan de hand van een CRON\footnote{Bij een CRON job wordt op vaste intervallen een AWS service aangeroepen.} job. De opgehaalde objecten uit de queue bevatten de methode, body en optionele querystrings en die worden dan terug gestuurd als een enkele request naar de proxy lambda. De proxy lambda vervult dan zijn taak als proxy lambda en stuurt de request naar de correcte lambda om te verwerken. Wanneer de Lambda succesvol is uitgevoerd, dan wordt message van de queue verwijderd.
 
-Er is voor SQS gekozen omdat SNS een push strategie voor zijn berichten hanteert. Indien er bij de synchronisatie een fout voorvalt, dan is het bericht en de data onherroepelijk verloren. Met SQS moeten de boodschappen expliciet worden verwijderd. Wanneer de afhandeling van een bericht meerdere keren zou falen, dan komt de  terecht in de 'dead letter queue'. Afhankelijk van de configuratie van die 'dead letter queue' blijft het bericht nog 30 dagen in de dead letter queue alvorens het wordt verwijderd. De berichten in de 'dead letter queue' kunnen dan nog altijd manueel worden verwerkt. AWS SNS wordt wel gebruikt wanneer de proxy lambda de lambda die de queue pollt wil laten weten als er nieuwe requests op de queue zijn geplaatst. Voor de kosteneffici\"entie kan de CRON-job dan op een interval van 10 minuten worden geplaatst want een SNS boodschap kan de lambda ook triggeren.
+Er is voor SQS gekozen omdat SNS een push strategie voor zijn berichten hanteert. Indien er bij de synchronisatie een fout voorvalt, dan is het bericht en de data onherroepelijk verloren. Met SQS moeten de boodschappen expliciet worden verwijderd. 
+\clearpage
+Wanneer de afhandeling van een bericht meerdere keren zou falen, dan komt de  terecht in de 'dead letter queue'. Afhankelijk van de configuratie van die 'dead letter queue' blijft het bericht nog 30 dagen in de dead letter queue alvorens het wordt verwijderd. De berichten in de 'dead letter queue' kunnen dan nog altijd manueel worden verwerkt. AWS SNS wordt wel gebruikt wanneer de proxy lambda de lambda die de queue pollt wil laten weten als er nieuwe requests op de queue zijn geplaatst. Voor de kosteneffici\"entie kan de CRON-job dan op een interval van 10 minuten worden geplaatst want een SNS boodschap kan de lambda ook triggeren.
 
 \begin{figure}[h]
 \caption{De server side architectuur voor de synchronisatie}
@@ -233,9 +244,10 @@ Er is voor SQS gekozen omdat SNS een push strategie voor zijn berichten hanteert
 \end{figure}
 
 \subsection{Open-source libraries}
-Voor het synchroniseren van de data bij Pridiktiv in AWS wordt er gebruik gemaakt van twee verschillende Open Source libraries. Deze zijn ontwikkeld in kader van dit onderzoek en bieden een oplossing aan voor het synchroniseren van data bij Pridiktiv. De componenten zijn geschreven in JavaScript voor NodeJS 4.3 en hoger. Hierdoor is het mogelijk om nieuwe features uit ES6 te gebruiken zoals Promises. Het is specifiek ontwikkeld om te werken met Simple Queue Service van AWS maar biedt de flexibiliteit om gebruikt te worden buiten AWS Lambda, bijvoorbeeld in AWS EC2 instances die ook NodeJS gebruiken. Deze libraries zijn ontwikkeld in kader van dit onderzoek en worden gebruikt binnen de productieomgeving van de Pridiktiv applicaties.
+Voor het synchroniseren van de data bij Pridiktiv in AWS wordt er gebruik gemaakt van twee verschillende open source libraries. Deze zijn ontwikkeld in kader van dit onderzoek en bieden een oplossing aan voor het synchroniseren van data bij Pridiktiv. De componenten zijn geschreven in JavaScript voor NodeJS 4.3 en hoger. Hierdoor is het mogelijk om nieuwe features uit ES6 te gebruiken zoals Promises. Het is specifiek ontwikkeld om te werken met Simple Queue Service van AWS maar biedt de flexibiliteit om gebruikt te worden buiten AWS Lambda, bijvoorbeeld in AWS EC2 instances die ook NodeJS gebruiken. Deze libraries zijn ontwikkeld in kader van dit onderzoek en worden gebruikt binnen de productieomgeving van de Pridiktiv applicaties.
 \subsubsection{aws-sqs-push}
 Deze library heeft een functie die berichten op de SQS queue plaatst en een Promise retourneert wanneer er een bericht op de queue is geplaatst. De naam van de queue wordt met een hulpfunctie aws-sqs-geturl opgevraagd. Op deze manier is de gebruiker van deze library niet verplicht om de volledige ARN naam van de SQS door te geven. Wanneer de message een object bevat is dan wordt het object met JSON.stringify() automatisch omgevormd naar een string.
+\clearpage
 
 \begin{lstlisting}[caption=Voorbeeld dat data plaatst op een SQS queue met behulp van de aws-sqs-push library]
 
@@ -252,7 +264,6 @@ Deze library heeft een functie die berichten op de SQS queue plaatst en een Prom
 	});
 	
 \end{lstlisting}
-\clearpage
 \subsubsection{aws-sqs-poll}
 De aws-sqs-poll library vraagt aan de SQS queue berichten. Die worden dan geretourneerd als een string of indien het een stringified object is, als een object. Net zoals bij de aws-sqs-push wordt er gebruikt gemaakt van een hulplibrary voor het opvragen van de ARN naam van de queue.
 
@@ -274,7 +285,7 @@ De aws-sqs-poll library vraagt aan de SQS queue berichten. Die worden dan gereto
     	//   "Body": "test"]
 	
 \end{lstlisting}
-
+\clearpage
 \subsubsection{aws-sqs-deletemessage}
 Een kleine functie die SQS messages verwijderd op basis van de ReceiptHandle die wordt meegestuurd wanneer er een bericht wordt opgevraagd. De message is verwerkt dan mag het bericht zonder problemen worden verwijderd van de queue. Net zoals bij de andere bovenstaande functies, heb je altijd de ARN naam nodig van de SQS queue die je wenst op te roepen. Dus hier wordt opnieuw de hulpfunctie aws-sqs-geturl nodig.
 

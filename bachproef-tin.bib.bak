@@ -262,6 +262,7 @@
   howpublished = {Web},
   year         = {2016},
   note         = {Geraadpleegd op 3 maart 2017},
+  url          = {https://success.outsystems.com/Documentation/10/Developing_an_Application/Use_Data/Offline/Offline_Data_Synchronization_Patterns},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}
