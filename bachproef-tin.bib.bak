@@ -1,13 +1,13 @@
 % Encoding: UTF-8
 
-@Electronic{mozilla-overview,
+@Misc{mozilla-overview,
   author       = {Mozilla},
-  year         = {2017},
   title        = {Web API Overview},
-  language     = {English},
   howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 14 maart 2017},
+  language     = {English},
   organization = {Mozilla},
-  note         = {Overview of Web APIs},
   url          = {https://developer.mozilla.org/nl/docs/WebAPI},
 }
 
@@ -28,118 +28,132 @@
   author    = {Raymond Camden},
 }
 
-@Electronic{indexeddb-moz,
+@Misc{indexeddb-moz,
   author       = {Bart Leemans},
-  year         = {2013},
   title        = {Overview of the IndexedDB API},
-  language     = {Dutch},
   howpublished = {Web},
+  year         = {2013},
+  note         = {Geraadpleegd op 14 maart 2017},
+  language     = {Dutch},
   organization = {Mozilla},
   url          = {https://developer.mozilla.org/nl/docs/IndexedDB},
 }
 
-@Electronic{websql-specification,
+@Misc{websql-specification,
   author       = {W3C},
-  year         = {2017},
   title        = {Overview of W3C Specification},
-  language     = {English},
   howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 3 maart 2017},
+  language     = {English},
   organization = {W3C},
   url          = {https://www.w3.org/TR/webdatabase/},
 }
 
-@Electronic{brechtbilliet-scalable,
-  author   = {Brecht Billiet},
-  year     = {2016},
-  title    = {Scalable Angular 2 Architecture},
-  language = {English},
-  url      = {http://blog.brecht.io/A-scalable-angular2-architecture/},
-}
-
-@Electronic{minko-gechev-scalable,
-  author   = {Minko Gechev},
-  year     = {2016},
-  title    = {Scalable Angular applications},
-  language = {English},
-  url      = {http://blog.mgechev.com/2016/04/10/scalable-javascript-single-page-app-angular2-application-architecture/},
-}
-
-@Electronic{ngrx-info,
-  author       = {ngrx},
-  year         = {2017},
-  title        = {Documentation for ngrx},
-  language     = {English},
+@Misc{brechtbilliet-scalable,
+  author       = {Brecht Billiet},
+  title        = {Scalable Angular 2 Architecture},
   howpublished = {Web},
+  year         = {2016},
+  note         = {Geraadpleegd op 3 maart 2017},
+  language     = {English},
+  url          = {http://blog.brecht.io/A-scalable-angular2-architecture/},
+}
+
+@Misc{minko-gechev-scalable,
+  author       = {Minko Gechev},
+  title        = {Scalable Angular applications},
+  howpublished = {Web},
+  year         = {2016},
+  note         = {Geraadpleegd op 3 maart 2017},
+  language     = {English},
+  url          = {http://blog.mgechev.com/2016/04/10/scalable-javascript-single-page-app-angular2-application-architecture/},
+}
+
+@Misc{ngrx-info,
+  author       = {ngrx},
+  title        = {Documentation for ngrx},
+  howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 3 maart 2017},
+  language     = {English},
   organization = {open source collective},
   url          = {https://github.com/ngrx/store},
 }
 
-@Electronic{reactivex-intro,
+@Misc{reactivex-intro,
   author       = {ReactiveX},
-  year         = {2017},
   title        = {Documentation on how to use RX},
-  language     = {English},
   howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 17 maart 2017},
+  language     = {English},
   organization = {ReactiveX},
   url          = {http://reactivex.io/intro.html},
 }
 
-@Electronic{promise-info,
+@Misc{promise-info,
   author       = {Mozilla},
-  year         = {2017},
   title        = {Explanation on Promises},
-  language     = {English},
   howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 23 april 2017},
+  language     = {English},
   organization = {Mozilla},
   url          = {https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise},
 }
 
-@Electronic{offline-first,
+@Misc{offline-first,
   author       = {{Offline First}},
-  year         = {2017},
   title        = {Offline first mission statement},
-  language     = {English},
   howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 24 november 2016},
+  language     = {English},
   organization = {Offline First Open Source},
   url          = {http://offlinefirst.org/},
 }
 
-@Electronic{aws-documentation,
+@Misc{aws-documentation,
   author       = {AWS},
-  year         = {2017},
   title        = {Overview of the different AWS services},
+  howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 10 maart 2017},
   language     = {English},
-  howpublished = {Web and pdf},
   organization = {Amazon Web Services},
   url          = {https://aws.amazon.com/documentation/},
 }
 
-@Electronic{chrome-offline-first-statement,
+@Misc{chrome-offline-first-statement,
   author       = {Google},
-  year         = {2017},
   title        = {Why develop for offline?},
-  language     = {English},
   howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 3 maart 2017},
+  language     = {English},
   organization = {Google},
   url          = {https://developer.chrome.com/apps/offline_apps},
 }
 
-@Electronic{webworker-reference,
+@Misc{webworker-reference,
   author       = {W3C},
-  year         = {2017},
   title        = {Specification for Webworkers},
-  language     = {English},
   howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 23 april 2017},
+  language     = {English},
   organization = {W3C},
   url          = {https://w3c.github.io/workers/},
 }
 
-@Electronic{scalable-theorie,
+@Misc{scalable-theorie,
   author       = {Chris Richardson},
-  year         = {2015},
   title        = {Overview of microservices},
-  language     = {English},
   howpublished = {Web},
+  year         = {2015},
+  note         = {Geraadpleegd op 17 maart 2017},
+  language     = {English},
   url          = {http://microservices.io/patterns/microservices.html},
 }
 
@@ -157,7 +171,7 @@
   title        = {How to detect online and offline events cross-browser},
   howpublished = {Web},
   year         = {2015},
-  note         = {Geraadpleegd op 20 april},
+  note         = {Geraadpleegd op 20 april 2017},
   url          = {https://stackoverflow.com/questions/3181080/how-to-detect-online-offline-event-cross-browser},
 }
 
@@ -166,6 +180,7 @@
   title        = {Using Web Workers},
   howpublished = {Web},
   year         = {2017},
+  note         = {Geraadpleegd op 23 april 2017},
   url          = {https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers},
 }
 
@@ -183,6 +198,7 @@
   title        = {Data Synchronisation steps},
   howpublished = {Web},
   year         = {2015},
+  note         = {Geraadpleegd op 6 maart 2017},
   url          = {http://www.dataintegration.info/data-synchronization},
 }
 
@@ -200,7 +216,7 @@
   title        = {Study for EC: Broadband coverage in Europe 2015},
   howpublished = {Web},
   year         = {2015},
-  note         = {Geraadpleegd op 5 december},
+  note         = {Geraadpleegd op 5 december 2016},
   url          = {https://ec.europa.eu/digital-single-market/en/connectivity},
 }
 
@@ -209,7 +225,7 @@
   title        = {Integration of Digital Technology in the EU},
   howpublished = {https://ec.europa.eu/digital-single-market/en/integration-digital-technology},
   year         = {2016},
-  note         = {Geraadpleegd op 6 december},
+  note         = {Geraadpleegd op 6 december 2016},
   url          = {https://ec.europa.eu/digital-single-market/en/integration-digital-technology},
 }
 
