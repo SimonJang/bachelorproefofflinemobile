@@ -95,7 +95,7 @@
 }
 
 @Electronic{offline-first,
-  author       = {Offline First},
+  author       = {{Offline First}},
   year         = {2017},
   title        = {Offline first mission statement},
   language     = {English},
@@ -105,7 +105,7 @@
 }
 
 @Electronic{aws-documentation,
-  author       = {Amazon Web Services},
+  author       = {AWS},
   year         = {2017},
   title        = {Overview of the different AWS services},
   language     = {English},
@@ -153,7 +153,7 @@
 }
 
 @Misc{offline-online-examples,
-  author       = {StackOverflow},
+  author       = {{Stack Overflow}},
   title        = {How to detect online and offline events cross-browser},
   howpublished = {Web},
   year         = {2015},
@@ -178,7 +178,7 @@
 }
 
 @Misc{data-integration-steps,
-  author       = {DataIntegration},
+  author       = {{Data Integration}},
   title        = {Data Synchronisation steps},
   howpublished = {Web},
   year         = {2015},
@@ -192,6 +192,38 @@
   year         = {2017},
   note         = {Geraadpleegd op 25 mei 2017},
   url          = {https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm},
+}
+
+@Misc{EuropeseCommissie2015Connectivity,
+  author       = {{Europese Commissie}},
+  title        = {Study for EC: Broadband coverage in Europe 2015},
+  howpublished = {https://ec.europa.eu/digital-single-market/en/connectivity},
+  year         = {2015},
+  note         = {Geraadpleegd op 5 december},
+}
+
+@Misc{EuropeseCommissie2016Integration,
+  author       = {{Europese Commissie}},
+  title        = {Integration of Digital Technology in the EU},
+  howpublished = {https://ec.europa.eu/digital-single-market/en/integration-digital-technology},
+  year         = {2016},
+  note         = {Geraadpleegd op 6 december},
+}
+
+@Proceedings{Go2015,
+  title        = {Reliable, Consistent, and Efficient Data Sync for Mobile Apps},
+  year         = {2015},
+  editor       = {Younghwan Go},
+  organization = {USENIX},
+}
+
+@Misc{david-meents-redux,
+  author       = {David Meents},
+  title        = {Managing state with Redux in React},
+  howpublished = {Web},
+  year         = {2016},
+  note         = {Geraadpleegd op 2 mei 2017},
+  url          = {https://www.davidmeents.com/blog/manage-state-connect-to-api-redux-axios/},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

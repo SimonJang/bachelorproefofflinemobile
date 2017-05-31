@@ -3,26 +3,28 @@
 %%=============================================================================
 \chapter{Inleiding}
 \label{ch:inleiding}
-Het onderzoek zal verschillende methodes voor offline opslag en synchronisatie analyseren en onderzoeken. Het onderzoek zal van elke methode de voor- en nadelen overlopen. In de sectie ~\ref{sec:business-case} 'Business case' wordt de business case van Pridiktiv.care - into.care toegelicht. Daarna worden in sectie ~\ref{sec:terminologie} 'Terminologie' de verschillende relevante termen overlopen. In sectie ~\ref{sec:stand-van-zaken} 'Stand van zaken' komt de context en noodzaak van het onderzoek aan bod. Tenslotte volgt de probleemstelling, de onderzoeksvraag en de opzet van de bachelorproef.
+Het onderzoek zal verschillende methodes voor offline opslag en synchronisatie analyseren, onderzoeken en toepassing op de business case. In de sectie~\ref{sec:business-case} 'Business case' wordt de business case van Pridiktiv.care - into.care toegelicht. Daarna in sectie~\ref{sec:terminologie} 'Terminologie' worden de belangrijkste begrippen van dit onderzoek overlopen. In sectie~\ref{sec:stand-van-zaken} 'Stand van zaken' komt de context en noodzaak van het onderzoek aan bod. Tenslotte volgt de probleemstelling, de onderzoeksvraag en de opzet van de bachelorproef.
 %% literatuurstudie. Vergeet niet telkens je bronnen te vermelden!
 \section{Business Case}
 \label{sec:business-case}
 \subsection{Voorstelling bedrijf}
 Pridiktiv - into.care is een start-up die een mobiel platform aanbiedt aan zorgverstrekkers om de administratielast te verlichten. Op die manier is er meer tijd voor zorg en verliezen de zorgverleners minder tijd bij het invullen van documenten. UX\footnote{UX staat voor User Experience. Een verzamelnaam die alle emoties capteert die gebruikers ervaren bij het gebruiken van een product.} en mobile vormen de speerpunten van de business doelstellingen en vormen de belangrijkste factoren om zich te onderscheiden van andere concurrenten. Op termijn wil de start-up een modern, mobile-friendly ERP-systeem aanbieden aan woonzorgcentra.
+\clearpage
 \subsection{Context en probleemstelling van de business case}
-De applicatie draait op een smartphone in een woonzorgcentrum. Het woonzorgcentrum beschikt over draadloos internet maar de internetdekking in het gebouw is niet volledig. Dus moet de applicatie ook offline werken. Wanneer verschillende waarden worden geregistreerd met de applicatie (zoals bloeddruk, gewicht, inname medicatie) worden die offline opgeslagen in een IndexedDB. Wanneer het toestel terug online komt, moeten deze waarden worden doorgestuurd naar de backend. Het is essentieel dat er geen data verloren gaat aangezien het gaat om medische data. Bij de start van het onderzoek gebruikte de applicatie een algoritme die een HTTP call uitvoert wanneer een waarde wordt ingegeven. Wanneer dit niet lukt, veronderstelt het algoritme dat de applicatie offline is en worden de data lokaal opgeslagen. Wanneer het toestel terug online komt, dan worden de offline data gesynchroniseerd met de server. De realiteit wijst echter uit dat betrouwbaar internet eerder uitzonderlijk is in een woonzorgcentrum. In deze context is er dus nood aan een 'offline first' -  oplossing.
+De applicatie draait op een smartphone in een woonzorgcentrum. Het woonzorgcentrum beschikt over draadloos internet maar de internetdekking in het gebouw is niet volledig. Dus moet de applicatie ook offline werken. Wanneer verschillende waarden worden geregistreerd met de applicatie (zoals bloeddruk, gewicht, inname medicatie) worden die lokaal opgeslagen. Wanneer het toestel terug online komt, moeten deze waarden worden doorgestuurd naar de backend. Omdat het medische data zijn, is essentieel dat er geen data verloren gaat. Bij de start van het onderzoek gebruikte de applicatie een algoritme die een HTTP call uitvoert wanneer een waarde wordt ingegeven. Wanneer dit niet lukt, veronderstelt het algoritme dat de applicatie offline is en worden de data lokaal opgeslagen. Wanneer het toestel terug online komt, dan worden de offline data gesynchroniseerd met de server. De realiteit wijst echter uit dat betrouwbaar internet eerder uitzonderlijk is in een woonzorgcentrum. In deze context is er dus nood aan een 'offline first' -  oplossing.
 \subsection{De Pridiktiv applicaties en technologiestack}
-Pridiktiv maakt gebruik van verschillende applicaties om de business doelstellingen te realiseren. In hoofdstuk ~\ref{ch:setup} kan u een gedetailleerd bespreking terugvinden van de verschillende applicaties.
+Pridiktiv maakt gebruik van verschillende applicaties om de business doelstellingen te realiseren. In hoofdstuk~\ref{ch:setup} 'Opstelling' kan u een gedetailleerd bespreking terugvinden van de verschillende applicaties.
 \subsubsection{Client: Mobile applicatie}
 De huidige applicatie is een Angular\footnote{Wanneer de term 'Angular' wordt gebruik zonder versienummer, dan duidt dat op alle versies vanaf Angular 2. AngularJS is de verwijzing naar de 'oude' Angular versie} applicatie met Redux als state container. Voor lokale opslag wordt momenteel gebruik gemaakt van Mozilla's localForage\footnote{localForage maakt gebruik van de verschillende DOM Storage methodes en voorziet een uniforme interface voor het opslaan van data in de browser.} library. De applicatie is gebundeld als een Cordova applicatie.
 \subsubsection{Client: Backoffice applicatie}
-De backoffice applicatie is net als de mobiele applicatie een Angular applicatie maar dan gericht voor desktop gebruik. Synchronisatie en caching is voor deze applicatie niet relevant. Deze applicatie komt niet verder aan bod in dit onderzoek
+De backoffice applicatie is net als de mobiele applicatie een Angular applicatie maar dan gericht voor desktop gebruik. Synchronisatie en caching is voor deze applicatie niet relevant.
 \clearpage
 \subsubsection{Server side: Serverless architectuur}
-De backend van de businesscase maakt gebruik van een serverless architectuur in de Amazon Web Services Cloud en bestaat uit een verzameling van verschillende microservices die AWS\footnote{AWS is de afkorting voor Amazon Web Services. Gemakkelijkheidshalve wordt in dit onderzoek AWS gebruikt om te verwijzen naar AWS} Lambda gebruiken. Om de data te persisteren wordt DynamoDB van AWS gebruikt.
+De backend van de businesscase maakt gebruik van een serverless architectuur in de Amazon Web Services Cloud en bestaat uit een verzameling van verschillende microservices die AWS\footnote{AWS is de afkorting voor Amazon Web Services. Gemakkelijkheidshalve wordt in dit onderzoek AWS gebruikt om te verwijzen naar Amazon Web Services} Lambda gebruiken. Om de data te persisteren wordt DynamoDB van AWS gebruikt.
+
 \section{Terminologie}
 \label{sec:terminologie}
-In deze sectie komen de verschillende begrippen met betrekking tot de componenten van het onderzoek en de tools aan bod. De volledige lijst met begrippen en termen kan u terugvinden onder het hoofdstuk 'Glossarium'. Er is een minimum kennis in verband met software ontwikkeling vereist van de lezer om deze sectie volledig te begrijpen.
+In deze sectie komen de verschillende begrippen met betrekking tot de verschillende componenten van het onderzoek aan bod. De volledige lijst met begrippen en termen kan u terugvinden onder het hoofdstuk 'Glossarium'.
 \subsection{Huidige Web APIs voor lokale opslag}
 Er zijn momenteel 4 APIs \autocite{mozilla-overview} voor lokale opslag die ondersteund worden door verschillende browsers. Deze APIs worden ondersteund \autocite{WHATWG-storage-API} door de Web Hypertext Application Technology Working Group, aangegeven door WHATWG. De specificatie van de API wordt dan gestandardiseerd door het World Wide Web Consortium, aangegeven door W3C. Dit proces is belangrijk omdat de APIs dan door de populaire browsers zoals Chrome, Firefox en Safari worden ge\"integreerd. Op die manier kunnen webapplicaties gebruik maken van de verschillende APIs. Het is belangrijk om deze APIs kort te overlopen omdat ze steeds gebruikt worden bij de verschillende caching technieken om data lokaal op te slaan.
 \subsection{Web Storage}
@@ -45,7 +47,7 @@ Net zoals bij IndexedDB biedt Web SQL toegang tot een databank waar data structu
 \clearpage
 \subsection{Scalable Angular Architecture}
 \begin{figure}[h]
-\caption{Overzicht van een schaalbare web applicatie}
+\caption{Overzicht\autocite{minko-gechev-scalable} van een schaalbare web applicatie.}
 \centering
 \includegraphics[width=0.8\textwidth]{scalable-webapplication}
 \end{figure}
@@ -63,7 +65,7 @@ Redux store is een container die de state van de applicatie bijhoudt waarbij per
 \end{itemize}
 In de applicatie van de business case wordt er gebruikt gemaakt van een Angular implementatie van Redux, de ngrx store. Net als Angular maakt ngrx gebruikt van RxJS. Zo is het mogelijk om RxJS componenten zoals Observables en Subjects te gebruiken bij het opvragen van de state.
 \begin{figure}[h]
-\caption{Voorbeeld van de flow bij een dispatch in Redux}
+\caption{Voorbeeld\autocite{david-meents-redux} van de flow bij een dispatch in Redux}
 \centering
 \includegraphics[width=0.9\textwidth]{ui_workflow}
 \end{figure}
@@ -87,7 +89,7 @@ const subscribe = example.subscribe(val => console.log(val));
 'Offline First' is een stroming \autocite{offline-first} binnen web development waarbij offline gebruik als de basis wordt beschouwd van de applicatie. Net zoals bij 'Progressive Enhancement' wordt online functionaliteit beschouwt als een extra laag van features die de applicatie kan aanbieden. Het idee is gegroeid vanuit de teleurstelling dat 'always online' omwille van technische, geografische, financi\"ele en praktische redenen nog niet haalbaar is voor de nabije toekomst.
 \clearpage
 \subsection{Amazon Web Services}
-De applicaties en backend van de business case maken uitgebreid gebruik van Amazon Web Services (AWS). Volgende componenten komen aan bod in het onderzoek:
+De applicaties en backend van de business case maken uitgebreid gebruik van Amazon Web Services. Volgende componenten komen aan bod in het onderzoek:
 \begin{itemize}
 \item Amazon SQS: Simpelweg Simple Queue Service is een message queue service die verschillende AWS services toelaat om data te plaatsen in een queue. SQS voorziet 2 varianten. De standard queue biedt de snelste en meer performante oplossing maar hanteert geen FIFO-principe. Een FIFO-queue, zoals de naam reeds aangeeft, hanteert wel het FIFO-principe en elke message in de queue wordt altijd maar 1 keer geleverd. Andere AWS services kunnen de queue pollen voor nieuwe data.
 \item Lambda: Met AWS Lambda is het mogelijk om code, functies en operaties uit te voeren in de cloud dus zonder servers zelf te beheren en vormt de basis voor de serverless architectuur. De input voor de functie kan worden geleverd door HTTP endpoints maar ook door andere AWS services en is een voorbeeld van een event-driven architectuur. De output kan dan bijvoorbeeld worden gepersisteerd in DynamoDB of teruggestuurd worden naar de client. De verschillende Lambda functies vormen de microservice architectuur in de backend van de businesscase.
@@ -95,26 +97,27 @@ De applicaties en backend van de business case maken uitgebreid gebruik van Amaz
 \item DynamoDB: DynamoDB is een fully-managed\footnote{fully-managed houdt in dat dat het management en beheer van een service of databank wordt 'outsourced' naar de service provider. In het geval van DynamoDB moet de developer zich niet meer bezighouden met installatie, upgrades, provisioning, deployment, backups, restores en database availability.} NoSQL database van AWS en wordt gebruikt door de business case voor de data opslag. DynamoDB voorziet geen automatische synchronisatie met clients.
 \item API Gateway: API Gateway is een fully managed service die toelaat om de toegang tot API's te beheren.
 \end{itemize}
+
 \section{Stand van zaken}
 \label{sec:stand-van-zaken}
-Wanneer een ontwikkelaar de eindgebruiker van zijn web -of mobiele applicatie wil voorstellen, dan denkt hij vaak aan een gebruiker met dezelfde eigenschappen als zichzelf (laatste smartphone, up-to-date besturingssysteem,  snelle internet verbinding). De ontwikkelomgeving (snelle desktop/laptop met een betrouwbare en snelle internet verbinding) simuleert amper de omgeving van de eindgebruiker \autocite{chrome-offline-first-statement}. Bepaalde omgevingsfactoren zoals tunnels, trein en vliegtuig hebben een grote invloed op de betrouwbaarheid van de connectie. Het klassieke client - server model waarbij de client enkel maar als het ware een view is van de data die door de server worden bijgehouden, is achterhaald, want elke onderbreking in de internetconnectie zorgt ervoor dat de applicatie niet meer kan worden gebruikt.
+Wanneer een ontwikkelaar de eindgebruiker van zijn web -of mobiele applicatie wil voorstellen, dan denkt hij vaak aan een gebruiker met dezelfde eigenschappen\footnote{De laatste smartphone met een up-to-date besturingssysteem en snelle internet verbinding} als zichzelf. De ontwikkelomgeving\footnote{Een snelle desktop of laptop met een betrouwbare en snelle internet verbinding} simuleert amper de omgeving\autocite{EuropeseCommissie2015Connectivity}\autocite{EuropeseCommissie2016Integration} van de eindgebruiker \autocite{chrome-offline-first-statement}. Bepaalde omgevingsfactoren zoals tunnels, trein en vliegtuig hebben een grote invloed op de betrouwbaarheid van de connectie. Het klassieke client - server model waarbij de client enkel maar als het ware een view is van de data die door de server worden bijgehouden, is achterhaald, want elke onderbreking in de internetconnectie zorgt ervoor dat de applicatie niet meer kan worden gebruikt.
 \clearpage
 Meeste mobiele- en webapplicaties hebben twee momenten waarbij er problemen kunnen optreden door de status van de connectie:
 \begin{enumerate}  
 \item client stuurt request naar de server
 \item server pusht request naar client
 \end{enumerate}
-Afhankelijk van de business context van de applicatie, zijn er verschillende mogelijkheden:
+Afhankelijk van de business context van de applicatie, zijn er verschillende mogelijkheden\autocite{Go2015}:
 \begin{itemize}  
 \item De gebruiker al dan niet op de hoogte brengen van veranderingen in de status van de connectie. Bijvoorbeeld: bij het versturen van een bericht kan de gebruiker op de hoogte worden gebracht dat het bericht pas wordt verstuurd wanneer de applicatie terug online is.
 \item Offline client-side creatie en manipulatie van data toelaten aan de hand van caching. Wanneer de applicatie terug online, deze data synchroniseren met de server.
 \item Uitschakelen of aanpassen van bepaalde features wanneer de applicatie offline is.
 \end{itemize}
-Daarnaast is het mogelijk dat de server data wil pushen naar de applicatie van de gebruiker omdat deze door een andere client werd gewijzigd. De applicatie moet de gebruiker dan waarschuwen dat er nieuwere, recentere data beschikbaar zijn en indien nodig, een conflict-resolution aanbieden. Momenteel zijn er al enkele frameworks en databank systemen die toelaten om (offline) automatisch data te synchroniseren van een web- of mobiele applicatie met de achterliggende databank. Deze oplossing is echter niet compatibel met de bestaande backend en komen enkel kort aan bod in hoofdstuk ~\ref{ch:synchronisatiemethdodes} 'Synchronisatie methodes'
+Momenteel zijn er al enkele frameworks en databank systemen die toelaten om (offline) automatisch data te synchroniseren van een web- of mobiele applicatie met de achterliggende databank. Deze oplossingen zijn echter niet compatibel met de bestaande backend en komen enkel kort aan bod in hoofdstuk~\ref{ch:synchronisatiemethdodes} 'Synchronisatie methodes'
 %% TODO: deze sectie (die je kan opsplitsen in verschillende secties) bevat je
 \section{Probleemstelling en Onderzoeksvragen}
 \label{sec:onderzoeksvragen}
-Het doel van dit onderzoek is het ontwerpen van een algoritme of architectuur die compatibel is met de huidige applicaties en technologie stack. Hoe wordt conflict-resolution opgelost en moet de gebruiker daar zelf een keuze maken of kan de applicatie of achterliggende systemen zelf alle conflicten oplossen? Het is de intentie van het onderzoek om tot een betrouwbare oplossing te komen voor het probleem van de business case. Zoals reeds vermeld moet in het geval van de business case, de applicatie zonder onderbreking gemakkelijk kunnen overstappen van een offline status naar een online status en omgekeerd, zonder dat er daarbij belangrijke data verloren gaat. De applicatie werkt met vertrouwelijke medische data waardoor het verlies van data onaanvaardbaar.
+Het doel van dit onderzoek is het ontwerpen van een algoritme of een architectuur die compatibel is met de huidige applicaties en technologie stack. Hoe wordt conflict-resolution opgelost en moet de gebruiker daar zelf een keuze maken of kunnen de applicatie en achterliggende systemen zelf alle conflicten oplossen? Het is de intentie van het onderzoek om tot een betrouwbare oplossing te komen voor het probleem van de business case. Zoals reeds vermeld moet in het geval van de business case, de applicatie zonder onderbreking gemakkelijk kunnen overschakelen van een offline status naar een online status en omgekeerd, zonder dat er daarbij belangrijke medische data verloren gaat.
 
 %% TODO:
 %% Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde
@@ -130,10 +133,9 @@ Het doel van dit onderzoek is het ontwerpen van een algoritme of architectuur di
 %% TODO: Het is gebruikelijk aan het einde van de inleiding een overzicht te
 %% geven van de opbouw van de rest van de tekst. Deze sectie bevat al een aanzet
 %% die je kan aanvullen/aanpassen in functie van je eigen tekst.
+Na de inleiding maakt het onderzoek gebruik van de volgende structuur.
 
-De rest van deze bachelorproef is als volgt opgebouwd:
-
-In het volgende hoofdstuk~\ref{ch:methodologie} wordt de methodologie toegelicht die werd gehanteerd voor dit onderzoek. De applicatie van de business case, backend infrastructuur voor dit onderzoek worden toegelicht in hoofdstuk~\ref{ch:setup}. Het onderzoek start in hoofdstuk~\ref{ch:synchronisatiemethdodes} met een opsomming van verschillende synchronisatie methodes. In hoofdstuk~\ref{ch:onderzoek} worden de oplossingen op de verschillende problemen bij synchronisatie overlopen. Tenslotte kan u in hoofdstuk~\ref{ch:conclusie} de conclusie en een oplossing vinden. Daarbij wordt ook een aanzet gegeven voor toekomstig onderzoek binnen dit domein. Indien bepaalde begrippen onduidelijk zijn, vindt u een beknopte uitleg in het hoofdstuk~\ref{ch:glossarium}.
+In het volgende hoofdstuk~\ref{ch:methodologie} wordt de methodologie toegelicht die werd gehanteerd voor dit onderzoek. De applicatie van de business case, backend infrastructuur voor dit onderzoek worden toegelicht in hoofdstuk~\ref{ch:setup}. Het onderzoek start in hoofdstuk~\ref{ch:synchronisatiemethdodes} met een opsomming van verschillende synchronisatie methodes. In hoofdstuk~\ref{ch:onderzoek} worden de oplossingen op de verschillende problemen bij synchronisatie overlopen. Tenslotte kan u in hoofdstuk~\ref{ch:conclusie} de conclusie en de synthese van het onderzoek terugvinden. Daarbij wordt ook een aanzet gegeven voor toekomstig onderzoek binnen dit domein. Indien bepaalde begrippen onduidelijk zijn, vindt u een beknopte uitleg in het hoofdstuk~\ref{ch:glossarium}.
 %% TODO: Vul hier aan voor je eigen hoofstukken, één of twee zinnen per hoofdstuk
 
 

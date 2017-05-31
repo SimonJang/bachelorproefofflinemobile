@@ -90,12 +90,12 @@
     \endentry
     \entry{data-integration-steps}{misc}{}
       \name{author}{1}{}{%
-        {{uniquename=0,hash=5a0b34ab3c0861cfea84dabe49148ad2}{%
-           family={DataIntegration},
+        {{uniquename=0,hash=6d8ab8489413756b1af6bdab6b80863e}{%
+           family={{Data Integration}},
            family_i={D\bibinitperiod}}}%
       }
-      \strng{namehash}{5a0b34ab3c0861cfea84dabe49148ad2}
-      \strng{fullhash}{5a0b34ab3c0861cfea84dabe49148ad2}
+      \strng{namehash}{6d8ab8489413756b1af6bdab6b80863e}
+      \strng{fullhash}{6d8ab8489413756b1af6bdab6b80863e}
       \field{sortinit}{D}
       \field{sortinithash}{78f7c4753a2004675f316a80bdb31742}
       \field{labelyear}{2015}
@@ -110,35 +110,43 @@
       \verb http://www.dataintegration.info/data-synchronization
       \endverb
     \endentry
-    \entry{offline-first}{online}{}
+    \entry{EuropeseCommissie2015Connectivity}{misc}{}
       \name{author}{1}{}{%
-        {{uniquename=0,hash=d8a92b47376633f734f8d544f44c0566}{%
-           family={First},
-           family_i={F\bibinitperiod},
-           given={Offline},
-           given_i={O\bibinitperiod}}}%
+        {{uniquename=0,hash=db23d301890530597d5c976b910dc14c}{%
+           family={{Europese Commissie}},
+           family_i={E\bibinitperiod}}}%
       }
-      \list{language}{1}{%
-        {English}%
-      }
-      \list{organization}{1}{%
-        {Offline First Open Source}%
-      }
-      \strng{namehash}{d8a92b47376633f734f8d544f44c0566}
-      \strng{fullhash}{d8a92b47376633f734f8d544f44c0566}
-      \field{sortinit}{F}
-      \field{sortinithash}{c6a7d9913bbd7b20ea954441c0460b78}
-      \field{labelyear}{2017}
+      \strng{namehash}{db23d301890530597d5c976b910dc14c}
+      \strng{fullhash}{db23d301890530597d5c976b910dc14c}
+      \field{sortinit}{E}
+      \field{sortinithash}{fefc5210ef4721525b2a478df41efcd4}
+      \field{labelyear}{2015}
       \field{datelabelsource}{year}
-      \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{howpublished}{Web}
-      \field{title}{Offline first mission statement}
-      \field{year}{2017}
-      \verb{url}
-      \verb http://offlinefirst.org/
-      \endverb
+      \field{howpublished}{https://ec.europa.eu/digital-single-market/en/connectivity}
+      \field{note}{Geraadpleegd op 5 december}
+      \field{title}{Study for EC: Broadband coverage in Europe 2015}
+      \field{year}{2015}
+    \endentry
+    \entry{EuropeseCommissie2016Integration}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=db23d301890530597d5c976b910dc14c}{%
+           family={{Europese Commissie}},
+           family_i={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{db23d301890530597d5c976b910dc14c}
+      \strng{fullhash}{db23d301890530597d5c976b910dc14c}
+      \field{sortinit}{E}
+      \field{sortinithash}{fefc5210ef4721525b2a478df41efcd4}
+      \field{labelyear}{2016}
+      \field{datelabelsource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{https://ec.europa.eu/digital-single-market/en/integration-digital-technology}
+      \field{note}{Geraadpleegd op 6 december}
+      \field{title}{Integration of Digital Technology in the EU}
+      \field{year}{2016}
     \endentry
     \entry{minko-gechev-scalable}{online}{}
       \name{author}{1}{}{%
@@ -165,6 +173,29 @@
       \verb{url}
       \verb http://blog.mgechev.com/2016/04/10/scalable-javascript-single-page-app-angular2-application-architecture/
       \endverb
+    \endentry
+    \entry{Go2015}{proceedings}{}
+      \name{editor}{1}{}{%
+        {{uniquename=0,hash=75bb7a61476917e0fbffe83701ade487}{%
+           family={Go},
+           family_i={G\bibinitperiod},
+           given={Younghwan},
+           given_i={Y\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {USENIX}%
+      }
+      \strng{namehash}{75bb7a61476917e0fbffe83701ade487}
+      \strng{fullhash}{75bb7a61476917e0fbffe83701ade487}
+      \field{sortinit}{G}
+      \field{sortinithash}{1c854ef9177a91bf894e66485bdbd3ed}
+      \field{labelyear}{2015}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{editor}
+      \field{labeltitlesource}{title}
+      \field{title}{Reliable, Consistent, and Efficient Data Sync for Mobile Apps}
+      \field{year}{2015}
     \endentry
     \entry{chrome-offline-first-statement}{online}{}
       \name{author}{1}{}{%
@@ -222,6 +253,31 @@
       \field{year}{2013}
       \verb{url}
       \verb https://developer.mozilla.org/nl/docs/IndexedDB
+      \endverb
+    \endentry
+    \entry{david-meents-redux}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=7bb4929fa17070d8a4688dea0726c8dd}{%
+           family={Meents},
+           family_i={M\bibinitperiod},
+           given={David},
+           given_i={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{7bb4929fa17070d8a4688dea0726c8dd}
+      \strng{fullhash}{7bb4929fa17070d8a4688dea0726c8dd}
+      \field{sortinit}{M}
+      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{labelyear}{2016}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 2 mei 2017}
+      \field{title}{Managing state with Redux in React}
+      \field{year}{2016}
+      \verb{url}
+      \verb https://www.davidmeents.com/blog/manage-state-connect-to-api-redux-axios/
       \endverb
     \endentry
     \entry{promise-info}{online}{}
@@ -377,6 +433,34 @@
       \verb https://github.com/ngrx/store
       \endverb
     \endentry
+    \entry{offline-first}{online}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=5e17fbf500531781851224a3da4e1544}{%
+           family={{Offline First}},
+           family_i={O\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{organization}{1}{%
+        {Offline First Open Source}%
+      }
+      \strng{namehash}{5e17fbf500531781851224a3da4e1544}
+      \strng{fullhash}{5e17fbf500531781851224a3da4e1544}
+      \field{sortinit}{O}
+      \field{sortinithash}{7803d2715d5e795e70382b084ab8d00e}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{title}{Offline first mission statement}
+      \field{year}{2017}
+      \verb{url}
+      \verb http://offlinefirst.org/
+      \endverb
+    \endentry
     \entry{reactivex-intro}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=cc229767f12338f8e71290551ae4dee5}{%
@@ -434,12 +518,12 @@
     \endentry
     \entry{offline-online-examples}{misc}{}
       \name{author}{1}{}{%
-        {{uniquename=0,hash=84d7dc19766c446f5e4084e8fce87f82}{%
-           family={StackOverflow},
+        {{uniquename=0,hash=fcb3cd0c1efd8afe09d0505e46cefa4c}{%
+           family={{Stack Overflow}},
            family_i={S\bibinitperiod}}}%
       }
-      \strng{namehash}{84d7dc19766c446f5e4084e8fce87f82}
-      \strng{fullhash}{84d7dc19766c446f5e4084e8fce87f82}
+      \strng{namehash}{fcb3cd0c1efd8afe09d0505e46cefa4c}
+      \strng{fullhash}{fcb3cd0c1efd8afe09d0505e46cefa4c}
       \field{sortinit}{S}
       \field{sortinithash}{fd1e7c5ab79596b13dbbb67f8d70fb5a}
       \field{labelyear}{2015}
