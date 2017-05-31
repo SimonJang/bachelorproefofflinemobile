@@ -19,6 +19,29 @@
 
 \refsection{0}
   \sortlist[entry]{apa/global/}
+    \entry{sync-couchdb}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=094cadb5042edd6ca32a66d50a5f84f4}{%
+           family={{Apache CouchDB}},
+           family_i={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{094cadb5042edd6ca32a66d50a5f84f4}
+      \strng{fullhash}{094cadb5042edd6ca32a66d50a5f84f4}
+      \field{sortinit}{A}
+      \field{sortinithash}{b685c7856330eaee22789815b49de9bb}
+      \field{labelyear}{2016}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 13 april 2017}
+      \field{title}{Database replication for offline sync}
+      \field{year}{2016}
+      \verb{url}
+      \verb http://docs.couchdb.org/en/2.0.0/replication/
+      \endverb
+    \endentry
     \entry{brechtbilliet-scalable}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=e018d3fbf9a85c1d01c905bcb1b0f733}{%
@@ -87,6 +110,9 @@
       \field{note}{Geraadpleegd op 20 mei 2017}
       \field{title}{Web Workers browser support}
       \field{year}{2017}
+      \verb{url}
+      \verb http://caniuse.com/#search=worker
+      \endverb
     \endentry
     \entry{data-integration-steps}{misc}{}
       \name{author}{1}{}{%
@@ -124,10 +150,13 @@
       \field{datelabelsource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{howpublished}{https://ec.europa.eu/digital-single-market/en/connectivity}
+      \field{howpublished}{Web}
       \field{note}{Geraadpleegd op 5 december}
       \field{title}{Study for EC: Broadband coverage in Europe 2015}
       \field{year}{2015}
+      \verb{url}
+      \verb https://ec.europa.eu/digital-single-market/en/connectivity
+      \endverb
     \endentry
     \entry{EuropeseCommissie2016Integration}{misc}{}
       \name{author}{1}{}{%
@@ -147,6 +176,9 @@
       \field{note}{Geraadpleegd op 6 december}
       \field{title}{Integration of Digital Technology in the EU}
       \field{year}{2016}
+      \verb{url}
+      \verb https://ec.europa.eu/digital-single-market/en/integration-digital-technology
+      \endverb
     \endentry
     \entry{minko-gechev-scalable}{online}{}
       \name{author}{1}{}{%
@@ -197,6 +229,29 @@
       \field{title}{Reliable, Consistent, and Efficient Data Sync for Mobile Apps}
       \field{year}{2015}
     \endentry
+    \entry{firebase-sync}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=8b36e9207c24c76e6719268e49201d94}{%
+           family={Google},
+           family_i={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{fullhash}{8b36e9207c24c76e6719268e49201d94}
+      \field{sortinit}{G}
+      \field{sortinithash}{1c854ef9177a91bf894e66485bdbd3ed}
+      \field{extrayear}{1}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 13 april 2017}
+      \field{title}{Enabling Firebase offline sync}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://firebase.google.com/docs/database/web/offline-capabilities
+      \endverb
+    \endentry
     \entry{chrome-offline-first-statement}{online}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=8b36e9207c24c76e6719268e49201d94}{%
@@ -213,9 +268,9 @@
       \strng{fullhash}{8b36e9207c24c76e6719268e49201d94}
       \field{sortinit}{G}
       \field{sortinithash}{1c854ef9177a91bf894e66485bdbd3ed}
+      \field{extrayear}{2}
       \field{labelyear}{2017}
       \field{datelabelsource}{year}
-      \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Web}
@@ -278,6 +333,29 @@
       \field{year}{2016}
       \verb{url}
       \verb https://www.davidmeents.com/blog/manage-state-connect-to-api-redux-axios/
+      \endverb
+    \endentry
+    \entry{azure-sync}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=3f6aade9b2448c487db5399dd2cd4f37}{%
+           family={{Microsoft Azure Documentation}},
+           family_i={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{3f6aade9b2448c487db5399dd2cd4f37}
+      \strng{fullhash}{3f6aade9b2448c487db5399dd2cd4f37}
+      \field{sortinit}{M}
+      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{labelyear}{2017}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 14 april 2017}
+      \field{title}{Enable Offline sync for your Cordova app}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://docs.microsoft.com/en-us/azure/app-service-mobile/app-service-mobile-cordova-get-started-offline-data
       \endverb
     \endentry
     \entry{promise-info}{online}{}
@@ -459,6 +537,29 @@
       \field{year}{2017}
       \verb{url}
       \verb http://offlinefirst.org/
+      \endverb
+    \endentry
+    \entry{outsystem-sync}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=735148ee7def8ce6999f36865144d97b}{%
+           family={OutSystems},
+           family_i={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{735148ee7def8ce6999f36865144d97b}
+      \strng{fullhash}{735148ee7def8ce6999f36865144d97b}
+      \field{sortinit}{O}
+      \field{sortinithash}{7803d2715d5e795e70382b084ab8d00e}
+      \field{labelyear}{2016}
+      \field{datelabelsource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Web}
+      \field{note}{Geraadpleegd op 3 maart 2017}
+      \field{title}{Offline Synchronisation Patterns}
+      \field{year}{2016}
+      \verb{url}
+      \verb https://success.outsystems.com/Documentation/10/Developing_an_Application/Use_Data/Offline/Offline_Data_Synchronization_Patterns
       \endverb
     \endentry
     \entry{reactivex-intro}{online}{}

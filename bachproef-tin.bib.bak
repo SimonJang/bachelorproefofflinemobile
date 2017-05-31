@@ -175,6 +175,7 @@
   howpublished = {Web},
   year         = {2017},
   note         = {Geraadpleegd op 20 mei 2017},
+  url          = {http://caniuse.com/#search=worker},
 }
 
 @Misc{data-integration-steps,
@@ -197,9 +198,10 @@
 @Misc{EuropeseCommissie2015Connectivity,
   author       = {{Europese Commissie}},
   title        = {Study for EC: Broadband coverage in Europe 2015},
-  howpublished = {https://ec.europa.eu/digital-single-market/en/connectivity},
+  howpublished = {Web},
   year         = {2015},
   note         = {Geraadpleegd op 5 december},
+  url          = {https://ec.europa.eu/digital-single-market/en/connectivity},
 }
 
 @Misc{EuropeseCommissie2016Integration,
@@ -208,6 +210,7 @@
   howpublished = {https://ec.europa.eu/digital-single-market/en/integration-digital-technology},
   year         = {2016},
   note         = {Geraadpleegd op 6 december},
+  url          = {https://ec.europa.eu/digital-single-market/en/integration-digital-technology},
 }
 
 @Proceedings{Go2015,
@@ -224,6 +227,41 @@
   year         = {2016},
   note         = {Geraadpleegd op 2 mei 2017},
   url          = {https://www.davidmeents.com/blog/manage-state-connect-to-api-redux-axios/},
+}
+
+@Misc{sync-couchdb,
+  author       = {{Apache CouchDB}},
+  title        = {Database replication for offline sync},
+  howpublished = {Web},
+  year         = {2016},
+  note         = {Geraadpleegd op 13 april 2017},
+  url          = {http://docs.couchdb.org/en/2.0.0/replication/},
+}
+
+@Misc{firebase-sync,
+  author       = {Google},
+  title        = {Enabling Firebase offline sync},
+  howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 13 april 2017},
+  url          = {https://firebase.google.com/docs/database/web/offline-capabilities},
+}
+
+@Misc{azure-sync,
+  author       = {{Microsoft Azure Documentation}},
+  title        = {Enable Offline sync for your Cordova app},
+  howpublished = {Web},
+  year         = {2017},
+  note         = {Geraadpleegd op 14 april 2017},
+  url          = {https://docs.microsoft.com/en-us/azure/app-service-mobile/app-service-mobile-cordova-get-started-offline-data},
+}
+
+@Misc{outsystem-sync,
+  author       = {OutSystems},
+  title        = {Offline Synchronisation Patterns},
+  howpublished = {Web},
+  year         = {2016},
+  note         = {Geraadpleegd op 3 maart 2017},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}
